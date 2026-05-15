@@ -19,6 +19,7 @@ dependencies = [
     "yt-dlp>=2025.1.15",
     "faster-whisper>=1.0.3",
     "anthropic>=0.42",
+    "pyyaml>=6.0",
     "jinja2>=3.1",
     "structlog>=24.4",
     "python-dotenv>=1.0",
