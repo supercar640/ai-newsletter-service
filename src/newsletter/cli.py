@@ -24,6 +24,7 @@ from newsletter import __version__  # noqa: E402
 from newsletter.core.config import get_settings  # noqa: E402
 from newsletter.core.logging import configure_logging, get_logger  # noqa: E402
 from newsletter.slices.collection.cli import app as collect_app  # noqa: E402
+from newsletter.slices.integration.cli import app as integrate_app  # noqa: E402
 from newsletter.slices.processing.cli import app as process_app  # noqa: E402
 from newsletter.slices.sources.cli import app as sources_app  # noqa: E402
 
@@ -37,6 +38,7 @@ app = typer.Typer(
 app.add_typer(sources_app, name="sources")
 app.add_typer(collect_app, name="collect")
 app.add_typer(process_app, name="process")
+app.add_typer(integrate_app, name="integrate")
 
 
 @app.callback()
