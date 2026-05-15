@@ -85,6 +85,59 @@ SEED_SOURCES: list[SourceCreate] = [
         fetch_interval="weekly",
         owner="admin",
     ),
+    # --- YOUTUBE_SEARCH sources (Iteration 2.5) ----------------------------
+    # For each keyword the YouTube Data API is searched, the top N videos
+    # by view count are kept, audio is downloaded via yt-dlp, and
+    # faster-whisper transcribes them. Transcripts land in RawItem.raw_content
+    # and on disk under data/runs/<id>/youtube/<source-id>/.
+    SourceCreate(
+        source_id="yt-search-ai-howto",
+        name="YouTube 검색 — AI 활용법",
+        type="YOUTUBE_SEARCH",
+        content_track="practical_insight",
+        endpoint="https://www.googleapis.com/youtube/v3/search",
+        query="AI 활용법",
+        language="ko",
+        region="KR",
+        category="Productivity",
+        audience_level="beginner",
+        priority="high",
+        trust_level="community",
+        fetch_interval="daily",
+        owner="admin",
+    ),
+    SourceCreate(
+        source_id="yt-search-chatgpt-howto",
+        name="YouTube 검색 — ChatGPT 사용법",
+        type="YOUTUBE_SEARCH",
+        content_track="practical_insight",
+        endpoint="https://www.googleapis.com/youtube/v3/search",
+        query="ChatGPT 사용법",
+        language="ko",
+        region="KR",
+        category="Prompting",
+        audience_level="beginner",
+        priority="high",
+        trust_level="community",
+        fetch_interval="daily",
+        owner="admin",
+    ),
+    SourceCreate(
+        source_id="yt-search-ai-automation",
+        name="YouTube 검색 — AI 자동화",
+        type="YOUTUBE_SEARCH",
+        content_track="practical_insight",
+        endpoint="https://www.googleapis.com/youtube/v3/search",
+        query="AI 자동화",
+        language="ko",
+        region="KR",
+        category="Workflow Automation",
+        audience_level="intermediate",
+        priority="high",
+        trust_level="community",
+        fetch_interval="daily",
+        owner="admin",
+    ),
 ]
 
 

@@ -34,6 +34,20 @@ class Settings(BaseSettings):
     youtube_api_key: str = Field(default="")
     youtube_fetch_metadata: bool = Field(default=True)
 
+    # YouTube search collector (YOUTUBE_SEARCH source type)
+    youtube_search_top_n: int = Field(default=3, ge=1, le=50)
+    youtube_search_region: str = Field(default="KR")
+    # Set to 0 to skip downloading + transcribing audio (faster, no transcript).
+    youtube_stt_enabled: bool = Field(default=True)
+    # faster-whisper: model size + compute type + language hint
+    whisper_model: str = Field(default="small")
+    whisper_compute_type: str = Field(default="int8")
+    whisper_device: str = Field(default="cpu")
+    whisper_language: str = Field(default="")  # "" = auto-detect
+
+    # Where on disk to write per-run artifacts (audio, scraped HTML, transcripts).
+    data_dir: str = Field(default="data")
+
     # SMTP
     smtp_host: str = Field(default="smtp.gmail.com")
     smtp_port: int = Field(default=587)

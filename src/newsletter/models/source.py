@@ -14,7 +14,14 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from newsletter.core.db import Base
 
-SOURCE_TYPES: Final = ("NAVER_API", "RSS", "YOUTUBE_RSS", "API", "MANUAL")
+SOURCE_TYPES: Final = (
+    "NAVER_API",
+    "RSS",
+    "YOUTUBE_RSS",
+    "YOUTUBE_SEARCH",
+    "API",
+    "MANUAL",
+)
 CONTENT_TRACKS: Final = ("expert_news", "practical_insight", "both")
 PRIORITIES: Final = ("high", "medium", "low")
 TRUST_LEVELS: Final = ("official", "media", "community")

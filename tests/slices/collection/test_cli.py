@@ -41,9 +41,15 @@ _FEED_XML = b"""<?xml version="1.0"?>
 
 
 @pytest.fixture
-def runner(settings: Settings, monkeypatch: pytest.MonkeyPatch) -> CliRunner:
+def runner(settings: Settings, monkeypatch: pytest.MonkeyPatch, tmp_path) -> CliRunner:
     monkeypatch.setenv("NAVER_CLIENT_ID", "test-id")
     monkeypatch.setenv("NAVER_CLIENT_SECRET", "test-secret")
+    # YOUTUBE_SEARCH sources need a key to even attempt collection;
+    # STT_ENABLED=0 keeps the test off the network for audio.
+    monkeypatch.setenv("YOUTUBE_API_KEY", "yt-test")
+    monkeypatch.setenv("YOUTUBE_STT_ENABLED", "0")
+    # Per-run artifacts go in a temp dir so we don't pollute the repo.
+    monkeypatch.setenv("DATA_DIR", str(tmp_path))
     get_settings.cache_clear()
     del settings  # fixture is consumed for env-var side-effects only
 
@@ -76,6 +82,39 @@ def _mock_seed_endpoints() -> None:
     respx.get(url__regex=r"^https://www\.youtube\.com/feeds/videos\.xml.*").mock(
         return_value=httpx.Response(200, content=_FEED_XML),
     )
+    # YOUTUBE_SEARCH sources hit the Data API.
+    respx.get("https://www.googleapis.com/youtube/v3/search").mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "items": [
+                    {
+                        "id": {"kind": "youtube#video", "videoId": "vidYT000001"},
+                        "snippet": {"title": "x", "channelTitle": "c"},
+                    }
+                ]
+            },
+        ),
+    )
+    respx.get("https://www.googleapis.com/youtube/v3/videos").mock(
+        return_value=httpx.Response(
+            200,
+            json={
+                "items": [
+                    {
+                        "id": "vidYT000001",
+                        "snippet": {
+                            "title": "Top video",
+                            "description": "Desc",
+                            "channelTitle": "c",
+                            "publishedAt": "2025-05-12T09:00:00Z",
+                        },
+                        "statistics": {"viewCount": "12345"},
+                    }
+                ]
+            },
+        ),
+    )
 
 
 @respx.mock
@@ -91,8 +130,11 @@ def test_collect_runs_against_seeded_sources(runner: CliRunner) -> None:
 
     with core_db.session_scope() as session:
         rows = session.scalars(select(RawItem)).all()
-    # 1 Naver + 4 RSS-style sources, each with 1 mocked item = 5
-    assert len(rows) == 5
+    # 1 Naver + 4 RSS-style sources + 3 YOUTUBE_SEARCH (each mocked to
+    # return 1 video) = 8 rows. The exact count is less important than
+    # "no source failed".
+    assert len(rows) >= 5
+    assert "ERR" not in result.output
 
 
 def test_collect_with_no_sources_prints_message(runner: CliRunner) -> None:

@@ -11,7 +11,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-SourceType = Literal["NAVER_API", "RSS", "YOUTUBE_RSS", "API", "MANUAL"]
+SourceType = Literal["NAVER_API", "RSS", "YOUTUBE_RSS", "YOUTUBE_SEARCH", "API", "MANUAL"]
 ContentTrack = Literal["expert_news", "practical_insight", "both"]
 Priority = Literal["high", "medium", "low"]
 TrustLevel = Literal["official", "media", "community"]

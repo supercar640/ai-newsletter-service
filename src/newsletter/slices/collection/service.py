@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from newsletter.core.logging import get_logger
+from newsletter.core.run_context import RunContext
 from newsletter.models.raw_item import RawItem
 from newsletter.models.source import Source
 from newsletter.slices.collection.base import (
@@ -66,6 +67,7 @@ def collect_all(
     *,
     source_ids: list[str] | None = None,
     collector_factory=None,
+    run_context: RunContext | None = None,
 ) -> CollectionReport:
     """Collect from every enabled source (or the subset given).
 
@@ -78,8 +80,18 @@ def collect_all(
     collector_factory:
         Override the per-type collector resolver (used in tests). Receives
         the source type string and must return a :class:`Collector`.
+    run_context:
+        Per-run output directory. Threaded through to collectors that
+        write artifacts to disk (YOUTUBE_SEARCH for audio + transcripts).
     """
-    factory = collector_factory or get_collector
+    if collector_factory is None:
+
+        def factory(source_type: str):
+            return get_collector(source_type, run_context=run_context)
+
+    else:
+        factory = collector_factory
+
     sources = sources_repo.list_sources(session, only_enabled=True)
     if source_ids:
         wanted = set(source_ids)

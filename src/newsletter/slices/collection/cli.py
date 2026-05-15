@@ -5,6 +5,7 @@ from __future__ import annotations
 import typer
 
 from newsletter.core.db import session_scope
+from newsletter.core.run_context import RunContext
 from newsletter.slices.collection.service import CollectionReport, collect_all
 
 app = typer.Typer(
@@ -28,11 +29,20 @@ def cmd_collect(
         "-s",
         help="Restrict to one or more source ids. Repeat the flag for multiple.",
     ),
+    run_id: str | None = typer.Option(
+        None,
+        "--run-id",
+        help="Reuse a specific run directory id (default: new timestamp).",
+    ),
 ) -> None:
     """Collect from all enabled sources (or the subset filtered by ``--source-id``)."""
     _ = date  # informational
+    run_ctx = RunContext.new(run_id=run_id)
+    typer.echo(f"Run id: {run_ctx.run_id}")
+    typer.echo(f"Artifacts: {run_ctx.path}")
+
     with session_scope() as session:
-        report = collect_all(session, source_ids=source_id or None)
+        report = collect_all(session, source_ids=source_id or None, run_context=run_ctx)
 
     _print_report(report)
     if report.errors:
