@@ -7,11 +7,23 @@ as slices come online — see ``Iteration 1+`` of the implementation plan.
 
 from __future__ import annotations
 
-import typer
+import contextlib
+import sys
 
-from newsletter import __version__
-from newsletter.core.config import get_settings
-from newsletter.core.logging import configure_logging, get_logger
+# Force UTF-8 on stdout/stderr before anything writes (Windows defaults to
+# cp949 which chokes on Korean text and em-dashes in source names).
+for _stream in (sys.stdout, sys.stderr):
+    _reconfigure = getattr(_stream, "reconfigure", None)
+    if callable(_reconfigure):
+        with contextlib.suppress(OSError, ValueError):
+            _reconfigure(encoding="utf-8", errors="replace")
+
+import typer  # noqa: E402 — must follow stdout reconfigure
+
+from newsletter import __version__  # noqa: E402
+from newsletter.core.config import get_settings  # noqa: E402
+from newsletter.core.logging import configure_logging, get_logger  # noqa: E402
+from newsletter.slices.sources.cli import app as sources_app  # noqa: E402
 
 app = typer.Typer(
     name="newsletter",
@@ -19,6 +31,8 @@ app = typer.Typer(
     no_args_is_help=True,
     add_completion=False,
 )
+
+app.add_typer(sources_app, name="sources")
 
 
 @app.callback()
