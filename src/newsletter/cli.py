@@ -23,6 +23,7 @@ import typer  # noqa: E402 — must follow stdout reconfigure
 from newsletter import __version__  # noqa: E402
 from newsletter.core.config import get_settings  # noqa: E402
 from newsletter.core.logging import configure_logging, get_logger  # noqa: E402
+from newsletter.slices.collection.cli import app as collect_app  # noqa: E402
 from newsletter.slices.sources.cli import app as sources_app  # noqa: E402
 
 app = typer.Typer(
@@ -33,6 +34,7 @@ app = typer.Typer(
 )
 
 app.add_typer(sources_app, name="sources")
+app.add_typer(collect_app, name="collect")
 
 
 @app.callback()

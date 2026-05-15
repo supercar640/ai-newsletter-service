@@ -30,6 +30,10 @@ class Settings(BaseSettings):
     naver_client_id: str = Field(default="")
     naver_client_secret: str = Field(default="")
 
+    # YouTube Data API v3
+    youtube_api_key: str = Field(default="")
+    youtube_fetch_metadata: bool = Field(default=True)
+
     # SMTP
     smtp_host: str = Field(default="smtp.gmail.com")
     smtp_port: int = Field(default=587)

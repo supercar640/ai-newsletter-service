@@ -15,6 +15,7 @@ dependencies = [
     "pydantic-settings>=2.6",
     "httpx>=0.28",
     "feedparser>=6.0.11",
+    "beautifulsoup4>=4.12",
     "anthropic>=0.42",
     "jinja2>=3.1",
     "structlog>=24.4",
@@ -62,6 +63,14 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["B011"] # allow assert False in tests
+
+[tool.ruff.lint.flake8-bugbear]
+# Typer / Click idiom — Option()/Argument() in defaults is intentional and
+# documented; they return descriptor objects, not mutable state.
+extend-immutable-calls = [
+    "typer.Option",
+    "typer.Argument",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -22,11 +22,33 @@ def _configure_logging() -> None:
     configure_logging(log_format="console", log_level="WARNING")
 
 
+# Only credential / identifier env vars (all string-typed). Non-string typed
+# settings (SMTP_PORT, YOUTUBE_FETCH_METADATA) must not be set to "" or
+# pydantic-settings will reject them.
+_EXTERNAL_CREDENTIAL_VARS = (
+    "ANTHROPIC_API_KEY",
+    "NAVER_CLIENT_ID",
+    "NAVER_CLIENT_SECRET",
+    "YOUTUBE_API_KEY",
+    "SMTP_HOST",
+    "SMTP_USER",
+    "SMTP_PASSWORD",
+    "SMTP_FROM",
+    "NEWSLETTER_RECIPIENTS",
+)
+
+
 @pytest.fixture
 def settings(monkeypatch: pytest.MonkeyPatch) -> Settings:
-    """In-memory SQLite + test env."""
+    """In-memory SQLite + test env. Clears all external-API vars so
+    real credentials never leak into tests; individual tests opt back
+    in via their own monkeypatch.
+    """
     monkeypatch.setenv("DB_URL", "sqlite:///:memory:")
     monkeypatch.setenv("ENV", "test")
+    # setenv("") (not delenv) so an on-disk .env can't repopulate these.
+    for name in _EXTERNAL_CREDENTIAL_VARS:
+        monkeypatch.setenv(name, "")
     get_settings.cache_clear()
     return get_settings()
 
