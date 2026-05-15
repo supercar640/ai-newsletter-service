@@ -1,0 +1,3815 @@
+{
+  "version": "2.11",
+  "children": [
+    {
+      "type": "frame",
+      "id": "o9Nd9",
+      "x": 80,
+      "y": 80,
+      "name": "Design System",
+      "width": 1200,
+      "fill": "$--surface-card",
+      "cornerRadius": "$--radius-lg",
+      "stroke": {
+        "thickness": 1,
+        "fill": "$--border-subtle"
+      },
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 32,
+      "children": [
+        {
+          "type": "text",
+          "id": "qsSmZ",
+          "fill": "$--text-primary",
+          "content": "Design System — AI Newsletter Admin",
+          "fontFamily": "$--font-heading",
+          "fontSize": 24,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "Xm1Rc",
+          "fill": "$--text-secondary",
+          "content": "검수 + 발송 UI 의 재사용 컴포넌트",
+          "fontFamily": "$--font-body",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "frame",
+          "id": "ZPIOn",
+          "name": "btnSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "eepJn",
+              "fill": "$--text-tertiary",
+              "content": "BUTTONS",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "gR4LC",
+              "name": "btnRow",
+              "gap": "$--space-3",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "b1NU5",
+                  "name": "Button/Primary",
+                  "reusable": true,
+                  "fill": "$--accent-primary",
+                  "cornerRadius": "$--radius-md",
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-4"
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "siAc4",
+                      "fill": "$--text-inverse",
+                      "content": "승인",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "YN7s0",
+                  "name": "Button/Secondary",
+                  "reusable": true,
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-md",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-default"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-4"
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "oaChZ",
+                      "fill": "$--text-primary",
+                      "content": "취소",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "a6kJZ",
+                  "name": "Button/Danger",
+                  "reusable": true,
+                  "fill": "$--danger",
+                  "cornerRadius": "$--radius-md",
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-4"
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "Q7BiH",
+                      "fill": "$--text-inverse",
+                      "content": "거절",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "f60oO",
+                  "name": "Button/Ghost",
+                  "reusable": true,
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-3"
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "zYvP4",
+                      "fill": "$--accent-primary",
+                      "content": "더보기",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "gD56i",
+          "name": "badgeSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "w8zeM",
+              "fill": "$--text-tertiary",
+              "content": "STATUS BADGES (ISSUE LIFECYCLE)",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "KICXz",
+              "name": "badgeRow",
+              "gap": "$--space-3",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "QHTcn",
+                  "name": "Badge/Green",
+                  "reusable": true,
+                  "fill": "$--success-bg",
+                  "cornerRadius": "$--radius-sm",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--success-border"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-1",
+                    "$--space-2"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "mRBZe",
+                      "fill": "$--success",
+                      "width": 8,
+                      "height": 8
+                    },
+                    {
+                      "type": "text",
+                      "id": "GFYKa",
+                      "fill": "$--success",
+                      "content": "APPROVED · 발송 가능",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "PaVwI",
+                  "name": "Badge/Yellow",
+                  "reusable": true,
+                  "fill": "$--warning-bg",
+                  "cornerRadius": "$--radius-sm",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--warning-border"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-1",
+                    "$--space-2"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "W0sA5",
+                      "fill": "$--warning",
+                      "width": 8,
+                      "height": 8
+                    },
+                    {
+                      "type": "text",
+                      "id": "wtdrx",
+                      "fill": "$--warning",
+                      "content": "DRAFTED · 검수 대기",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Q5MT9W",
+                  "name": "Badge/Red",
+                  "reusable": true,
+                  "fill": "$--danger-bg",
+                  "cornerRadius": "$--radius-sm",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--danger-border"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-1",
+                    "$--space-2"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "ehPDe",
+                      "fill": "$--danger",
+                      "width": 8,
+                      "height": 8
+                    },
+                    {
+                      "type": "text",
+                      "id": "k8LAJ4",
+                      "fill": "$--danger",
+                      "content": "REJECTED · 거절됨",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bfNrm",
+                  "name": "Badge/Neutral",
+                  "reusable": true,
+                  "fill": "$--surface-subtle",
+                  "cornerRadius": "$--radius-sm",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-default"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-1",
+                    "$--space-2"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qOOG4",
+                      "fill": "$--text-secondary",
+                      "content": "PENDING",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "UuQBE",
+                  "name": "Badge/Info",
+                  "reusable": true,
+                  "fill": "$--accent-primary-bg",
+                  "cornerRadius": "$--radius-sm",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--accent-primary"
+                  },
+                  "gap": "$--space-2",
+                  "padding": [
+                    "$--space-1",
+                    "$--space-2"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "JijWI",
+                      "fill": "$--accent-primary",
+                      "content": "SENT · 발송 완료",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "VXxtG",
+          "name": "cardSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "MzXfV",
+              "fill": "$--text-tertiary",
+              "content": "CARDS",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "b4Suy",
+              "name": "cardRow",
+              "gap": "$--space-4",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "v8Qxn",
+                  "name": "Card",
+                  "reusable": true,
+                  "width": 280,
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-lg",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-subtle"
+                  },
+                  "layout": "vertical",
+                  "gap": "$--space-3",
+                  "padding": "$--space-5",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "NcAch",
+                      "fill": "$--text-primary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "카드 제목",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 16,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "mnKjL",
+                      "fill": "$--text-secondary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "카드 내용. 일반적 콘텐츠 컨테이너.",
+                      "lineHeight": 1.5,
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Em6Ug",
+                  "name": "StatCard",
+                  "reusable": true,
+                  "width": 240,
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-lg",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-subtle"
+                  },
+                  "layout": "vertical",
+                  "gap": "$--space-2",
+                  "padding": "$--space-5",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "g76gZ",
+                      "fill": "$--text-secondary",
+                      "content": "수집된 RawItem",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "A6isO",
+                      "fill": "$--text-primary",
+                      "content": "148",
+                      "fontFamily": "$--font-mono",
+                      "fontSize": 32,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "W9dp1q",
+                      "fill": "$--success",
+                      "content": "전주 대비 +24",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kle1G",
+                  "name": "StatCard/Danger",
+                  "reusable": true,
+                  "width": 240,
+                  "fill": "$--danger-bg",
+                  "cornerRadius": "$--radius-lg",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--danger-border"
+                  },
+                  "layout": "vertical",
+                  "gap": "$--space-2",
+                  "padding": "$--space-5",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ZT9RT",
+                      "fill": "$--danger",
+                      "content": "검수 대기",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "text",
+                      "id": "BZsXx",
+                      "fill": "$--danger",
+                      "content": "2",
+                      "fontFamily": "$--font-mono",
+                      "fontSize": 32,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "GOoHF",
+                      "fill": "$--danger",
+                      "content": "즉시 검토 필요",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "J6FufL",
+          "name": "inputSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "QpimF",
+              "fill": "$--text-tertiary",
+              "content": "INPUTS & TOGGLES",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "heY3K",
+              "name": "inputRow",
+              "gap": "$--space-4",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "UCxRj",
+                  "name": "Input/Text",
+                  "reusable": true,
+                  "width": 280,
+                  "layout": "vertical",
+                  "gap": "$--space-2",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "iss9z",
+                      "fill": "$--text-primary",
+                      "content": "라벨",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 12,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "b2Agdq",
+                      "name": "inpBox",
+                      "width": "fill_container",
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-md",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-default"
+                      },
+                      "padding": [
+                        "$--space-2",
+                        "$--space-3"
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "vASEg",
+                          "fill": "$--text-tertiary",
+                          "content": "플레이스홀더 텍스트",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "J28St",
+                      "fill": "$--text-tertiary",
+                      "content": "도움말 텍스트",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Alvwz",
+                  "name": "Checkbox/Unchecked",
+                  "reusable": true,
+                  "gap": "$--space-2",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "YOHTn",
+                      "width": 18,
+                      "height": 18,
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-sm",
+                      "stroke": {
+                        "thickness": 1.5,
+                        "fill": "$--border-default"
+                      }
+                    },
+                    {
+                      "type": "text",
+                      "id": "r8UKI",
+                      "fill": "$--text-secondary",
+                      "content": "미선택 항목",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "MCybd",
+                  "name": "Checkbox/Checked",
+                  "reusable": true,
+                  "gap": "$--space-2",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "CShjG",
+                      "name": "cbBox",
+                      "width": 18,
+                      "height": 18,
+                      "fill": "$--accent-primary",
+                      "cornerRadius": "$--radius-sm",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "sqAvG",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--text-inverse"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "Sj5Pm",
+                      "fill": "$--text-primary",
+                      "content": "선택된 항목",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RFZ8o",
+          "name": "navSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "v6T90h",
+              "fill": "$--text-tertiary",
+              "content": "SIDEBAR NAV ITEMS",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "o4QfMa",
+              "name": "navWrap",
+              "width": 240,
+              "fill": "$--surface-sidebar",
+              "cornerRadius": "$--radius-md",
+              "layout": "vertical",
+              "gap": "$--space-1",
+              "padding": "$--space-2",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "ng11c",
+                  "name": "SideNavItem",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "cornerRadius": "$--radius-md",
+                  "gap": "$--space-3",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-3"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "kJV5w",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "mail",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--text-sidebar"
+                    },
+                    {
+                      "type": "text",
+                      "id": "yBXZr",
+                      "fill": "$--text-sidebar",
+                      "content": "이슈 목록",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "c0HxSz",
+                  "name": "SideNavItem/Active",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "fill": "$--surface-sidebar-active",
+                  "cornerRadius": "$--radius-md",
+                  "gap": "$--space-3",
+                  "padding": [
+                    "$--space-2",
+                    "$--space-3"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "C6WG3P",
+                      "width": 18,
+                      "height": 18,
+                      "iconFontName": "layout-dashboard",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--text-inverse"
+                    },
+                    {
+                      "type": "text",
+                      "id": "ltHyl",
+                      "fill": "$--text-inverse",
+                      "content": "대시보드",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 14,
+                      "fontWeight": "600"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "ro7nm",
+          "name": "tblSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "DUKSQ",
+              "fill": "$--text-tertiary",
+              "content": "TABLE COMPONENTS",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "OcdQR",
+              "name": "tblWrap",
+              "width": "fill_container",
+              "fill": "$--surface-card",
+              "cornerRadius": "$--radius-md",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$--border-subtle"
+              },
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "eW8eF",
+                  "name": "Table/HeaderRow",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "fill": "$--surface-subtle",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$--border-subtle"
+                  },
+                  "gap": "$--space-4",
+                  "padding": [
+                    "$--space-3",
+                    "$--space-4"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "NM8GG",
+                      "name": "tHC1",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "R5mqcZ",
+                          "fill": "$--text-secondary",
+                          "content": "발행일",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "c5mne",
+                      "name": "tHC2",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "zwB33",
+                          "fill": "$--text-secondary",
+                          "content": "제목",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Njsfb",
+                      "name": "tHC3",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "krVJH",
+                          "fill": "$--text-secondary",
+                          "content": "상태",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 11,
+                          "fontWeight": "700",
+                          "letterSpacing": 0.5
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "bqUGV",
+                  "name": "Table/BodyRow",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$--border-subtle"
+                  },
+                  "gap": "$--space-4",
+                  "padding": [
+                    "$--space-3",
+                    "$--space-4"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "AOcOS",
+                      "name": "tBC1",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "yAFTK",
+                          "fill": "$--text-primary",
+                          "content": "2026-05-15",
+                          "fontFamily": "$--font-mono",
+                          "fontSize": 13,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SUQ6m",
+                      "name": "tBC2",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "dWRzR",
+                          "fill": "$--text-primary",
+                          "content": "이번 주 AI 뉴스 — 5월 셋째 주",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 13,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Y27aR",
+                      "name": "tBC3",
+                      "width": "fill_container",
+                      "children": [
+                        {
+                          "id": "JnQRc",
+                          "type": "ref",
+                          "ref": "PaVwI"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "poQ2Y",
+          "name": "candSec",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-3",
+          "children": [
+            {
+              "type": "text",
+              "id": "vHDNN",
+              "fill": "$--text-tertiary",
+              "content": "CANDIDATE ROW (NEWSLETTER)",
+              "fontFamily": "$--font-body",
+              "fontSize": 11,
+              "fontWeight": "700",
+              "letterSpacing": 1
+            },
+            {
+              "type": "frame",
+              "id": "V40sC",
+              "name": "candWrap",
+              "width": "fill_container",
+              "fill": "$--surface-card",
+              "cornerRadius": "$--radius-md",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$--border-subtle"
+              },
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "DY0PX",
+                  "name": "CandidateRow",
+                  "reusable": true,
+                  "width": "fill_container",
+                  "stroke": {
+                    "thickness": {
+                      "bottom": 1
+                    },
+                    "fill": "$--border-subtle"
+                  },
+                  "gap": "$--space-3",
+                  "padding": [
+                    "$--space-3",
+                    "$--space-4"
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Fcg8g",
+                      "name": "cbox",
+                      "width": 18,
+                      "height": 18,
+                      "fill": "$--accent-primary",
+                      "cornerRadius": "$--radius-sm",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "TnP19",
+                          "width": 14,
+                          "height": 14,
+                          "iconFontName": "check",
+                          "iconFontFamily": "lucide",
+                          "fill": "$--text-inverse"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "r6ReCv",
+                      "name": "crBody",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": "$--space-1",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "R8U0S",
+                          "fill": "$--text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "OpenAI, GPT-5 플래그십 모델 공개",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 14,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Sd8yC",
+                          "name": "crMeta",
+                          "gap": "$--space-2",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "SiKKh",
+                              "fill": "$--text-secondary",
+                              "content": "TechCrunch",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "BMyX9",
+                              "fill": "$--text-tertiary",
+                              "content": "·",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "pEM77",
+                              "fill": "$--text-secondary",
+                              "content": "AI Model",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "W5pWg",
+                              "fill": "$--text-tertiary",
+                              "content": "·",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "rZZrh",
+                              "fill": "$--text-tertiary",
+                              "content": "2시간 전",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "SlHZQ",
+                      "name": "crScore",
+                      "layout": "vertical",
+                      "alignItems": "end",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "j9fpbR",
+                          "fill": "$--text-primary",
+                          "content": "0.92",
+                          "fontFamily": "$--font-mono",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cg3WQ",
+                          "fill": "$--text-tertiary",
+                          "content": "중요도",
+                          "fontFamily": "$--font-body",
+                          "fontSize": 10,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "OAcZz",
+      "x": 1380,
+      "y": 80,
+      "name": "Screen 1 — Dashboard",
+      "width": 1440,
+      "height": 900,
+      "fill": "$--surface-bg",
+      "children": [
+        {
+          "type": "frame",
+          "id": "QJh5Y",
+          "name": "sidebar",
+          "width": 240,
+          "height": "fill_container",
+          "fill": "$--surface-sidebar",
+          "layout": "vertical",
+          "gap": "$--space-4",
+          "padding": "$--space-4",
+          "children": [
+            {
+              "type": "frame",
+              "id": "y3ny8",
+              "name": "brand",
+              "gap": "$--space-2",
+              "padding": "$--space-2",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "p8LIul",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "newspaper",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--text-inverse"
+                },
+                {
+                  "type": "text",
+                  "id": "o9QSP",
+                  "fill": "$--text-inverse",
+                  "content": "AI 뉴스레터",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "JJbAL",
+              "name": "navList",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-1",
+              "children": [
+                {
+                  "id": "kVdR2",
+                  "type": "ref",
+                  "ref": "c0HxSz",
+                  "name": "nav1"
+                },
+                {
+                  "id": "yv0y6",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "nav2",
+                  "descendants": {
+                    "yBXZr": {
+                      "content": "이슈 목록"
+                    }
+                  }
+                },
+                {
+                  "id": "v2fpi",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "nav3",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "database"
+                    },
+                    "yBXZr": {
+                      "content": "소스 관리"
+                    }
+                  }
+                },
+                {
+                  "id": "PNYFd",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "nav4",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "activity"
+                    },
+                    "yBXZr": {
+                      "content": "실행 로그"
+                    }
+                  }
+                },
+                {
+                  "id": "I02aY8",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "nav5",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "settings"
+                    },
+                    "yBXZr": {
+                      "content": "설정"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "X3QrhQ",
+          "name": "main",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-6",
+          "padding": "$--space-8",
+          "children": [
+            {
+              "type": "frame",
+              "id": "xhk47",
+              "name": "topbar",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "hGEfq",
+                  "name": "crumbs",
+                  "gap": "$--space-2",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "P3b270",
+                      "fill": "$--text-secondary",
+                      "content": "대시보드",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "iRArr",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--text-tertiary"
+                    },
+                    {
+                      "type": "text",
+                      "id": "xMtnw",
+                      "fill": "$--text-primary",
+                      "content": "2026-05-15",
+                      "fontFamily": "$--font-mono",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "v1EJo",
+                  "name": "user",
+                  "gap": "$--space-2",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "fjdsa",
+                      "fill": "$--accent-primary",
+                      "width": 28,
+                      "height": 28
+                    },
+                    {
+                      "type": "text",
+                      "id": "ZFmW3",
+                      "fill": "$--text-primary",
+                      "content": "master",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XrKEv",
+              "name": "header",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-2",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "fFXyr",
+                  "fill": "$--text-primary",
+                  "content": "오늘의 파이프라인",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "DGkpj",
+                  "fill": "$--text-secondary",
+                  "content": "수집 → 처리 → 통합 → 초안 → 검수 → 발송",
+                  "fontFamily": "$--font-body",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "O9SmKw",
+              "name": "statRow",
+              "width": "fill_container",
+              "gap": "$--space-4",
+              "children": [
+                {
+                  "id": "fyOKR",
+                  "type": "ref",
+                  "ref": "Em6Ug",
+                  "name": "s1",
+                  "descendants": {
+                    "g76gZ": {
+                      "content": "수집된 RawItem"
+                    },
+                    "A6isO": {
+                      "content": "148"
+                    },
+                    "W9dp1q": {
+                      "content": "전주 대비 +24"
+                    }
+                  }
+                },
+                {
+                  "id": "Qj4GU",
+                  "type": "ref",
+                  "ref": "Em6Ug",
+                  "name": "s2",
+                  "descendants": {
+                    "g76gZ": {
+                      "content": "처리된 ProcessedItem"
+                    },
+                    "A6isO": {
+                      "content": "112"
+                    },
+                    "W9dp1q": {
+                      "content": "AI 관련 87 / 비관련 25"
+                    }
+                  }
+                },
+                {
+                  "id": "g4Iei",
+                  "type": "ref",
+                  "ref": "Em6Ug",
+                  "name": "s3",
+                  "descendants": {
+                    "g76gZ": {
+                      "content": "후보 (전문가/일반)"
+                    },
+                    "A6isO": {
+                      "content": "11"
+                    },
+                    "W9dp1q": {
+                      "content": "전문가 7 · 일반 4"
+                    }
+                  }
+                },
+                {
+                  "id": "pFXuc",
+                  "type": "ref",
+                  "ref": "kle1G",
+                  "name": "s4",
+                  "descendants": {
+                    "ZT9RT": {
+                      "content": "검수 대기"
+                    },
+                    "BZsXx": {
+                      "content": "2"
+                    },
+                    "GOoHF": {
+                      "content": "즉시 검토 필요"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "r1dnYF",
+              "name": "section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-4",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "WduKY",
+                  "name": "secHead",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "d8Ciwf",
+                      "fill": "$--text-primary",
+                      "content": "최근 이슈",
+                      "fontFamily": "$--font-heading",
+                      "fontSize": 18,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "id": "b0uki8",
+                      "type": "ref",
+                      "ref": "b1NU5",
+                      "name": "cta",
+                      "descendants": {
+                        "siAc4": {
+                          "content": "오늘자 이슈 검수 시작"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cQSnO",
+                  "name": "tbl",
+                  "width": "fill_container",
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-md",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-subtle"
+                  },
+                  "layout": "vertical",
+                  "children": [
+                    {
+                      "id": "aHeSx",
+                      "type": "ref",
+                      "ref": "eW8eF",
+                      "name": "h"
+                    },
+                    {
+                      "id": "O2L4SB",
+                      "type": "ref",
+                      "ref": "bqUGV",
+                      "name": "r1",
+                      "descendants": {
+                        "yAFTK": {
+                          "content": "2026-05-15"
+                        },
+                        "dWRzR": {
+                          "content": "이번 주 AI 뉴스 — 5월 셋째 주"
+                        },
+                        "Y27aR": {
+                          "children": [
+                            {
+                              "id": "x6oK2",
+                              "type": "ref",
+                              "ref": "PaVwI"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "id": "bwlQk",
+                      "type": "ref",
+                      "ref": "bqUGV",
+                      "name": "r2",
+                      "descendants": {
+                        "yAFTK": {
+                          "content": "2026-05-08"
+                        },
+                        "dWRzR": {
+                          "content": "5월 둘째 주 AI 동향"
+                        },
+                        "Y27aR": {
+                          "children": [
+                            {
+                              "id": "OHhdc",
+                              "type": "ref",
+                              "ref": "UuQBE"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "id": "FLa8k",
+                      "type": "ref",
+                      "ref": "bqUGV",
+                      "name": "r3",
+                      "descendants": {
+                        "yAFTK": {
+                          "content": "2026-05-01"
+                        },
+                        "dWRzR": {
+                          "content": "5월 첫째 주 AI 동향"
+                        },
+                        "Y27aR": {
+                          "children": [
+                            {
+                              "id": "B2ooK",
+                              "type": "ref",
+                              "ref": "UuQBE"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "id": "uiD0R",
+                      "type": "ref",
+                      "ref": "bqUGV",
+                      "name": "r4",
+                      "descendants": {
+                        "yAFTK": {
+                          "content": "2026-04-24"
+                        },
+                        "dWRzR": {
+                          "content": "4월 넷째 주 AI 동향"
+                        },
+                        "Y27aR": {
+                          "children": [
+                            {
+                              "id": "T75d5",
+                              "type": "ref",
+                              "ref": "UuQBE"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "HcTpg",
+      "x": 1380,
+      "y": 1080,
+      "name": "Screen 2 — Issue Review",
+      "width": 1440,
+      "height": 1400,
+      "fill": "$--surface-bg",
+      "children": [
+        {
+          "type": "frame",
+          "id": "Xq0Nt",
+          "name": "sidebar",
+          "width": 240,
+          "height": "fill_container",
+          "fill": "$--surface-sidebar",
+          "layout": "vertical",
+          "gap": "$--space-4",
+          "padding": "$--space-4",
+          "children": [
+            {
+              "type": "frame",
+              "id": "V3aM1",
+              "name": "brand",
+              "gap": "$--space-2",
+              "padding": "$--space-2",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "GmiHZ",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "newspaper",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--text-inverse"
+                },
+                {
+                  "type": "text",
+                  "id": "garLp",
+                  "fill": "$--text-inverse",
+                  "content": "AI 뉴스레터",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "q6hytj",
+              "name": "navList",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-1",
+              "children": [
+                {
+                  "id": "O8jwA",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "n1",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "layout-dashboard"
+                    },
+                    "yBXZr": {
+                      "content": "대시보드"
+                    }
+                  }
+                },
+                {
+                  "id": "zSTLq",
+                  "type": "ref",
+                  "ref": "c0HxSz",
+                  "name": "n2",
+                  "descendants": {
+                    "C6WG3P": {
+                      "iconFontName": "mail"
+                    },
+                    "ltHyl": {
+                      "content": "이슈 목록"
+                    }
+                  }
+                },
+                {
+                  "id": "JEwNT",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "n3",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "database"
+                    },
+                    "yBXZr": {
+                      "content": "소스 관리"
+                    }
+                  }
+                },
+                {
+                  "id": "lj0bv",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "n4",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "activity"
+                    },
+                    "yBXZr": {
+                      "content": "실행 로그"
+                    }
+                  }
+                },
+                {
+                  "id": "XQGJP",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "n5",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "settings"
+                    },
+                    "yBXZr": {
+                      "content": "설정"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "X3z0BW",
+          "name": "main",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-5",
+          "padding": "$--space-8",
+          "children": [
+            {
+              "type": "frame",
+              "id": "RfVLG",
+              "name": "topbar",
+              "width": "fill_container",
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "jR5d8",
+                  "name": "crumbs",
+                  "gap": "$--space-2",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "UPj19",
+                      "fill": "$--text-secondary",
+                      "content": "이슈 목록",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "Q056C6",
+                      "width": 14,
+                      "height": 14,
+                      "iconFontName": "chevron-right",
+                      "iconFontFamily": "lucide",
+                      "fill": "$--text-tertiary"
+                    },
+                    {
+                      "type": "text",
+                      "id": "iMEqZ",
+                      "fill": "$--text-primary",
+                      "content": "#1 · 2026-05-15",
+                      "fontFamily": "$--font-mono",
+                      "fontSize": 13,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "id": "ooJJY",
+                      "type": "ref",
+                      "ref": "PaVwI"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "pnFhk",
+                  "name": "acts",
+                  "gap": "$--space-2",
+                  "children": [
+                    {
+                      "id": "LVjVN",
+                      "type": "ref",
+                      "ref": "YN7s0",
+                      "name": "b1",
+                      "descendants": {
+                        "oaChZ": {
+                          "content": "임시저장"
+                        }
+                      }
+                    },
+                    {
+                      "id": "zHUQC",
+                      "type": "ref",
+                      "ref": "a6kJZ",
+                      "name": "b2",
+                      "descendants": {
+                        "Q7BiH": {
+                          "content": "거절"
+                        }
+                      }
+                    },
+                    {
+                      "id": "s5FxV",
+                      "type": "ref",
+                      "ref": "b1NU5",
+                      "name": "b3",
+                      "descendants": {
+                        "siAc4": {
+                          "content": "승인"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "yB1UN",
+              "name": "title",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-2",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "XjzWH",
+                  "fill": "$--text-primary",
+                  "content": "이번 주 AI 뉴스 — 5월 셋째 주",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "frame",
+                  "id": "r29hM",
+                  "name": "tMeta",
+                  "gap": "$--space-3",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "L9HbBH",
+                      "fill": "$--text-secondary",
+                      "content": "발행 예정 · 2026-05-16 09:00",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "cOY5f",
+                      "fill": "$--text-tertiary",
+                      "content": "·",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "VdIz2",
+                      "fill": "$--text-secondary",
+                      "content": "수신자 18명",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vA0eQ",
+              "name": "body",
+              "width": "fill_container",
+              "height": "fill_container",
+              "gap": "$--space-5",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "XNzdI",
+                  "name": "leftPanel",
+                  "width": 420,
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-lg",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-subtle"
+                  },
+                  "layout": "vertical",
+                  "gap": "$--space-4",
+                  "padding": "$--space-5",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "sCpR6",
+                      "name": "lpHead",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "RZwa4",
+                          "fill": "$--text-primary",
+                          "content": "후보 선택",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "UJR9p",
+                          "fill": "$--text-secondary",
+                          "content": "9 / 11 선택됨",
+                          "fontFamily": "$--font-mono",
+                          "fontSize": 12,
+                          "fontWeight": "600"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "EGIAt",
+                      "name": "aLabel",
+                      "fill": "$--text-tertiary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "A. 전문가용 (5/7)",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 11,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "evDg0",
+                      "name": "trackAList",
+                      "width": "fill_container",
+                      "height": 495,
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-md",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "id": "MmdGE",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a1",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "OpenAI, GPT-5 플래그십 모델 공개"
+                            },
+                            "SiKKh": {
+                              "content": "TechCrunch"
+                            },
+                            "pEM77": {
+                              "content": "AI Model"
+                            },
+                            "rZZrh": {
+                              "content": "2시간 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.92"
+                            }
+                          }
+                        },
+                        {
+                          "id": "DX2tC",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a2",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "Anthropic Claude 5 출시 — 1M 토큰 컨텍스트"
+                            },
+                            "SiKKh": {
+                              "content": "Anthropic Blog"
+                            },
+                            "pEM77": {
+                              "content": "AI Model"
+                            },
+                            "rZZrh": {
+                              "content": "5시간 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.89"
+                            }
+                          }
+                        },
+                        {
+                          "id": "GiW75",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a3",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "Google Gemini 3 Ultra 발표, 멀티모달 강화"
+                            },
+                            "SiKKh": {
+                              "content": "The Verge"
+                            },
+                            "pEM77": {
+                              "content": "AI Model"
+                            },
+                            "rZZrh": {
+                              "content": "1일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.81"
+                            }
+                          }
+                        },
+                        {
+                          "id": "NKJ0n",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a4",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "EU AI Act 시행 첫 주 — 기업 영향 정리"
+                            },
+                            "SiKKh": {
+                              "content": "Reuters"
+                            },
+                            "pEM77": {
+                              "content": "Policy"
+                            },
+                            "rZZrh": {
+                              "content": "2일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.78"
+                            }
+                          }
+                        },
+                        {
+                          "id": "M2NZGo",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a5",
+                          "descendants": {
+                            "Fcg8g": {
+                              "fill": "$--surface-card",
+                              "stroke": {
+                                "thickness": 1.5,
+                                "fill": "$--border-default"
+                              }
+                            },
+                            "TnP19": {
+                              "enabled": false
+                            },
+                            "R8U0S": {
+                              "content": "Meta Llama 4, 오픈소스 가중치 공개",
+                              "fill": "$--text-tertiary"
+                            },
+                            "SiKKh": {
+                              "content": "VentureBeat"
+                            },
+                            "pEM77": {
+                              "content": "Open Source"
+                            },
+                            "rZZrh": {
+                              "content": "2일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.74",
+                              "fill": "$--text-tertiary"
+                            }
+                          }
+                        },
+                        {
+                          "id": "H8eWl",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a6",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "Microsoft Copilot, 엔터프라이즈 대규모 도입"
+                            },
+                            "SiKKh": {
+                              "content": "The Information"
+                            },
+                            "pEM77": {
+                              "content": "Enterprise"
+                            },
+                            "rZZrh": {
+                              "content": "3일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.71"
+                            }
+                          }
+                        },
+                        {
+                          "id": "FTVFk",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "a7",
+                          "descendants": {
+                            "Fcg8g": {
+                              "fill": "$--surface-card",
+                              "stroke": {
+                                "thickness": 1.5,
+                                "fill": "$--border-default"
+                              }
+                            },
+                            "TnP19": {
+                              "enabled": false
+                            },
+                            "R8U0S": {
+                              "content": "Mistral Large 3 — 유럽 AI 강세 신호",
+                              "fill": "$--text-tertiary"
+                            },
+                            "SiKKh": {
+                              "content": "TechCrunch"
+                            },
+                            "pEM77": {
+                              "content": "AI Model"
+                            },
+                            "rZZrh": {
+                              "content": "3일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.66",
+                              "fill": "$--text-tertiary"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "A8d0EL",
+                      "name": "bLabel",
+                      "fill": "$--text-tertiary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "B. 일반 임직원용 (4/4)",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 11,
+                      "fontWeight": "700",
+                      "letterSpacing": 1
+                    },
+                    {
+                      "type": "frame",
+                      "id": "KHtPc",
+                      "name": "trackBList",
+                      "width": "fill_container",
+                      "height": 260,
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-md",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "id": "h0ZLP5",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "b1",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "Excel + GPT — 보고서 자동화 5분 가이드"
+                            },
+                            "SiKKh": {
+                              "content": "Notion Blog"
+                            },
+                            "pEM77": {
+                              "content": "Tutorial"
+                            },
+                            "rZZrh": {
+                              "content": "1일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.85"
+                            }
+                          }
+                        },
+                        {
+                          "id": "Y8xpEr",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "b2",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "회의록에서 액션아이템 자동 추출하기"
+                            },
+                            "SiKKh": {
+                              "content": "Anthropic Help"
+                            },
+                            "pEM77": {
+                              "content": "Tutorial"
+                            },
+                            "rZZrh": {
+                              "content": "2일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.77"
+                            }
+                          }
+                        },
+                        {
+                          "id": "D9n4j",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "b3",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "긴 PDF, 핵심 3줄로 요약하는 프롬프트 패턴"
+                            },
+                            "SiKKh": {
+                              "content": "OpenAI Cookbook"
+                            },
+                            "pEM77": {
+                              "content": "Prompt"
+                            },
+                            "rZZrh": {
+                              "content": "2일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.69"
+                            }
+                          }
+                        },
+                        {
+                          "id": "eK9B7",
+                          "type": "ref",
+                          "ref": "DY0PX",
+                          "name": "b4",
+                          "descendants": {
+                            "R8U0S": {
+                              "content": "Slack 봇으로 일일 업무 정리"
+                            },
+                            "SiKKh": {
+                              "content": "Notion Blog"
+                            },
+                            "pEM77": {
+                              "content": "Workflow"
+                            },
+                            "rZZrh": {
+                              "content": "3일 전"
+                            },
+                            "j9fpbR": {
+                              "content": "0.64"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "BonGq",
+                  "name": "rightPanel",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$--space-3",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "yLFVm",
+                      "name": "rpToolbar",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "i68RvR",
+                          "name": "rpTbLeft",
+                          "gap": "$--space-3",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "q2Gxx",
+                              "fill": "$--text-primary",
+                              "content": "미리보기",
+                              "fontFamily": "$--font-heading",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "baeHr",
+                              "fill": "$--text-tertiary",
+                              "content": "·",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "o5hfJ9",
+                              "fill": "$--text-secondary",
+                              "content": "3,128자 · 2분 47초",
+                              "fontFamily": "$--font-mono",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "SJdhi",
+                          "name": "rpTbRight",
+                          "gap": "$--space-2",
+                          "children": [
+                            {
+                              "id": "q5hg6x",
+                              "type": "ref",
+                              "ref": "f60oO",
+                              "name": "rg",
+                              "descendants": {
+                                "zYvP4": {
+                                  "content": "선택분으로 재생성"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "GjA4V",
+                      "name": "preview",
+                      "width": "fill_container",
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-lg",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "gap": "$--space-4",
+                      "padding": "$--space-8",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "e2q28",
+                          "fill": "$--text-primary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "[AI 뉴스레터] 2026-05-15 — 최신 AI 동향과 업무 활용 인사이트",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 22,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Rzrsn",
+                          "fill": "$--text-secondary",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "안녕하세요. 이번 주 뉴스레터는 GPT-5/Claude 5 동시 공개라는 빅이슈와 EU AI Act 시행이라는 정책 변수가 겹친 한 주를 정리했습니다. 일반 임직원용 섹션에서는 Excel 자동화와 회의록 요약 워크플로를 다룹니다.",
+                          "lineHeight": 1.7,
+                          "fontFamily": "$--font-body",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "O5j3W",
+                          "width": "fill_container",
+                          "height": 1,
+                          "fill": "$--border-subtle"
+                        },
+                        {
+                          "type": "text",
+                          "id": "D5Blw",
+                          "fill": "$--text-primary",
+                          "content": "A. AI 전문가용 최신 AI 뉴스",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 18,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "BwKBF",
+                          "fill": "$--text-primary",
+                          "content": "1. 이번 주 핵심 AI 동향 3줄 요약",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "jvB5C",
+                          "name": "bul1",
+                          "width": "fill_container",
+                          "gap": "$--space-2",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "sKo7O",
+                              "fill": "$--text-secondary",
+                              "content": "•",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "s5ZsI",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "OpenAI GPT-5와 Anthropic Claude 5가 같은 주에 출시, 1M 토큰 컨텍스트가 새로운 기준이 됨.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "m5gyoR",
+                          "name": "bul2",
+                          "width": "fill_container",
+                          "gap": "$--space-2",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "QmvLp",
+                              "fill": "$--text-secondary",
+                              "content": "•",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "GNPYy",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "EU AI Act 본격 시행 — GPAI 의무 사항 점검과 한국 기업 영향 정리 필요.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "z3RieM",
+                          "name": "bul3",
+                          "width": "fill_container",
+                          "gap": "$--space-2",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "xEU2A",
+                              "fill": "$--text-secondary",
+                              "content": "•",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "eEyzx",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "엔터프라이즈 Copilot 도입 사례가 두 자릿수 늘면서 사내 도입 비교 시점이 옴.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "aYqMy",
+                          "fill": "$--text-primary",
+                          "content": "2. 주요 뉴스",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 15,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "H9ne1R",
+                          "name": "nc1",
+                          "width": "fill_container",
+                          "fill": "$--surface-subtle",
+                          "cornerRadius": "$--radius-md",
+                          "layout": "vertical",
+                          "gap": "$--space-2",
+                          "padding": "$--space-4",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "VsCek",
+                              "fill": "$--text-primary",
+                              "content": "뉴스 1. OpenAI, GPT-5 플래그십 모델 공개",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "TUeYQ",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "요약: 추론·코딩·멀티모달 전 영역에서 GPT-4 대비 큰 향상, 1M 토큰 컨텍스트 지원.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "QRMg1",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "왜 중요한가: 프런티어 모델의 기준선이 한 단계 위로 이동, 가격/성능 비교 전면 재조정 필요.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "bpgTP",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "회사 관점: 사내 GPT-4 기반 워크플로의 GPT-5 마이그레이션 비용/효익을 다음 분기 안에 산출.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "KOyr5",
+                          "name": "nc2",
+                          "width": "fill_container",
+                          "fill": "$--surface-subtle",
+                          "cornerRadius": "$--radius-md",
+                          "layout": "vertical",
+                          "gap": "$--space-2",
+                          "padding": "$--space-4",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "MqPxk",
+                              "fill": "$--text-primary",
+                              "content": "뉴스 2. Anthropic Claude 5 출시 — 1M 토큰 컨텍스트",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 14,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "text",
+                              "id": "UsgV7",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "요약: Claude 5가 1M 토큰 컨텍스트, 향상된 도구 사용, 새 컴퓨터 사용 기능과 함께 출시.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "PLFUA",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "왜 중요한가: GPT-5와 같은 주 출시로 직접 비교가 가능해진 최초의 프런티어 라운드.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "eKsII",
+                              "fill": "$--text-secondary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "회사 관점: 코드베이스 전체를 한 번에 넣는 워크플로가 현실화 — 사내 RAG 구조 단순화 검토 시점.",
+                              "lineHeight": 1.6,
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "X5Owjf",
+                          "name": "fade",
+                          "width": "fill_container",
+                          "fill": "$--accent-primary-bg",
+                          "cornerRadius": "$--radius-md",
+                          "stroke": {
+                            "thickness": 1,
+                            "fill": "$--accent-primary-bg"
+                          },
+                          "layout": "vertical",
+                          "gap": "$--space-1",
+                          "padding": [
+                            "$--space-3",
+                            "$--space-4"
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "z38wK5",
+                              "fill": "$--accent-primary",
+                              "content": "··· 아래로 스크롤하여 나머지 섹션 확인 (B. 일반 임직원용 포함)",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "UgtHK",
+      "x": 1380,
+      "y": 2300,
+      "name": "Screen 3 — Send Confirm",
+      "width": 1440,
+      "height": 1100,
+      "fill": "$--surface-bg",
+      "children": [
+        {
+          "type": "frame",
+          "id": "brdJ0",
+          "name": "sidebar",
+          "width": 240,
+          "height": "fill_container",
+          "fill": "$--surface-sidebar",
+          "layout": "vertical",
+          "gap": "$--space-4",
+          "padding": "$--space-4",
+          "children": [
+            {
+              "type": "frame",
+              "id": "OhEiw",
+              "name": "brand",
+              "gap": "$--space-2",
+              "padding": "$--space-2",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "QwtAE",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "newspaper",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--text-inverse"
+                },
+                {
+                  "type": "text",
+                  "id": "ghLOg",
+                  "fill": "$--text-inverse",
+                  "content": "AI 뉴스레터",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 16,
+                  "fontWeight": "700"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "E9Sdmc",
+              "name": "navList",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": "$--space-1",
+              "children": [
+                {
+                  "id": "gwrGC",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "I3a",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "layout-dashboard"
+                    },
+                    "yBXZr": {
+                      "content": "대시보드"
+                    }
+                  }
+                },
+                {
+                  "id": "M6ygIV",
+                  "type": "ref",
+                  "ref": "c0HxSz",
+                  "name": "I3b",
+                  "descendants": {
+                    "C6WG3P": {
+                      "iconFontName": "mail"
+                    },
+                    "ltHyl": {
+                      "content": "이슈 목록"
+                    }
+                  }
+                },
+                {
+                  "id": "q0KPpo",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "I3c",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "database"
+                    },
+                    "yBXZr": {
+                      "content": "소스 관리"
+                    }
+                  }
+                },
+                {
+                  "id": "QsZSA",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "I3d",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "activity"
+                    },
+                    "yBXZr": {
+                      "content": "실행 로그"
+                    }
+                  }
+                },
+                {
+                  "id": "souzj",
+                  "type": "ref",
+                  "ref": "ng11c",
+                  "name": "I3e",
+                  "descendants": {
+                    "kJV5w": {
+                      "iconFontName": "settings"
+                    },
+                    "yBXZr": {
+                      "content": "설정"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "A0IUCU",
+          "name": "main",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": "$--space-5",
+          "padding": "$--space-8",
+          "children": [
+            {
+              "type": "frame",
+              "id": "LFnmR",
+              "name": "crumbs",
+              "gap": "$--space-2",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "HtNkN",
+                  "fill": "$--text-secondary",
+                  "content": "이슈 목록",
+                  "fontFamily": "$--font-body",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "TIM4f",
+                  "width": 14,
+                  "height": 14,
+                  "iconFontName": "chevron-right",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "CL350",
+                  "fill": "$--text-secondary",
+                  "content": "#1 · 2026-05-15",
+                  "fontFamily": "$--font-mono",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "icon_font",
+                  "id": "gTElq",
+                  "width": 14,
+                  "height": 14,
+                  "iconFontName": "chevron-right",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--text-tertiary"
+                },
+                {
+                  "type": "text",
+                  "id": "iAPNy",
+                  "fill": "$--text-primary",
+                  "content": "발송 확인",
+                  "fontFamily": "$--font-body",
+                  "fontSize": 13,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "MBi2C",
+              "name": "header",
+              "width": "fill_container",
+              "gap": "$--space-3",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Xskff",
+                  "fill": "$--text-primary",
+                  "content": "발송 확인",
+                  "fontFamily": "$--font-heading",
+                  "fontSize": 28,
+                  "fontWeight": "700"
+                },
+                {
+                  "id": "q2uZb9",
+                  "type": "ref",
+                  "ref": "QHTcn"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "Qex1d",
+              "fill": "$--text-secondary",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "이 이슈는 검수 완료(approved) 상태입니다. 발송하기 전에 수신자와 옵션을 확인하세요.",
+              "fontFamily": "$--font-body",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "P6Ouu",
+              "name": "grid",
+              "width": "fill_container",
+              "gap": "$--space-5",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "xDxor",
+                  "name": "col",
+                  "width": 520,
+                  "layout": "vertical",
+                  "gap": "$--space-4",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "EnkV9",
+                      "name": "summary",
+                      "width": "fill_container",
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-lg",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "gap": "$--space-3",
+                      "padding": "$--space-5",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "LBCQO",
+                          "fill": "$--text-primary",
+                          "content": "이슈 요약",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "jEwix",
+                          "name": "sr1",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "NP5jt",
+                              "fill": "$--text-secondary",
+                              "content": "발행일",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "qFQm0",
+                              "fill": "$--text-primary",
+                              "content": "2026-05-15",
+                              "fontFamily": "$--font-mono",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "K9e7Oi",
+                          "name": "sr2",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "ceqh1",
+                              "fill": "$--text-secondary",
+                              "content": "제목",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "CE1zH",
+                              "fill": "$--text-primary",
+                              "content": "이번 주 AI 뉴스 — 5월 셋째 주",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "URhCV",
+                          "name": "sr3",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "e90pJO",
+                              "fill": "$--text-secondary",
+                              "content": "본문",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "text",
+                              "id": "K6qqg",
+                              "fill": "$--text-primary",
+                              "content": "3,128자 · 9개 항목",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "gzMOm",
+                          "name": "sr4",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "ZmoOW",
+                              "fill": "$--text-secondary",
+                              "content": "승인자",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "normal"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "b1cASZ",
+                              "name": "av",
+                              "gap": "$--space-2",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "ellipse",
+                                  "id": "l7co0M",
+                                  "fill": "$--accent-primary",
+                                  "width": 20,
+                                  "height": 20
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "xf6D0",
+                                  "fill": "$--text-primary",
+                                  "content": "master · 2026-05-15 18:42",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "CTQVy",
+                      "name": "options",
+                      "width": "fill_container",
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-lg",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "gap": "$--space-4",
+                      "padding": "$--space-5",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "wRDWM",
+                          "fill": "$--text-primary",
+                          "content": "옵션",
+                          "fontFamily": "$--font-heading",
+                          "fontSize": 16,
+                          "fontWeight": "700"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "g1t7s",
+                          "name": "dryRun",
+                          "width": "fill_container",
+                          "justifyContent": "space_between",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "zIu9H",
+                              "name": "drL",
+                              "layout": "vertical",
+                              "gap": "$--space-1",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "nqnaY",
+                                  "fill": "$--text-primary",
+                                  "content": "드라이런 (dry-run)",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 14,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "PaAIV",
+                                  "fill": "$--text-secondary",
+                                  "content": "실제 SMTP 발송 없이 본문만 로그로 출력",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "XCJn5",
+                              "name": "toggle",
+                              "width": 42,
+                              "height": 24,
+                              "fill": "$--accent-primary",
+                              "cornerRadius": 99,
+                              "padding": "$--space-1",
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "ellipse",
+                                  "id": "Wt62Z",
+                                  "fill": "$--text-inverse",
+                                  "width": 16,
+                                  "height": 16
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "nysBN",
+                          "width": "fill_container",
+                          "height": 1,
+                          "fill": "$--border-subtle"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "bGb2X",
+                          "name": "fromRow",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": "$--space-2",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "QUfDQ",
+                              "fill": "$--text-primary",
+                              "content": "발신",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 12,
+                              "fontWeight": "600"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "N35EFt",
+                              "name": "frBox",
+                              "width": "fill_container",
+                              "fill": "$--surface-subtle",
+                              "cornerRadius": "$--radius-md",
+                              "stroke": {
+                                "thickness": 1,
+                                "fill": "$--border-default"
+                              },
+                              "gap": "$--space-2",
+                              "padding": [
+                                "$--space-2",
+                                "$--space-3"
+                              ],
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "icon_font",
+                                  "id": "Rxnzs",
+                                  "width": 14,
+                                  "height": 14,
+                                  "iconFontName": "send",
+                                  "iconFontFamily": "lucide",
+                                  "fill": "$--text-secondary"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "Din6g",
+                                  "fill": "$--text-primary",
+                                  "content": "newsletter-bot@company.com",
+                                  "fontFamily": "$--font-mono",
+                                  "fontSize": 13,
+                                  "fontWeight": "500"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "GrxUV",
+                  "name": "recipients",
+                  "width": "fill_container",
+                  "fill": "$--surface-card",
+                  "cornerRadius": "$--radius-lg",
+                  "stroke": {
+                    "thickness": 1,
+                    "fill": "$--border-subtle"
+                  },
+                  "layout": "vertical",
+                  "gap": "$--space-3",
+                  "padding": "$--space-5",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "w9GegJ",
+                      "name": "rcpH",
+                      "width": "fill_container",
+                      "justifyContent": "space_between",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "WpTL7",
+                          "name": "rcpHL",
+                          "gap": "$--space-2",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "miHaI",
+                              "fill": "$--text-primary",
+                              "content": "수신자",
+                              "fontFamily": "$--font-heading",
+                              "fontSize": 16,
+                              "fontWeight": "700"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "X3Lfml",
+                              "name": "rcpBadge",
+                              "fill": "$--surface-subtle",
+                              "cornerRadius": "$--radius-sm",
+                              "padding": [
+                                "$--space-1",
+                                "$--space-2"
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "MV8kG",
+                                  "fill": "$--text-secondary",
+                                  "content": "18명",
+                                  "fontFamily": "$--font-mono",
+                                  "fontSize": 12,
+                                  "fontWeight": "600"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "t2EvFI",
+                          "type": "ref",
+                          "ref": "f60oO",
+                          "name": "rcpEdit",
+                          "descendants": {
+                            "zYvP4": {
+                              "content": "수정"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "RRp7d",
+                      "name": "rcpList",
+                      "width": "fill_container",
+                      "fill": "$--surface-card",
+                      "cornerRadius": "$--radius-md",
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$--border-subtle"
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "q8WRfW",
+                          "name": "r1",
+                          "width": "fill_container",
+                          "stroke": {
+                            "thickness": {
+                              "bottom": 1
+                            },
+                            "fill": "$--border-subtle"
+                          },
+                          "gap": "$--space-3",
+                          "padding": [
+                            "$--space-3",
+                            "$--space-4"
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "hkl0t",
+                              "fill": "$--accent-primary",
+                              "width": 24,
+                              "height": 24
+                            },
+                            {
+                              "type": "frame",
+                              "id": "tqxtV",
+                              "name": "r1Body",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "jdDfX",
+                                  "fill": "$--text-primary",
+                                  "content": "마스터",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "F1Y4D",
+                                  "fill": "$--text-secondary",
+                                  "content": "hologon8016@gmail.com",
+                                  "fontFamily": "$--font-mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "mVygX",
+                              "type": "ref",
+                              "ref": "QHTcn"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "e8NR8",
+                          "name": "r2",
+                          "width": "fill_container",
+                          "stroke": {
+                            "thickness": {
+                              "bottom": 1
+                            },
+                            "fill": "$--border-subtle"
+                          },
+                          "gap": "$--space-3",
+                          "padding": [
+                            "$--space-3",
+                            "$--space-4"
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "M0p25j",
+                              "fill": "$--success",
+                              "width": 24,
+                              "height": 24
+                            },
+                            {
+                              "type": "frame",
+                              "id": "k1jWZ1",
+                              "name": "r2Body",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "D9g2Qx",
+                                  "fill": "$--text-primary",
+                                  "content": "AI팀",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "t7OBg",
+                                  "fill": "$--text-secondary",
+                                  "content": "ai-team@company.com",
+                                  "fontFamily": "$--font-mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "P4A0ux",
+                              "type": "ref",
+                              "ref": "QHTcn"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "uRsjs",
+                          "name": "r3",
+                          "width": "fill_container",
+                          "stroke": {
+                            "thickness": {
+                              "bottom": 1
+                            },
+                            "fill": "$--border-subtle"
+                          },
+                          "gap": "$--space-3",
+                          "padding": [
+                            "$--space-3",
+                            "$--space-4"
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "ellipse",
+                              "id": "pZ1ps",
+                              "fill": "$--warning",
+                              "width": 24,
+                              "height": 24
+                            },
+                            {
+                              "type": "frame",
+                              "id": "l7DGJ",
+                              "name": "r3Body",
+                              "width": "fill_container",
+                              "layout": "vertical",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "y6QTa",
+                                  "fill": "$--text-primary",
+                                  "content": "기획팀",
+                                  "fontFamily": "$--font-body",
+                                  "fontSize": 13,
+                                  "fontWeight": "600"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "o3xh0P",
+                                  "fill": "$--text-secondary",
+                                  "content": "product@company.com",
+                                  "fontFamily": "$--font-mono",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "id": "TVM8t",
+                              "type": "ref",
+                              "ref": "QHTcn"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "hr8G6",
+                          "name": "r4",
+                          "width": "fill_container",
+                          "gap": "$--space-3",
+                          "padding": [
+                            "$--space-3",
+                            "$--space-4"
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "cpZ5X",
+                              "fill": "$--accent-primary",
+                              "content": "+ 15명 더 보기",
+                              "fontFamily": "$--font-body",
+                              "fontSize": 13,
+                              "fontWeight": "500"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "o4HE0v",
+              "name": "warn",
+              "width": "fill_container",
+              "fill": "$--warning-bg",
+              "cornerRadius": "$--radius-md",
+              "stroke": {
+                "thickness": 1,
+                "fill": "$--warning-border"
+              },
+              "gap": "$--space-3",
+              "padding": "$--space-4",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "wFYoU",
+                  "width": 20,
+                  "height": 20,
+                  "iconFontName": "triangle-alert",
+                  "iconFontFamily": "lucide",
+                  "fill": "$--warning"
+                },
+                {
+                  "type": "frame",
+                  "id": "FXi4V",
+                  "name": "warnBody",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": "$--space-1",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "MGyR0",
+                      "fill": "$--warning",
+                      "content": "발송 전 마지막 확인",
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "700"
+                    },
+                    {
+                      "type": "text",
+                      "id": "FEbb4",
+                      "fill": "$--text-primary",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "이 작업은 18명의 수신자에게 실제 메일을 발송합니다. 잘못된 내용이 보이면 \"드라이런\" 토글을 켜고 발송하세요.",
+                      "lineHeight": 1.6,
+                      "fontFamily": "$--font-body",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "XqkfN",
+              "name": "footer",
+              "width": "fill_container",
+              "padding": [
+                "$--space-3",
+                0
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "gPBBW",
+                  "name": "fL",
+                  "fill": "$--text-tertiary",
+                  "content": "발송 후에는 취소할 수 없습니다.",
+                  "fontFamily": "$--font-body",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "RAdVK",
+                  "name": "fR",
+                  "gap": "$--space-2",
+                  "children": [
+                    {
+                      "id": "mUnZE",
+                      "type": "ref",
+                      "ref": "YN7s0",
+                      "name": "fc",
+                      "descendants": {
+                        "oaChZ": {
+                          "content": "취소"
+                        }
+                      }
+                    },
+                    {
+                      "id": "jg3vn",
+                      "type": "ref",
+                      "ref": "f60oO",
+                      "name": "fb",
+                      "descendants": {
+                        "zYvP4": {
+                          "content": "드라이런으로 미리 발송"
+                        }
+                      }
+                    },
+                    {
+                      "id": "ttr0z",
+                      "type": "ref",
+                      "ref": "b1NU5",
+                      "name": "fs",
+                      "descendants": {
+                        "siAc4": {
+                          "content": "발송"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "--accent-primary": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "--accent-primary-bg": {
+      "type": "color",
+      "value": "#EFF6FF"
+    },
+    "--accent-primary-hover": {
+      "type": "color",
+      "value": "#1D4ED8"
+    },
+    "--border-default": {
+      "type": "color",
+      "value": "#CBD5E1"
+    },
+    "--border-strong": {
+      "type": "color",
+      "value": "#94A3B8"
+    },
+    "--border-subtle": {
+      "type": "color",
+      "value": "#E2E8F0"
+    },
+    "--danger": {
+      "type": "color",
+      "value": "#DC2626"
+    },
+    "--danger-bg": {
+      "type": "color",
+      "value": "#FEF2F2"
+    },
+    "--danger-border": {
+      "type": "color",
+      "value": "#FCA5A5"
+    },
+    "--font-body": {
+      "type": "string",
+      "value": "Inter"
+    },
+    "--font-heading": {
+      "type": "string",
+      "value": "Inter"
+    },
+    "--font-mono": {
+      "type": "string",
+      "value": "Geist Mono"
+    },
+    "--radius-lg": {
+      "type": "number",
+      "value": 8
+    },
+    "--radius-md": {
+      "type": "number",
+      "value": 6
+    },
+    "--radius-sm": {
+      "type": "number",
+      "value": 4
+    },
+    "--space-1": {
+      "type": "number",
+      "value": 4
+    },
+    "--space-10": {
+      "type": "number",
+      "value": 40
+    },
+    "--space-12": {
+      "type": "number",
+      "value": 48
+    },
+    "--space-2": {
+      "type": "number",
+      "value": 8
+    },
+    "--space-3": {
+      "type": "number",
+      "value": 12
+    },
+    "--space-4": {
+      "type": "number",
+      "value": 16
+    },
+    "--space-5": {
+      "type": "number",
+      "value": 20
+    },
+    "--space-6": {
+      "type": "number",
+      "value": 24
+    },
+    "--space-8": {
+      "type": "number",
+      "value": 32
+    },
+    "--success": {
+      "type": "color",
+      "value": "#16A34A"
+    },
+    "--success-bg": {
+      "type": "color",
+      "value": "#ECFDF5"
+    },
+    "--success-border": {
+      "type": "color",
+      "value": "#86EFAC"
+    },
+    "--surface-bg": {
+      "type": "color",
+      "value": "#F8FAFC"
+    },
+    "--surface-card": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "--surface-inverse": {
+      "type": "color",
+      "value": "#0F172A"
+    },
+    "--surface-sidebar": {
+      "type": "color",
+      "value": "#111827"
+    },
+    "--surface-sidebar-active": {
+      "type": "color",
+      "value": "#2563EB"
+    },
+    "--surface-sidebar-hover": {
+      "type": "color",
+      "value": "#1F2937"
+    },
+    "--surface-subtle": {
+      "type": "color",
+      "value": "#F1F5F9"
+    },
+    "--text-inverse": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "--text-primary": {
+      "type": "color",
+      "value": "#0F172A"
+    },
+    "--text-secondary": {
+      "type": "color",
+      "value": "#475569"
+    },
+    "--text-sidebar": {
+      "type": "color",
+      "value": "#CBD5E1"
+    },
+    "--text-tertiary": {
+      "type": "color",
+      "value": "#94A3B8"
+    },
+    "--warning": {
+      "type": "color",
+      "value": "#D97706"
+    },
+    "--warning-bg": {
+      "type": "color",
+      "value": "#FFFBEB"
+    },
+    "--warning-border": {
+      "type": "color",
+      "value": "#FCD34D"
+    }
+  }
+}
