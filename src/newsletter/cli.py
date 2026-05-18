@@ -21,6 +21,7 @@ for _stream in (sys.stdout, sys.stderr):
 import typer  # noqa: E402 — must follow stdout reconfigure
 
 from newsletter import __version__  # noqa: E402
+from newsletter.admin.cli import app as admin_app  # noqa: E402
 from newsletter.core.config import get_settings  # noqa: E402
 from newsletter.core.logging import configure_logging, get_logger  # noqa: E402
 from newsletter.slices.collection.cli import app as collect_app  # noqa: E402
@@ -39,6 +40,7 @@ app.add_typer(sources_app, name="sources")
 app.add_typer(collect_app, name="collect")
 app.add_typer(process_app, name="process")
 app.add_typer(integrate_app, name="integrate")
+app.add_typer(admin_app, name="admin")
 
 
 @app.callback()

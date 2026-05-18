@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }} — AI Newsletter Admin</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/tokens.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar__brand">AI Newsletter</div>
+      <nav class="sidebar__nav">
+        {% set items = [
+          ('dashboard', '대시보드', '/'),
+          ('issues', '이슈 검수', '/issues'),
+          ('sources', '소스 관리', '/sources'),
+        ] %}
+        {% for key, label, href in items %}
+          {% set is_active = (active_nav == key) %}
+          <a class="sidebar__item{% if is_active %} sidebar__item--active{% endif %}" href="{{ href }}">{{ label }}</a>
+        {% endfor %}
+      </nav>
+    </aside>
+    <main class="content">
+      <header class="page-header">
+        <h1 class="page-header__title">{{ title }}</h1>
+        {% block page_actions %}{% endblock %}
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

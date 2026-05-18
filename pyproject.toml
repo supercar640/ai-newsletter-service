@@ -13,7 +13,7 @@ dependencies = [
     "alembic>=1.14",
     "pydantic>=2.10",
     "pydantic-settings>=2.6",
-    "httpx>=0.28",
+    "httpx[brotli]>=0.28",
     "feedparser>=6.0.11",
     "beautifulsoup4>=4.12",
     "yt-dlp>=2025.1.15",
@@ -23,6 +23,10 @@ dependencies = [
     "jinja2>=3.1",
     "structlog>=24.4",
     "python-dotenv>=1.0",
+    "fastapi>=0.136.1",
+    "uvicorn>=0.47.0",
+    "python-multipart>=0.0.29",
+    "markdown-it-py>=4.2.0",
 ]
 
 [project.scripts]
@@ -68,11 +72,19 @@ ignore = [
 "tests/*" = ["B011"] # allow assert False in tests
 
 [tool.ruff.lint.flake8-bugbear]
-# Typer / Click idiom — Option()/Argument() in defaults is intentional and
-# documented; they return descriptor objects, not mutable state.
+# Typer / Click and FastAPI idiom — Option()/Argument()/Depends()/Query() in
+# defaults return descriptor objects, not mutable state.
 extend-immutable-calls = [
     "typer.Option",
     "typer.Argument",
+    "fastapi.Depends",
+    "fastapi.Query",
+    "fastapi.Path",
+    "fastapi.Header",
+    "fastapi.Cookie",
+    "fastapi.Body",
+    "fastapi.Form",
+    "fastapi.File",
 ]
 
 [tool.pytest.ini_options]

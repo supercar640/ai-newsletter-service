@@ -1,0 +1,37 @@
+{# Reusable UI macros — ported 1:1 from design/newsletter_admin.pen components. #}
+
+{%- macro button(label, kind='primary', href=None, type='button', extra='') -%}
+  {%- set cls = 'btn btn--' ~ kind -%}
+  {%- if extra %}{% set cls = cls ~ ' ' ~ extra %}{% endif -%}
+  {%- if href -%}
+<a class="{{ cls }}" href="{{ href }}">{{ label }}</a>
+  {%- else -%}
+<button class="{{ cls }}" type="{{ type }}">{{ label }}</button>
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro badge(label, kind='neutral') -%}
+<span class="badge badge--{{ kind }}">{{ label }}</span>
+{%- endmacro -%}
+
+{%- macro stat_card(label, value, hint=None, kind='neutral') -%}
+<div class="stat-card stat-card--{{ kind }}">
+  <div class="stat-card__label">{{ label }}</div>
+  <div class="stat-card__value">{{ value }}</div>
+  {% if hint %}<div class="stat-card__hint">{{ hint }}</div>{% endif %}
+</div>
+{%- endmacro -%}
+
+{# Maps NewsletterIssue.status → (한국어 라벨, badge 색상). #}
+{%- set _STATUS_MAP = {
+  'drafted':         ('초안',     'neutral'),
+  'review_required': ('검수 대기', 'yellow'),
+  'approved':        ('승인',     'green'),
+  'sent':            ('발송 완료', 'info'),
+  'rejected':        ('거절',     'red'),
+} -%}
+
+{%- macro status_badge(status) -%}
+  {%- set pair = _STATUS_MAP.get(status, (status, 'neutral')) -%}
+  {{ badge(pair[0], pair[1]) }}
+{%- endmacro -%}

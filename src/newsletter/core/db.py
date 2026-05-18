@@ -12,6 +12,7 @@ from contextlib import contextmanager
 
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from newsletter.core.config import get_settings
 
@@ -29,10 +30,17 @@ def get_engine() -> Engine:
     if _engine is None:
         settings = get_settings()
         connect_args: dict[str, object] = {}
+        engine_kwargs: dict[str, object] = {"future": True}
         if settings.db_url.startswith("sqlite"):
             # Allow cross-thread use; FK enforcement enabled via PRAGMA below.
             connect_args["check_same_thread"] = False
-        _engine = create_engine(settings.db_url, future=True, connect_args=connect_args)
+            # ":memory:" gives a fresh DB per connection by default. StaticPool
+            # pins one connection so the schema/test data is visible to every
+            # session (including the threadpool starlette uses for sync deps).
+            if ":memory:" in settings.db_url:
+                engine_kwargs["poolclass"] = StaticPool
+        engine_kwargs["connect_args"] = connect_args
+        _engine = create_engine(settings.db_url, **engine_kwargs)
         if settings.db_url.startswith("sqlite"):
             _enable_sqlite_foreign_keys(_engine)
     return _engine

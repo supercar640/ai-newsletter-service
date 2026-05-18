@@ -1,0 +1,55 @@
+{% extends "base.html.j2" %}
+{% from "components.html.j2" import button, stat_card, status_badge %}
+
+{% block page_actions %}
+  {% set cta_href = "/issues/" ~ today_issue_id if today_issue_id else "/issues" %}
+  {{ button("오늘자 이슈 검수 시작", kind="primary", href=cta_href) }}
+{% endblock %}
+
+{% block content %}
+<section class="stat-grid">
+  {{ stat_card("수집", stats.collected_today, hint=today.isoformat() ~ " 기준", kind="info") }}
+  {{ stat_card("처리", stats.processed_today, hint=today.isoformat() ~ " 기준", kind="info") }}
+  {{ stat_card("후보", stats.candidates_count, hint="현재 이슈", kind="neutral") }}
+  {{ stat_card(
+       "검수 대기",
+       stats.pending_review,
+       hint="approved 이전",
+       kind=("warning" if stats.pending_review > 0 else "neutral")
+  ) }}
+</section>
+
+<section class="card">
+  <header class="card__header">
+    <h2 class="card__title">최근 이슈</h2>
+  </header>
+  {% if recent_issues %}
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>발행일</th>
+        <th>제목</th>
+        <th>상태</th>
+        <th class="data-table__num">전문가</th>
+        <th class="data-table__num">일반</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in recent_issues %}
+      <tr>
+        <td class="mono">{{ r.issue_date.isoformat() }}</td>
+        <td><a class="link" href="/issues/{{ r.id }}">{{ r.title }}</a></td>
+        <td>{{ status_badge(r.status) }}</td>
+        <td class="mono data-table__num">{{ r.expert_count }}</td>
+        <td class="mono data-table__num">{{ r.practical_count }}</td>
+        <td><a class="btn btn--ghost" href="/issues/{{ r.id }}">검수</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="card__empty">아직 발행된 이슈가 없습니다.</div>
+  {% endif %}
+</section>
+{% endblock %}

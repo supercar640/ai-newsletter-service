@@ -1,0 +1,67 @@
+/* Design tokens — ported from design/newsletter_admin.pen.
+   Source of truth: handoff note hitl/260515-iteration-4-5-완료-검수UI-디자인.md. */
+
+:root {
+  /* Accent */
+  --color-accent-primary: #2563EB;
+  --color-accent-primary-hover: #1D4ED8;
+  --color-accent-primary-soft: #DBEAFE;
+
+  /* Semantic */
+  --color-success: #16A34A;
+  --color-success-soft: #DCFCE7;
+  --color-warning: #D97706;
+  --color-warning-soft: #FEF3C7;
+  --color-danger: #DC2626;
+  --color-danger-soft: #FEE2E2;
+  --color-info: #2563EB;
+  --color-info-soft: #DBEAFE;
+  --color-neutral: #64748B;
+  --color-neutral-soft: #F1F5F9;
+
+  /* Surface */
+  --color-surface-base: #F8FAFC;
+  --color-surface-card: #FFFFFF;
+  --color-surface-muted: #F1F5F9;
+
+  /* Border */
+  --color-border-default: #E2E8F0;
+  --color-border-strong: #CBD5E1;
+
+  /* Text */
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-text-inverted: #FFFFFF;
+
+  /* Sidebar */
+  --color-sidebar-bg: #0F172A;
+  --color-sidebar-bg-hover: #1E293B;
+  --color-sidebar-text: #CBD5E1;
+  --color-sidebar-text-active: #FFFFFF;
+  --color-sidebar-accent: #2563EB;
+
+  /* Typography */
+  --font-body: "Inter", "Pretendard", system-ui, -apple-system, "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-heading: "Inter", "Pretendard", system-ui, -apple-system, "Segoe UI",
+    "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", "Fira Code", ui-monospace,
+    SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Spacing — matches Pencil --space-1 ~ --space-12 (4/8/12/16/20/24/32/40/48) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
