@@ -66,11 +66,35 @@ def test_send_dry_run_redirects(db_session, make_issue):
     assert issue.status == "approved"
 
 
-def test_send_real_returns_501(db_session, make_issue):
+def test_send_real_routes_to_distribution(db_session, make_issue, monkeypatch):
+    """Non-dry-run path delegates to distribution.send_issue."""
+    from datetime import UTC, datetime
+
+    from newsletter.slices.distribution.service import SendReport
+
+    calls: list[bool] = []
+
+    def fake_send_issue(session, issue, *, dry_run, **_kwargs):
+        _ = session  # signature parity with real send_issue
+        calls.append(dry_run)
+        if not dry_run:
+            issue.status = "sent"
+        return SendReport(
+            dry_run=dry_run,
+            recipients=("a@example.com",),
+            sent_at=None if dry_run else datetime.now(UTC),
+        )
+
+    monkeypatch.setattr("newsletter.admin.routes.send.send_issue", fake_send_issue)
+
     issue = make_issue(status="approved")
     db_session.commit()
     res = _client(db_session).post(f"/issues/{issue.id}/send", data={"dry_run": 0})
-    assert res.status_code == 501
+    assert res.status_code == 303
+    assert res.headers["location"].endswith("sent=ok")
+    assert calls == [False]
+    db_session.expire_all()
+    assert issue.status == "sent"
 
 
 def test_send_rejects_when_not_approved(db_session, make_issue):

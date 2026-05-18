@@ -25,6 +25,7 @@ from newsletter.admin.cli import app as admin_app  # noqa: E402
 from newsletter.core.config import get_settings  # noqa: E402
 from newsletter.core.logging import configure_logging, get_logger  # noqa: E402
 from newsletter.slices.collection.cli import app as collect_app  # noqa: E402
+from newsletter.slices.distribution.cli import app as send_app  # noqa: E402
 from newsletter.slices.integration.cli import app as integrate_app  # noqa: E402
 from newsletter.slices.newsletter.cli import app as newsletter_app  # noqa: E402
 from newsletter.slices.processing.cli import app as process_app  # noqa: E402
@@ -42,6 +43,7 @@ app.add_typer(collect_app, name="collect")
 app.add_typer(process_app, name="process")
 app.add_typer(integrate_app, name="integrate")
 app.add_typer(newsletter_app, name="newsletter")
+app.add_typer(send_app, name="send")
 app.add_typer(admin_app, name="admin")
 
 

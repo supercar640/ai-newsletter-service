@@ -1,8 +1,9 @@
 """Send-confirm screen + send-action route.
 
-The actual SMTP send lives in the distribution slice (Iteration 9). This
-route enforces the spec gate — only ``approved`` issues are eligible —
-and supports a dry-run path so the UI flow is testable before SMTP lands.
+Delegates the actual send to :mod:`newsletter.slices.distribution.service`.
+The state-machine guard (``status == 'approved'``) is enforced by that
+service — this route is a thin wrapper that returns 409 / 303 / 500
+based on its outcome.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from newsletter.admin.deps import get_db
 from newsletter.admin.templating import templates
 from newsletter.core.config import get_settings
 from newsletter.models.newsletter_issue import NewsletterIssue
+from newsletter.slices.distribution.service import SendError, send_issue
 
 router = APIRouter(prefix="/issues")
 
@@ -56,21 +58,13 @@ async def send_action(
     db: Session = Depends(get_db),
 ) -> RedirectResponse:
     issue = _load_issue_or_404(db, issue_id)
-    if issue.status != "approved":
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=(
-                f"이슈가 {issue.status} 상태라 발송할 수 없습니다. "
-                "approved 상태에서만 발송 가능합니다."
-            ),
-        )
-    if dry_run:
-        return RedirectResponse(
-            f"/issues/{issue_id}?sent=dryrun",
-            status_code=status.HTTP_303_SEE_OTHER,
-        )
-    # Real SMTP send arrives with the distribution slice (Iteration 9).
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="실제 SMTP 발송은 아직 구현되지 않았습니다.",
+    try:
+        report = send_issue(db, issue, dry_run=bool(dry_run))
+    except SendError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+    db.commit()
+    suffix = "dryrun" if report.dry_run else "ok"
+    return RedirectResponse(
+        f"/issues/{issue_id}?sent={suffix}",
+        status_code=status.HTTP_303_SEE_OTHER,
     )
