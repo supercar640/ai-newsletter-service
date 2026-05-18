@@ -43,9 +43,7 @@ def test_dashboard_renders_empty_state_when_no_issues(db_session):
 def test_dashboard_shows_review_pending_badge(db_session):
     db_session.add_all(
         [
-            NewsletterIssue(
-                issue_date=date(2026, 5, 18), title="r", status="review_required"
-            ),
+            NewsletterIssue(issue_date=date(2026, 5, 18), title="r", status="review_required"),
             NewsletterIssue(issue_date=date(2026, 5, 17), title="a", status="approved"),
         ]
     )

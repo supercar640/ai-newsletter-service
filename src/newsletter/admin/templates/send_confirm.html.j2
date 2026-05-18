@@ -1,0 +1,59 @@
+{% extends "base.html.j2" %}
+{% from "components.html.j2" import button, status_badge %}
+
+{% block page_actions %}
+  {{ button("검수로 돌아가기", kind="secondary", href="/issues/" ~ issue.id) }}
+{% endblock %}
+
+{% block content %}
+{% if not is_approved %}
+<div class="alert alert--danger">
+  <strong>발송 불가</strong> — 이슈 상태가 <code class="mono">{{ issue.status }}</code> 입니다.
+  <code class="mono">approved</code> 상태가 되어야 발송할 수 있습니다.
+</div>
+{% endif %}
+
+<section class="card">
+  <header class="card__header">
+    <h2 class="card__title">{{ issue.title }}</h2>
+    {{ status_badge(issue.status) }}
+  </header>
+  <dl class="kv">
+    <dt>발행일</dt><dd class="mono">{{ issue.issue_date.isoformat() }}</dd>
+    <dt>승인자</dt><dd>{{ issue.approved_by or "—" }}</dd>
+    <dt>발신자</dt><dd class="mono">{{ smtp_from or "(미설정)" }}</dd>
+    <dt>SMTP</dt><dd class="mono">{{ smtp_host }}</dd>
+  </dl>
+</section>
+
+<section class="card">
+  <header class="card__header">
+    <h2 class="card__title">수신자 ({{ recipients|length }})</h2>
+  </header>
+  {% if recipients %}
+  <ul class="recipient-list">
+    {% for r in recipients %}
+    <li class="mono">{{ r }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div class="card__empty">
+    <code class="mono">NEWSLETTER_RECIPIENTS</code>가 설정되어 있지 않습니다.
+  </div>
+  {% endif %}
+</section>
+
+<form method="post" action="/issues/{{ issue.id }}/send" class="send-actions">
+  <label class="checkbox-row">
+    <input type="checkbox" name="dry_run" value="1" checked />
+    <span>Dry-run으로 보내기 (실제 발송하지 않음 · 권장)</span>
+  </label>
+  <button type="submit" class="btn btn--primary" {% if not is_approved %}disabled{% endif %}>
+    발송
+  </button>
+</form>
+
+<div class="alert alert--warning">
+  발송 후에는 되돌릴 수 없습니다. 먼저 dry-run 결과를 확인하는 것을 권합니다.
+</div>
+{% endblock %}

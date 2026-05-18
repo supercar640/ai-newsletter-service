@@ -18,6 +18,10 @@ def create_app() -> FastAPI:
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
     from newsletter.admin.routes.dashboard import router as dashboard_router
+    from newsletter.admin.routes.issues import router as issues_router
+    from newsletter.admin.routes.send import router as send_router
 
     app.include_router(dashboard_router)
+    app.include_router(issues_router)
+    app.include_router(send_router)
     return app

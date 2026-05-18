@@ -1,0 +1,114 @@
+{% extends "base.html.j2" %}
+{% from "components.html.j2" import status_badge %}
+
+{% set issue_id = detail.issue.id %}
+{% set is_editable = detail.issue.status not in ("approved", "sent") %}
+{% set can_approve = detail.issue.status in ("drafted", "review_required") %}
+
+{% block page_actions %}
+<div class="action-bar">
+  {{ status_badge(detail.issue.status) }}
+  {% if detail.issue.status != "sent" %}
+  <form method="post" action="/issues/{{ issue_id }}/reject" class="inline-form">
+    <button type="submit" class="btn btn--secondary">거절</button>
+  </form>
+  {% endif %}
+  {% if can_approve %}
+  <form method="post" action="/issues/{{ issue_id }}/approve" class="inline-form">
+    <input type="hidden" name="approved_by" value="master" />
+    <button type="submit" class="btn btn--primary">승인</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<section class="review-meta">
+  <span class="mono">{{ detail.issue.issue_date.isoformat() }}</span>
+  <span>·</span>
+  <span>전문가 <strong>{{ expert_included }}</strong>건 포함</span>
+  <span>·</span>
+  <span>일반 <strong>{{ practical_included }}</strong>건 포함</span>
+  {% if detail.issue.approved_by %}
+    <span>·</span>
+    <span>승인자 <strong>{{ detail.issue.approved_by }}</strong></span>
+  {% endif %}
+</section>
+
+<div class="review-layout">
+  <aside class="candidate-pane">
+    {% if detail.expert_candidates %}
+    <section class="candidate-section">
+      <h2 class="section-title">전문가 후보 ({{ expert_included }}/{{ detail.expert_candidates|length }})</h2>
+      {% for c in detail.expert_candidates %}
+        {{ _candidate_row(c, issue_id, is_editable) }}
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if detail.practical_candidates %}
+    <section class="candidate-section">
+      <h2 class="section-title">일반 후보 ({{ practical_included }}/{{ detail.practical_candidates|length }})</h2>
+      {% for c in detail.practical_candidates %}
+        {{ _candidate_row(c, issue_id, is_editable) }}
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if not detail.expert_candidates and not detail.practical_candidates %}
+    <div class="card card__empty">후보가 아직 없습니다.</div>
+    {% endif %}
+  </aside>
+
+  <article class="preview-pane">
+    {% if detail.issue.expert_section_md %}
+    <h2 class="section-title">전문가 트랙 미리보기</h2>
+    <div class="markdown-preview">{{ expert_html|safe }}</div>
+    {% endif %}
+
+    {% if detail.issue.practical_section_md %}
+    <h2 class="section-title">일반 임직원 트랙 미리보기</h2>
+    <div class="markdown-preview">{{ practical_html|safe }}</div>
+    {% endif %}
+
+    {% if not detail.issue.expert_section_md and not detail.issue.practical_section_md %}
+    <div class="card card__empty">초안이 아직 생성되지 않았습니다.</div>
+    {% endif %}
+  </article>
+</div>
+{% endblock %}
+
+{# Inline macro — candidate row as a single POST form for JS-free toggle. #}
+{%- macro _candidate_row(c, issue_id, is_editable) -%}
+<form
+  method="post"
+  action="/issues/{{ issue_id }}/toggle"
+  class="candidate-row{% if not c.included %} candidate-row--excluded{% endif %}"
+>
+  <input type="hidden" name="track" value="{{ c.track }}" />
+  <input type="hidden" name="processed_item_id" value="{{ c.processed_item_id }}" />
+  <input type="hidden" name="included" value="{{ 0 if c.included else 1 }}" />
+  <button
+    type="submit"
+    class="candidate-row__toggle{% if c.included %} candidate-row__toggle--on{% endif %}"
+    aria-label="{{ '제외하기' if c.included else '포함하기' }}"
+    {% if not is_editable %}disabled{% endif %}
+  >
+    {{ '✓' if c.included else '○' }}
+  </button>
+  <div class="candidate-row__body">
+    <div class="candidate-row__title">
+      {% if c.url -%}
+      <a class="link" href="{{ c.url }}" target="_blank" rel="noopener">{{ c.title }}</a>
+      {%- else -%}
+      {{ c.title }}
+      {%- endif %}
+    </div>
+    <div class="candidate-row__meta">
+      <span>{{ c.source_name }}</span>
+      {% if c.category %}<span>· {{ c.category }}</span>{% endif %}
+    </div>
+  </div>
+  <span class="candidate-row__score mono">{{ "%.2f" | format(c.importance_score) }}</span>
+</form>
+{%- endmacro -%}

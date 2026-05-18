@@ -1,0 +1,35 @@
+{% extends "base.html.j2" %}
+{% from "components.html.j2" import status_badge %}
+
+{% block content %}
+<section class="card">
+  {% if issues %}
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>발행일</th>
+        <th>제목</th>
+        <th>상태</th>
+        <th class="data-table__num">전문가</th>
+        <th class="data-table__num">일반</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in issues %}
+      <tr>
+        <td class="mono">{{ r.issue_date.isoformat() }}</td>
+        <td><a class="link" href="/issues/{{ r.id }}">{{ r.title }}</a></td>
+        <td>{{ status_badge(r.status) }}</td>
+        <td class="mono data-table__num">{{ r.expert_count }}</td>
+        <td class="mono data-table__num">{{ r.practical_count }}</td>
+        <td><a class="btn btn--ghost" href="/issues/{{ r.id }}">검수</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="card__empty">검수할 이슈가 없습니다.</div>
+  {% endif %}
+</section>
+{% endblock %}

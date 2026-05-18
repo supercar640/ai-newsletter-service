@@ -82,9 +82,7 @@ def test_stats_counts_today_only(db_session):
 def test_pending_review_counts_only_review_required(db_session):
     db_session.add_all(
         [
-            NewsletterIssue(
-                issue_date=date(2026, 5, 17), title="r", status="review_required"
-            ),
+            NewsletterIssue(issue_date=date(2026, 5, 17), title="r", status="review_required"),
             NewsletterIssue(issue_date=date(2026, 5, 16), title="a", status="approved"),
             NewsletterIssue(issue_date=date(2026, 5, 15), title="d", status="drafted"),
         ]

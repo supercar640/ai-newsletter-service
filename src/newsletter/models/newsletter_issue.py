@@ -81,7 +81,4 @@ class NewsletterIssue(Base):
     )
 
     def __repr__(self) -> str:  # pragma: no cover - debug only
-        return (
-            f"NewsletterIssue(id={self.id}, date={self.issue_date}, "
-            f"status={self.status!r})"
-        )
+        return f"NewsletterIssue(id={self.id}, date={self.issue_date}, status={self.status!r})"
