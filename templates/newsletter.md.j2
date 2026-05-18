@@ -1,0 +1,26 @@
+{# Final newsletter markdown body. Mirrors spec §8.2 layout. #}
+# {{ title }}
+
+안녕하세요. 이번 뉴스레터는 두 부분으로 구성했습니다.
+
+**A. AI 전문가가 볼 만한 최신 AI 뉴스**
+- AI 모델·제품·정책·연구·시장 동향
+- 기술 담당자·기획자·전략 담당자에게 유용한 내용
+
+**B. 일반 임직원이 실제로 활용할 수 있는 AI 인사이트**
+- 문서 작성·회의·조사·엑셀·보고서 업무에 바로 적용 가능
+- 예시 프롬프트와 주의사항 포함
+
+---
+
+{{ expert_section }}
+
+---
+
+{% if practical_section -%}
+{{ practical_section }}
+{%- else -%}
+## B. 일반 임직원용 AI 활용 인사이트
+
+_(이 트랙은 다음 단계에서 추가됩니다.)_
+{%- endif %}
