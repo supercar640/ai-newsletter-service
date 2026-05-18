@@ -1,12 +1,8 @@
-"""Newsletter draft assembly (Iteration 7).
+"""Newsletter draft assembly (Iterations 6 + 7).
 
 Pulls today's processed items through scoring/clustering/candidate
-selection, runs the expert-section writer over the selected clusters,
+selection, runs both per-track section writers (expert + practical),
 stitches a final markdown/HTML body, and persists a NewsletterIssue.
-
-The Practical (B-section) track lands with Iteration 6. Until then this
-assembler emits a placeholder for the B-section and leaves
-``practical_section_md`` ``None`` on the issue row.
 """
 
 from __future__ import annotations
@@ -34,6 +30,7 @@ from newsletter.slices.newsletter.expert import (
     ClusterMember,
     build_expert_section,
 )
+from newsletter.slices.newsletter.practical import build_practical_section
 
 log = get_logger(__name__)
 
@@ -85,6 +82,9 @@ def draft_issue(
     expert_briefs = _resolve_briefs(session, report.expert_candidates)
     expert_section = build_expert_section(expert_briefs, date=today.isoformat(), llm=llm)
 
+    practical_briefs = _resolve_briefs(session, report.practical_candidates)
+    practical_section = build_practical_section(practical_briefs, date=today.isoformat(), llm=llm)
+
     candidate_blob = {
         "expert": [{"id": c.id, "included": True} for c in report.expert_candidates],
         "practical": [{"id": c.id, "included": True} for c in report.practical_candidates],
@@ -94,7 +94,7 @@ def draft_issue(
     markdown_body = _render_newsletter_md(
         title=title,
         expert_md=expert_section.markdown,
-        practical_md=None,
+        practical_md=practical_section.markdown,
     )
     html_body = _MD.render(markdown_body)
 
@@ -103,7 +103,7 @@ def draft_issue(
         title=title,
         status="review_required",
         expert_section_md=expert_section.markdown,
-        practical_section_md=None,
+        practical_section_md=practical_section.markdown,
         markdown_body=markdown_body,
         html_body=html_body,
         candidate_ids_json=json.dumps(candidate_blob, ensure_ascii=False),

@@ -28,14 +28,20 @@ class _StubLLM:
 
     json_payload: dict = field(
         default_factory=lambda: {
+            # expert summarizer fields
             "title": "스텁 제목",
             "summary": "스텁 요약입니다.",
             "why_it_matters": "스텁 중요도.",
             "company_perspective": "스텁 회사 관점.",
+            # practical summarizer fields
+            "scenario": "스텁 시나리오.",
+            "method": "스텁 사용 방법.",
+            "prompt_example": "스텁 예시 프롬프트.",
+            "caveats": "스텁 주의사항.",
             "sources": [],
         }
     )
-    writer_text: str = "## A. AI 전문가용 최신 AI 뉴스\n\nstubbed opus output."
+    writer_text: str = "stubbed opus output."
     json_calls: list[str] = field(default_factory=list)
     text_calls: list[str] = field(default_factory=list)
 
@@ -104,11 +110,13 @@ def test_draft_issue_with_empty_db_creates_placeholder_issue(db_session):
     assert issue.status == "review_required"
     assert issue.issue_date == TODAY
     assert issue.title == "[AI 뉴스레터] 2026-05-18 — 최신 AI 동향과 업무 활용 인사이트"
-    # No items → empty expert section + practical placeholder text.
-    assert "다음 단계에서 추가" in issue.markdown_body
+    # No items → both sections render their _empty_section placeholders.
+    assert "A. AI 전문가용 최신 AI 뉴스" in issue.markdown_body
+    assert "B. 일반 임직원용 AI 활용 인사이트" in issue.markdown_body
+    assert "이번 주 해당 내용 없음" in issue.markdown_body
     blob = json.loads(issue.candidate_ids_json)
     assert blob == {"expert": [], "practical": []}
-    # Writer LLM not invoked when there are no clusters.
+    # Writer LLMs not invoked when there are no clusters in either track.
     assert llm.json_calls == []
     assert llm.text_calls == []
 
@@ -134,16 +142,18 @@ def test_draft_issue_with_items_invokes_writer(db_session):
     assert report.practical_clusters_used == 2
 
     issue = db_session.get(NewsletterIssue, report.issue_id)
-    assert "stubbed opus output" in issue.markdown_body
     assert "stubbed opus output" in issue.expert_section_md
+    assert "stubbed opus output" in issue.practical_section_md
+    assert "stubbed opus output" in issue.markdown_body
 
     blob = json.loads(issue.candidate_ids_json)
     assert {e["id"] for e in blob["expert"]} == {it.id for it in expert_items}
     assert {e["id"] for e in blob["practical"]} == {it.id for it in practical_items}
     assert all(e["included"] for e in blob["expert"])
-    # Summarizer called once per cluster; writer called once.
-    assert len(llm.json_calls) == 3
-    assert len(llm.text_calls) == 1
+    # Summarizer called once per cluster across both tracks (3 + 2 = 5);
+    # both section writers invoked once each.
+    assert len(llm.json_calls) == 5
+    assert len(llm.text_calls) == 2
 
 
 def test_draft_issue_html_body_is_rendered(db_session):
