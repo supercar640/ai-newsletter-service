@@ -39,6 +39,10 @@ NEWSLETTER_ISSUE_STATUSES: Final = (
     "rejected",
 )
 
+# Phase 2: known audience profiles. NULL is treated as "general" so existing
+# rows pre-migration stay valid.
+NEWSLETTER_ISSUE_AUDIENCES: Final = ("general", "executive", "technical")
+
 
 def _in_clause(column: str, values: tuple[str, ...]) -> str:
     quoted = ", ".join(f"'{v}'" for v in values)
@@ -54,13 +58,19 @@ class NewsletterIssue(Base):
             _in_clause("status", NEWSLETTER_ISSUE_STATUSES),
             name="ck_newsletter_issues_status",
         ),
+        CheckConstraint(
+            "audience IS NULL OR " + _in_clause("audience", NEWSLETTER_ISSUE_AUDIENCES),
+            name="ck_newsletter_issues_audience",
+        ),
         Index("ix_newsletter_issues_issue_date", "issue_date"),
         Index("ix_newsletter_issues_status", "status"),
+        Index("ix_newsletter_issues_audience", "audience"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     issue_date: Mapped[date] = mapped_column(Date)
     status: Mapped[str] = mapped_column(String(32), default="drafted")
+    audience: Mapped[str | None] = mapped_column(String(16))
     title: Mapped[str] = mapped_column(String(200))
     expert_section_md: Mapped[str | None] = mapped_column(Text)
     practical_section_md: Mapped[str | None] = mapped_column(Text)

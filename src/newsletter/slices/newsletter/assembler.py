@@ -25,6 +25,11 @@ from newsletter.models.raw_item import RawItem
 from newsletter.models.source import Source
 from newsletter.slices.integration.candidates import Candidate
 from newsletter.slices.integration.service import integrate
+from newsletter.slices.newsletter.audiences import (
+    DEFAULT_AUDIENCE,
+    AudienceProfile,
+    resolve_audience,
+)
 from newsletter.slices.newsletter.expert import (
     ClusterBrief,
     ClusterMember,
@@ -44,6 +49,7 @@ _MD = MarkdownIt("commonmark", {"html": False, "linkify": True})
 class DraftReport:
     issue_id: int
     issue_date: date_cls
+    audience: str
     expert_clusters_used: int
     practical_clusters_used: int
     candidate_count: int
@@ -55,8 +61,9 @@ def draft_issue(
     today: date_cls,
     llm: LLMClient,
     scoring_llm: LLMClient | None = None,
-    expert_count: int = 7,
-    practical_count: int = 4,
+    expert_count: int | None = None,
+    practical_count: int | None = None,
+    audience: str | None = None,
 ) -> DraftReport:
     """Build today's newsletter draft and persist it as a NewsletterIssue.
 
@@ -68,15 +75,28 @@ def draft_issue(
         Optional sonnet client passed to the integration's LLM-boost pass.
         ``None`` (the default) skips the boost — base trust * recency
         scores are still applied. Production wires both to the same client.
+    expert_count / practical_count:
+        Per-track candidate caps. When ``None`` (the default), the values
+        come from the resolved :class:`AudienceProfile` — explicit kwargs
+        override the profile for ad-hoc draft sizes.
+    audience:
+        Profile name (``general`` / ``executive`` / ``technical``). ``None``
+        falls back to the default audience.
 
     Always inserts a *new* row — there is no upsert. Callers that want to
     replace an earlier same-day draft should delete it first.
     """
+    profile = resolve_audience(audience)
+    effective_expert = expert_count if expert_count is not None else profile.expert_count
+    effective_practical = (
+        practical_count if practical_count is not None else profile.practical_count
+    )
+
     report = integrate(
         session,
         llm=scoring_llm,
-        expert_count=expert_count,
-        practical_count=practical_count,
+        expert_count=effective_expert,
+        practical_count=effective_practical,
     )
 
     expert_briefs = _resolve_briefs(session, report.expert_candidates)
@@ -90,11 +110,12 @@ def draft_issue(
         "practical": [{"id": c.id, "included": True} for c in report.practical_candidates],
     }
 
-    title = _format_title(today)
+    title = _format_title(today, profile)
     markdown_body = _render_newsletter_md(
         title=title,
         expert_md=expert_section.markdown,
         practical_md=practical_section.markdown,
+        template=profile.template,
     )
     html_body = _MD.render(markdown_body)
 
@@ -102,6 +123,7 @@ def draft_issue(
         issue_date=today,
         title=title,
         status="review_required",
+        audience=profile.name,
         expert_section_md=expert_section.markdown,
         practical_section_md=practical_section.markdown,
         markdown_body=markdown_body,
@@ -116,12 +138,14 @@ def draft_issue(
         "newsletter.draft.created",
         issue_id=issue.id,
         issue_date=today.isoformat(),
+        audience=profile.name,
         expert_clusters=len(report.expert_candidates),
         practical_clusters=len(report.practical_candidates),
     )
     return DraftReport(
         issue_id=issue.id,
         issue_date=today,
+        audience=profile.name,
         expert_clusters_used=len(report.expert_candidates),
         practical_clusters_used=len(report.practical_candidates),
         candidate_count=len(report.expert_candidates) + len(report.practical_candidates),
@@ -165,8 +189,16 @@ def _fetch_members(session: Session, ids: list[int]) -> dict[int, ClusterMember]
     return out
 
 
-def _format_title(today: date_cls) -> str:
-    return f"[AI 뉴스레터] {today.isoformat()} — 최신 AI 동향과 업무 활용 인사이트"
+_AUDIENCE_TITLE_SUFFIX = {
+    "general": "최신 AI 동향과 업무 활용 인사이트",
+    "executive": "임원 요약",
+    "technical": "실무자용 상세",
+}
+
+
+def _format_title(today: date_cls, profile: AudienceProfile) -> str:
+    suffix = _AUDIENCE_TITLE_SUFFIX.get(profile.name, _AUDIENCE_TITLE_SUFFIX[DEFAULT_AUDIENCE])
+    return f"[AI 뉴스레터] {today.isoformat()} — {suffix}"
 
 
 def _render_newsletter_md(
@@ -174,13 +206,14 @@ def _render_newsletter_md(
     title: str,
     expert_md: str,
     practical_md: str | None,
+    template: str,
 ) -> str:
     env = Environment(
         loader=FileSystemLoader(str(_TEMPLATE_DIR)),
         autoescape=select_autoescape(disabled_extensions=("md", "j2")),
         keep_trailing_newline=True,
     )
-    tmpl = env.get_template("newsletter.md.j2")
+    tmpl = env.get_template(template)
     return tmpl.render(
         title=title,
         expert_section=expert_md,

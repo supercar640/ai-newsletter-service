@@ -36,6 +36,39 @@ def test_status_check_constraint_rejects_unknown_values(db_session):
         db_session.commit()
 
 
+def test_audience_default_null(db_session):
+    issue = NewsletterIssue(
+        issue_date=date(2026, 5, 19),
+        title="no audience",
+    )
+    db_session.add(issue)
+    db_session.commit()
+    db_session.refresh(issue)
+    assert issue.audience is None
+
+
+def test_audience_accepts_known_values(db_session):
+    for value in ("general", "executive", "technical"):
+        issue = NewsletterIssue(
+            issue_date=date(2026, 5, 19),
+            title=f"v={value}",
+            audience=value,
+        )
+        db_session.add(issue)
+    db_session.commit()
+
+
+def test_audience_rejects_unknown(db_session):
+    issue = NewsletterIssue(
+        issue_date=date(2026, 5, 19),
+        title="bad",
+        audience="intern",
+    )
+    db_session.add(issue)
+    with pytest.raises(IntegrityError):
+        db_session.commit()
+
+
 def test_full_lifecycle_fields_persist(db_session):
     issue = NewsletterIssue(
         issue_date=date(2026, 5, 18),

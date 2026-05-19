@@ -30,6 +30,7 @@ def stub_services(monkeypatch):
             self.candidate_count = 5
             self.issue_id = 99
             self.issue_date = date(2026, 5, 19)
+            self.audience = "general"
 
     rep = _Rep()
 

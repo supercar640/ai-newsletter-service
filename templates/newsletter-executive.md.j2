@@ -1,0 +1,25 @@
+{# Executive newsletter: compressed format for leadership.
+
+   Goal: scannable in under 60 seconds. The same upstream pipeline
+   feeds this — only the layout is condensed. #}
+# {{ title }}
+
+> **임원 요약본** — 핵심 동향과 사업 임팩트 위주로 정리했습니다.
+
+---
+
+## A. 이번 주 AI 핵심 동향
+
+{{ expert_section }}
+
+{% if practical_section %}
+---
+
+## B. 회사 단위에서 검토해 볼 활용 포인트
+
+{{ practical_section }}
+{% endif %}
+
+---
+
+_상세 내용·기술 세부는 실무자용 뉴스레터를 참고해주세요._

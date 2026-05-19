@@ -25,6 +25,7 @@ from newsletter.slices.monitoring.recorder import (
     record_step,
 )
 from newsletter.slices.newsletter.assembler import draft_issue
+from newsletter.slices.newsletter.audiences import AUDIENCES, DEFAULT_AUDIENCE
 from newsletter.slices.processing.service import process
 
 app = typer.Typer(
@@ -51,6 +52,14 @@ def _resolve_until(value: str) -> str:
     return value
 
 
+def _validate_audience(value: str) -> str:
+    if value not in AUDIENCES:
+        raise typer.BadParameter(
+            f"unknown audience {value!r}. choose one of: {', '.join(AUDIENCES)}"
+        )
+    return value
+
+
 @app.callback(invoke_without_command=True)
 def cmd_run(
     date: str = typer.Option("today", "--date", help="Issue date (YYYY-MM-DD or 'today')."),
@@ -61,8 +70,18 @@ def cmd_run(
         callback=_resolve_until,
     ),
     no_llm: bool = typer.Option(False, "--no-llm", help="Skip all LLM-driven sub-steps."),
-    expert_count: int = typer.Option(7, "--expert-count"),
-    practical_count: int = typer.Option(4, "--practical-count"),
+    audience: str = typer.Option(
+        DEFAULT_AUDIENCE,
+        "--audience",
+        help=f"Audience profile (one of: {', '.join(AUDIENCES)}). Used by the draft step.",
+        callback=_validate_audience,
+    ),
+    expert_count: int | None = typer.Option(
+        None, "--expert-count", help="Override the audience's expert-track cap."
+    ),
+    practical_count: int | None = typer.Option(
+        None, "--practical-count", help="Override the audience's practical-track cap."
+    ),
 ) -> None:
     """Run the pipeline up to the chosen step."""
     issue_date = _resolve_date(date)
@@ -105,13 +124,16 @@ def cmd_run(
         # integrate is only run as a discrete step when it's the cutoff;
         # otherwise draft_issue will integrate internally.
         if until == "integrate":
-            with record_step("integrate") as r:
+            with record_step("integrate", meta={"audience": audience}) as r:
                 with session_scope() as session:
                     rep = integrate(
                         session,
                         llm=llm,
-                        expert_count=expert_count,
-                        practical_count=practical_count,
+                        # Integrate has no audience concept of its own; we
+                        # pre-bind the audience's caps so the candidate
+                        # counts match what draft would have used.
+                        expert_count=expert_count or AUDIENCES[audience].expert_count,
+                        practical_count=practical_count or AUDIENCES[audience].practical_count,
                     )
                 r.item_count = len(rep.expert_candidates) + len(rep.practical_candidates)
                 total += r.item_count
@@ -120,19 +142,24 @@ def cmd_run(
             return
 
         # draft (calls integrate inside)
-        with record_step("draft", meta={"date": issue_date.isoformat()}) as r:
+        with record_step(
+            "draft",
+            meta={"date": issue_date.isoformat(), "audience": audience},
+        ) as r:
             with session_scope() as session:
                 rep = draft_issue(
                     session,
                     today=issue_date,
                     llm=llm,
                     scoring_llm=llm,
+                    audience=audience,
                     expert_count=expert_count,
                     practical_count=practical_count,
                 )
             r.item_count = rep.candidate_count
             total += r.item_count
             typer.echo(
-                f"  draft: issue_id={rep.issue_id} candidates={r.item_count}"
+                f"  draft: issue_id={rep.issue_id} audience={rep.audience} "
+                f"candidates={r.item_count}"
             )
         run_log.item_count = total
