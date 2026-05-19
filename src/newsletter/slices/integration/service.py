@@ -25,7 +25,12 @@ from newsletter.slices.integration.candidates import (
     select_candidates,
 )
 from newsletter.slices.integration.clustering import ClusterInput, cluster_items
-from newsletter.slices.integration.scoring import ScoreInput, score_items
+from newsletter.slices.integration.scoring import (
+    InterestProfile,
+    ScoreInput,
+    score_items,
+)
+from newsletter.slices.interests import repository as interests_repo
 
 log = get_logger(__name__)
 
@@ -91,12 +96,16 @@ def integrate(
         if proc.embedding:
             embeddings[proc.id] = deserialize(proc.embedding)
 
+    interests = _load_interests(session)
+
     scores = score_items(
         score_inputs,
         llm=llm,
         now=now,
         top_k_for_llm=top_k_for_llm,
         half_life_days=half_life_days,
+        interests=interests,
+        item_embeddings=embeddings or None,
     )
 
     # Persist importance_score.
@@ -140,8 +149,28 @@ def integrate(
         expert_candidates=len(report.expert_candidates),
         practical_candidates=len(report.practical_candidates),
         items_with_embedding=len(embeddings),
+        active_interests=len(interests),
     )
     return report
+
+
+def _load_interests(session: Session) -> list[InterestProfile]:
+    """Materialize enabled CompanyInterest rows into score-side profiles."""
+    rows = interests_repo.list_interests(session, only_enabled=True)
+    profiles: list[InterestProfile] = []
+    for row in rows:
+        keywords = tuple(k.lower() for k in interests_repo.load_keywords(row))
+        embedding = deserialize(row.embedding) if row.embedding else None
+        profiles.append(
+            InterestProfile(
+                id=row.id,
+                name=row.name,
+                keywords=keywords,
+                weight=row.weight,
+                embedding=embedding,
+            )
+        )
+    return profiles
 
 
 def _fetch_processed_with_context(

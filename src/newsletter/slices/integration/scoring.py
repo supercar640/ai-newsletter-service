@@ -1,11 +1,14 @@
 """Importance scoring for ProcessedItem rows.
 
-A single score combines three signals (spec §15.3 / iteration plan 4.1):
+A single score combines four signals (spec §15.3 + Phase 2):
 
 - **trust**: the source's ``trust_level`` (official > media > community)
 - **recency**: exponential decay with a configurable half-life
 - **LLM importance**: 1-5 enterprise-impact score, applied only to the top
   ``top_k_for_llm`` items by base score (cost guard).
+- **company interest**: keyword + embedding match against operator-curated
+  topics. Multiplier in [1.0, 1.5] — never *de-boosts*, only raises items
+  that touch focus areas the company wants over-weighted.
 
 The math is intentionally pure — it takes :class:`ScoreInput` dataclasses,
 not ORM rows, so it can be unit-tested without a database. The integration
@@ -16,10 +19,12 @@ materializing the inputs.
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Final, Protocol
 
+from newsletter.core.embeddings import cosine
 from newsletter.core.llm import LLMError
 from newsletter.core.logging import get_logger
 from newsletter.core.prompts import load_prompt
@@ -48,6 +53,27 @@ class ScoreInput:
     title: str
     summary: str | None
     source_name: str
+
+
+@dataclass(slots=True, frozen=True)
+class InterestProfile:
+    """One company-interest entry materialized for scoring.
+
+    ``keywords`` is stored lowercased so callers can match against
+    pre-lowercased item text without redundant transforms.
+    """
+
+    id: int
+    name: str
+    keywords: tuple[str, ...]
+    weight: float
+    embedding: Sequence[float] | None
+
+
+# Interest matching tuning knobs.
+_INTEREST_CAP: Final[float] = 0.5
+_INTEREST_PER_HIT_STRENGTH: Final[float] = 0.1
+_INTEREST_COSINE_THRESHOLD: Final[float] = 0.55
 
 
 class _JSONCompleter(Protocol):
@@ -94,6 +120,49 @@ def base_importance(
     return weight * recency_factor(published_at, now, half_life_days)
 
 
+def interest_match_factor(
+    *,
+    title: str,
+    summary: str | None,
+    item_embedding: Sequence[float] | None,
+    interests: list[InterestProfile],
+) -> float:
+    """Return a multiplier in [1.0, 1.5] from company-interest signals.
+
+    Two paths per interest:
+
+    * **Keyword** — any of ``interest.keywords`` (already lowercased) appears
+      in ``title + summary`` (lowercased once here).
+    * **Embedding cosine** — when both sides have a vector, similarity above
+      :data:`_INTEREST_COSINE_THRESHOLD` contributes a linearly-scaled signal.
+
+    The stronger of the two signals per interest is multiplied by the
+    interest's ``weight``, scaled by ``per_hit_strength``, summed across all
+    interests, and clamped to ``cap``. ``cap`` of 0.5 means a 50% top-end
+    boost relative to the unscored item.
+    """
+    if not interests:
+        return 1.0
+    text = (title + " " + (summary or "")).lower()
+    total = 0.0
+    for interest in interests:
+        keyword_strength = 1.0 if _has_any_keyword(text, interest.keywords) else 0.0
+        cosine_strength = 0.0
+        if item_embedding is not None and interest.embedding is not None:
+            c = cosine(item_embedding, interest.embedding)
+            if c >= _INTEREST_COSINE_THRESHOLD:
+                cosine_strength = (c - _INTEREST_COSINE_THRESHOLD) / (
+                    1.0 - _INTEREST_COSINE_THRESHOLD
+                )
+        signal = max(keyword_strength, cosine_strength)
+        total += signal * interest.weight * _INTEREST_PER_HIT_STRENGTH
+    return 1.0 + min(_INTEREST_CAP, total)
+
+
+def _has_any_keyword(text: str, keywords: tuple[str, ...]) -> bool:
+    return any(kw in text for kw in keywords if kw)
+
+
 def score_items(
     items: list[ScoreInput],
     *,
@@ -101,17 +170,30 @@ def score_items(
     now: datetime,
     top_k_for_llm: int = 20,
     half_life_days: float = _DEFAULT_HALF_LIFE_DAYS,
+    interests: list[InterestProfile] | None = None,
+    item_embeddings: dict[int, Sequence[float]] | None = None,
 ) -> dict[int, float]:
     """Compute a final importance score per input item.
 
     Items not in the LLM-evaluated top-K keep their base score. The LLM
     multiplier maps importance 1..5 to a 0.5..1.5 factor (3 is neutral).
+    The interest multiplier (when ``interests`` is non-empty) compounds on
+    top, expressed as a 1.0..1.5 factor.
     """
     if not items:
         return {}
 
+    embeddings_by_id = item_embeddings or {}
+    interest_list = interests or []
+
     base = {
         item.id: base_importance(item.trust_level, item.published_at, now, half_life_days)
+        * interest_match_factor(
+            title=item.title,
+            summary=item.summary,
+            item_embedding=embeddings_by_id.get(item.id),
+            interests=interest_list,
+        )
         for item in items
     }
     if llm is None or top_k_for_llm <= 0:
@@ -164,8 +246,10 @@ def _llm_importance(item: ScoreInput, *, llm: _JSONCompleter) -> int | None:
 
 __all__ = [
     "TRUST_WEIGHTS",
+    "InterestProfile",
     "ScoreInput",
     "base_importance",
+    "interest_match_factor",
     "recency_factor",
     "score_items",
 ]
