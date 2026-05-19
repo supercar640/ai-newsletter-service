@@ -30,6 +30,16 @@ class Settings(BaseSettings):
     voyage_api_key: str = Field(default="", description="Voyage AI key for embeddings")
     voyage_embedding_model: str = Field(default="voyage-3-lite")
 
+    # Notion archive (Phase 2)
+    # https://www.notion.so/my-integrations — create an internal integration
+    # and share the target database with it.
+    notion_token: str = Field(default="", description="Notion internal integration token")
+    notion_database_id: str = Field(
+        default="",
+        description="Notion database id (32-char hex, with or without dashes).",
+    )
+    notion_api_version: str = Field(default="2022-06-28")
+
     # Naver Search Open API
     naver_client_id: str = Field(default="")
     naver_client_secret: str = Field(default="")
