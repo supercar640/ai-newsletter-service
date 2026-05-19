@@ -19,7 +19,11 @@ from newsletter.core.db import session_scope
 from newsletter.core.run_context import RunContext
 from newsletter.slices.collection.service import collect_all
 from newsletter.slices.integration.service import integrate
-from newsletter.slices.monitoring.recorder import build_llm_client, record_step
+from newsletter.slices.monitoring.recorder import (
+    build_embedding_client,
+    build_llm_client,
+    record_step,
+)
 from newsletter.slices.newsletter.assembler import draft_issue
 from newsletter.slices.processing.service import process
 
@@ -63,6 +67,7 @@ def cmd_run(
     """Run the pipeline up to the chosen step."""
     issue_date = _resolve_date(date)
     llm = None if no_llm else build_llm_client()
+    embedding_client = build_embedding_client()
     run_ctx = RunContext.new()
     typer.echo(f"Run id: {run_ctx.run_id}")
     typer.echo(f"Until: {until}")
@@ -84,7 +89,12 @@ def cmd_run(
         # process
         with record_step("process") as r:
             with session_scope() as session:
-                rep = process(session, llm=llm, keyword_only=no_llm)
+                rep = process(
+                    session,
+                    llm=llm,
+                    keyword_only=no_llm,
+                    embedding_client=embedding_client,
+                )
             r.item_count = rep.processed
             total += r.item_count
             typer.echo(f"  process: processed={r.item_count}")

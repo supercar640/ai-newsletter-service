@@ -5,6 +5,7 @@ from __future__ import annotations
 import pytest
 from sqlalchemy import select
 
+from newsletter.core.embeddings import DisabledEmbeddingClient, VoyageEmbeddingClient
 from newsletter.core.llm import LLMResponse
 from newsletter.models.run_log import RunLog
 from newsletter.slices.monitoring import recorder
@@ -107,6 +108,51 @@ def test_build_llm_client_wires_recorder(db_session, monkeypatch):
     assert rows[0].llm_tokens_in == 42
     assert rows[0].llm_tokens_out == 7
     assert rows[0].model == "claude-sonnet-4-6"
+
+
+def test_make_embedding_recorder_writes_one_row_per_batch(db_session):
+    record = recorder.make_embedding_recorder()
+    record("voyage-3-lite", 12_500)
+    record("voyage-3-lite", 1_000_000)
+    db_session.expire_all()
+    rows = _all_runs(db_session)
+    assert len(rows) == 2
+    assert all(r.step == "embedding.batch" for r in rows)
+    assert all(r.model == "voyage-3-lite" for r in rows)
+    # voyage-3-lite: $0.02 per 1M tokens.
+    assert rows[1].cost_usd == pytest.approx(0.02)
+    assert rows[0].cost_usd == pytest.approx(0.02 * 12500 / 1_000_000)
+
+
+def test_build_embedding_client_disabled_without_api_key(monkeypatch, settings):
+    monkeypatch.setenv("VOYAGE_API_KEY", "")
+    from newsletter.core.config import get_settings
+
+    get_settings.cache_clear()
+    client = recorder.build_embedding_client()
+    assert isinstance(client, DisabledEmbeddingClient)
+    assert client.embed(["x"]) == []
+
+
+def test_build_embedding_client_uses_voyage_when_key_set(monkeypatch, settings):
+    """When VOYAGE_API_KEY is present, build_embedding_client returns a
+    VoyageEmbeddingClient. We stub the voyageai SDK so no network call
+    happens during construction."""
+    monkeypatch.setenv("VOYAGE_API_KEY", "test-key")
+    from newsletter.core.config import get_settings
+
+    get_settings.cache_clear()
+
+    class _FakeVoyageSDK:
+        class Client:
+            def __init__(self, *a, **kw):
+                pass
+
+    monkeypatch.setitem(__import__("sys").modules, "voyageai", _FakeVoyageSDK)
+
+    client = recorder.build_embedding_client()
+    assert isinstance(client, VoyageEmbeddingClient)
+    assert client.model == "voyage-3-lite"
 
 
 def test_record_step_survives_outer_session_rollback(db_session):

@@ -27,6 +27,7 @@ dependencies = [
     "uvicorn>=0.47.0",
     "python-multipart>=0.0.29",
     "markdown-it-py>=4.2.0",
+    "voyageai>=0.3",
 ]
 
 [project.scripts]

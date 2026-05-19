@@ -33,19 +33,19 @@ def stub_services(monkeypatch):
 
     rep = _Rep()
 
-    def fake_collect_all(session, *, run_context=None, source_ids=None):
+    def fake_collect_all(session, **kwargs):
         calls.append("collect")
         return rep
 
-    def fake_process(session, *, llm=None, keyword_only=False, min_relevance=0.0):
+    def fake_process(session, **kwargs):
         calls.append("process")
         return rep
 
-    def fake_integrate(session, *, llm=None, **kwargs):
+    def fake_integrate(session, **kwargs):
         calls.append("integrate")
         return rep
 
-    def fake_draft_issue(session, *, today, llm, scoring_llm=None, **kwargs):
+    def fake_draft_issue(session, **kwargs):
         calls.append("draft")
         return rep
 
@@ -101,7 +101,7 @@ def test_run_rejects_invalid_until(stub_services, db_session):
 
 
 def test_run_records_failure_when_step_blows_up(monkeypatch, db_session):
-    def boom(session, *, run_context=None, source_ids=None):
+    def boom(session, **kwargs):
         raise RuntimeError("nope")
 
     monkeypatch.setattr(run_cli, "collect_all", boom)

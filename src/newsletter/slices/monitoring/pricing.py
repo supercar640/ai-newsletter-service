@@ -18,9 +18,23 @@ PRICING: dict[str, tuple[float, float]] = {
 _FALLBACK: tuple[float, float] = (3.0, 15.0)
 
 
+# Voyage embeddings: single-rate (no output tokens).
+EMBEDDING_PRICING: dict[str, float] = {
+    "voyage-3-lite": 0.02,
+    "voyage-3": 0.12,
+    "voyage-3-large": 0.18,
+}
+_EMBEDDING_FALLBACK: float = 0.02
+
+
 def cost_for(model: str, input_tokens: int, output_tokens: int) -> float:
     in_rate, out_rate = PRICING.get(model, _FALLBACK)
     return (input_tokens / 1_000_000.0) * in_rate + (output_tokens / 1_000_000.0) * out_rate
 
 
-__all__ = ["PRICING", "cost_for"]
+def embedding_cost_for(model: str, tokens: int) -> float:
+    rate = EMBEDDING_PRICING.get(model, _EMBEDDING_FALLBACK)
+    return (tokens / 1_000_000.0) * rate
+
+
+__all__ = ["EMBEDDING_PRICING", "PRICING", "cost_for", "embedding_cost_for"]

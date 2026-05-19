@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     # Anthropic
     anthropic_api_key: str = Field(default="", description="Claude API key")
 
+    # Voyage AI (embeddings, Phase 2)
+    voyage_api_key: str = Field(default="", description="Voyage AI key for embeddings")
+    voyage_embedding_model: str = Field(default="voyage-3-lite")
+
     # Naver Search Open API
     naver_client_id: str = Field(default="")
     naver_client_secret: str = Field(default="")

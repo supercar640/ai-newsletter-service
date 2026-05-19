@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from newsletter.core.embeddings import EmbeddingClient, serialize
 from newsletter.core.llm import LLMClient
 from newsletter.core.logging import get_logger
 from newsletter.models.processed_item import ProcessedItem
@@ -36,6 +37,7 @@ def process(
     keyword_only: bool = False,
     raw_item_ids: list[int] | None = None,
     min_relevance: float = 0.0,
+    embedding_client: EmbeddingClient | None = None,
 ) -> ProcessingReport:
     """Process every RawItem that does not yet have a ProcessedItem.
 
@@ -51,6 +53,10 @@ def process(
     min_relevance:
         Drop items whose final relevance score is below this threshold.
         ``0.0`` keeps everything that has any AI signal.
+    embedding_client:
+        Provider used to attach semantic embeddings to each ProcessedItem.
+        ``None`` or a :class:`DisabledEmbeddingClient` leaves ``embedding``
+        NULL; downstream clustering will fall back to lexical Jaccard.
     """
     raws = _fetch_pending(session, raw_item_ids)
     report = ProcessingReport(fetched=len(raws))
@@ -79,6 +85,7 @@ def process(
         for raw, title, url in pre
     )
 
+    admitted_items: list[tuple[ProcessedItem, str, str | None]] = []
     for raw, normalized, canon in pre:
         source = sources_by_id.get(raw.source_id)
         if source is None:
@@ -111,9 +118,12 @@ def process(
             duplicate_group_id=groups.get(raw.id),
         )
         session.add(item)
+        admitted_items.append((item, normalized, raw.raw_summary))
         report.processed += 1
         report.per_track[track] = report.per_track.get(track, 0) + 1
 
+    session.flush()
+    _attach_embeddings(admitted_items, embedding_client)
     session.flush()
     log.info(
         "processing.done",
@@ -123,6 +133,38 @@ def process(
         per_track=report.per_track,
     )
     return report
+
+
+def _attach_embeddings(
+    admitted: list[tuple[ProcessedItem, str, str | None]],
+    client: EmbeddingClient | None,
+) -> None:
+    """Compute one embedding per admitted ProcessedItem in a single batch.
+
+    Provider failures are swallowed: the pipeline continues with NULL
+    embeddings rather than aborting the whole processing run.
+    """
+    if not admitted or client is None:
+        return
+    texts = [_embed_text(title, summary) for _, title, summary in admitted]
+    try:
+        vectors = client.embed(texts)
+    except Exception:
+        log.exception("processing.embedding_failed", batch_size=len(texts))
+        return
+    if not vectors:
+        return
+    model = getattr(client, "model", None)
+    for (item, _, _), vector in zip(admitted, vectors, strict=False):
+        item.embedding = serialize(vector)
+        item.embedding_model = model
+
+
+def _embed_text(title: str, summary: str | None) -> str:
+    """Concatenate title + summary for the embedding input."""
+    if summary:
+        return f"{title}\n{summary}"
+    return title
 
 
 def _fetch_pending(session: Session, raw_item_ids: list[int] | None) -> list[RawItem]:

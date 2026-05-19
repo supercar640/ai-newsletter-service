@@ -13,6 +13,7 @@ from datetime import UTC, datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from newsletter.core.embeddings import deserialize
 from newsletter.core.llm import LLMClient
 from newsletter.core.logging import get_logger
 from newsletter.models.processed_item import ProcessedItem
@@ -47,6 +48,7 @@ def integrate(
     top_k_for_llm: int = 20,
     half_life_days: float = 3.0,
     max_per_category: int = 2,
+    cosine_threshold: float = 0.85,
 ) -> IntegrationReport:
     """Run integration over every ProcessedItem row.
 
@@ -63,6 +65,7 @@ def integrate(
     cluster_inputs: list[ClusterInput] = []
     track_by_id: dict[int, str] = {}
     category_by_id: dict[int, str | None] = {}
+    embeddings: dict[int, list[float]] = {}
 
     for proc, raw, source in rows:
         published = _to_aware(raw.published_at) if raw else None
@@ -85,6 +88,8 @@ def integrate(
         )
         track_by_id[proc.id] = proc.content_track
         category_by_id[proc.id] = proc.category
+        if proc.embedding:
+            embeddings[proc.id] = deserialize(proc.embedding)
 
     scores = score_items(
         score_inputs,
@@ -99,7 +104,11 @@ def integrate(
         proc.importance_score = float(scores.get(proc.id, 0.0))
     session.flush()
 
-    clusters = cluster_items(cluster_inputs)
+    clusters = cluster_items(
+        cluster_inputs,
+        embeddings=embeddings or None,
+        cosine_threshold=cosine_threshold,
+    )
 
     cand_inputs = [
         CandidateInput(
@@ -130,6 +139,7 @@ def integrate(
         clusters=report.clusters,
         expert_candidates=len(report.expert_candidates),
         practical_candidates=len(report.practical_candidates),
+        items_with_embedding=len(embeddings),
     )
     return report
 

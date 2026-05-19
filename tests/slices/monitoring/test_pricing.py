@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from newsletter.slices.monitoring.pricing import cost_for
+from newsletter.slices.monitoring.pricing import cost_for, embedding_cost_for
 
 
 def test_sonnet_cost():
@@ -25,3 +25,15 @@ def test_unknown_model_falls_back_to_sonnet_rates():
 
 def test_zero_tokens_zero_cost():
     assert cost_for("claude-opus-4-7", 0, 0) == 0.0
+
+
+def test_embedding_cost_voyage_3_lite():
+    assert embedding_cost_for("voyage-3-lite", 1_000_000) == pytest.approx(0.02)
+
+
+def test_embedding_cost_unknown_model_uses_voyage_lite_rate():
+    assert embedding_cost_for("future-model", 1_000_000) == pytest.approx(0.02)
+
+
+def test_embedding_cost_zero():
+    assert embedding_cost_for("voyage-3-lite", 0) == 0.0

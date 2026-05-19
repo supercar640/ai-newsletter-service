@@ -14,11 +14,17 @@ from contextlib import contextmanager
 from datetime import UTC, datetime
 from typing import Any
 
+from newsletter.core.config import get_settings
 from newsletter.core.db import get_sessionmaker
+from newsletter.core.embeddings import (
+    DisabledEmbeddingClient,
+    EmbeddingClient,
+    VoyageEmbeddingClient,
+)
 from newsletter.core.llm import LLMClient, LLMResponse
 from newsletter.core.logging import get_logger
 from newsletter.models.run_log import RunLog
-from newsletter.slices.monitoring.pricing import cost_for
+from newsletter.slices.monitoring.pricing import cost_for, embedding_cost_for
 
 log = get_logger(__name__)
 
@@ -102,6 +108,50 @@ def build_llm_client(*, client: Any = None) -> LLMClient:
     return LLMClient(client=client, usage_callback=make_llm_recorder())
 
 
+def make_embedding_recorder() -> Callable[[str, int], None]:
+    """Return a callback that writes one RunLog row per embedding batch."""
+    sf = get_sessionmaker()
+
+    def record(model: str, tokens: int) -> None:
+        cost = embedding_cost_for(model, tokens)
+        now = _now()
+        row = RunLog(
+            step="embedding.batch",
+            status="success",
+            started_at=now,
+            finished_at=now,
+            llm_tokens_in=tokens,
+            cost_usd=cost,
+            model=model,
+        )
+        session = sf()
+        try:
+            session.add(row)
+            session.commit()
+        except Exception:
+            session.rollback()
+            log.exception("monitoring.embedding_record_failed", model=model)
+        finally:
+            session.close()
+
+    return record
+
+
+def build_embedding_client() -> EmbeddingClient:
+    """Construct the embedding client from settings.
+
+    Returns :class:`DisabledEmbeddingClient` when no API key is set so the
+    pipeline keeps working with lexical-only clustering.
+    """
+    settings = get_settings()
+    if not settings.voyage_api_key:
+        return DisabledEmbeddingClient()
+    return VoyageEmbeddingClient(
+        model=settings.voyage_embedding_model,
+        usage_callback=make_embedding_recorder(),
+    )
+
+
 def _now() -> datetime:
     return datetime.now(UTC)
 
@@ -154,4 +204,10 @@ def _finalize(sf, run: RunLog, *, error: BaseException | None) -> None:
         session.close()
 
 
-__all__ = ["build_llm_client", "make_llm_recorder", "record_step"]
+__all__ = [
+    "build_embedding_client",
+    "build_llm_client",
+    "make_embedding_recorder",
+    "make_llm_recorder",
+    "record_step",
+]

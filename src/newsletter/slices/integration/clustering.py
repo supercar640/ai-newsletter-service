@@ -1,18 +1,21 @@
 """Cluster ProcessedItems that report the same underlying story.
 
 Seeds the cluster partition with each item's ``duplicate_group_id`` (set
-by the processing slice), then merges further via Jaccard similarity on
-title keyword tokens. This is the MVP — the swap point for an embedding-
-based clusterer is :func:`_pair_similarity`; replacing it with a vector
-distance is the only change needed.
+by the processing slice). The pairwise merge pass uses cosine similarity
+on Voyage embeddings when both items have one — falling back to title-
+token Jaccard when at least one side is missing an embedding so semantic
+clustering rolls out incrementally without blocking existing pipelines.
 """
 
 from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from typing import Final
+
+from newsletter.core.embeddings import cosine
 
 _TOKEN_RE: Final = re.compile(
     r"[A-Za-z0-9가-힣ぁ-んァ-ン一-龯][\w가-힣ぁ-んァ-ン一-龯-]*", re.UNICODE
@@ -78,13 +81,20 @@ def cluster_items(
     items: list[ClusterInput],
     *,
     jaccard_threshold: float = 0.5,
+    embeddings: Mapping[int, Sequence[float]] | None = None,
+    cosine_threshold: float = 0.85,
 ) -> dict[int, str]:
     """Return ``{item.id: cluster_id}`` for every input item.
 
-    Two items end up in the same cluster when either condition holds:
-    they share a ``duplicate_group_id``, or their title-token Jaccard
-    is at or above ``jaccard_threshold``. Merges are transitive (union-
-    find), so chained matches connect the full component.
+    Two items end up in the same cluster when any of these hold:
+    * they share a ``duplicate_group_id`` (set by the dedupe pass)
+    * both have an embedding and their cosine similarity is at or above
+      ``cosine_threshold``
+    * their title-token Jaccard is at or above ``jaccard_threshold``
+      (always evaluated — semantic and lexical merge unions, not gates)
+
+    Merges are transitive (union-find), so chained matches connect the
+    full component.
     """
     if not items:
         return {}
@@ -117,13 +127,20 @@ def cluster_items(
         for other in ids[1:]:
             union(first, other)
 
-    # Pass 2: merge by title-token Jaccard. O(n^2) is fine for MVP volume
+    # Pass 2: merge by semantic cosine (when both sides have a vector)
+    # OR by title-token Jaccard. O(n^2) is fine for MVP volume
     # (tens to a couple hundred items per run).
     tokens = {item.id: title_tokens(item.title) for item in items}
+    embeds = embeddings or {}
     ids_sorted = sorted(parent.keys())
     for i, a in enumerate(ids_sorted):
         for b in ids_sorted[i + 1 :]:
             if find(a) == find(b):
+                continue
+            ea = embeds.get(a)
+            eb = embeds.get(b)
+            if ea is not None and eb is not None and cosine(ea, eb) >= cosine_threshold:
+                union(a, b)
                 continue
             if _jaccard(tokens[a], tokens[b]) >= jaccard_threshold:
                 union(a, b)

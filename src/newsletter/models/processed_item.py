@@ -15,6 +15,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    LargeBinary,
     String,
     Text,
     UniqueConstraint,
@@ -59,6 +60,10 @@ class ProcessedItem(Base):
     summary: Mapped[str | None] = mapped_column(Text)
     keywords: Mapped[str | None] = mapped_column(String(500))
     duplicate_group_id: Mapped[str | None] = mapped_column(String(64))
+    # Phase 2: packed float32 embedding for semantic clustering. None when the
+    # embedding provider was disabled at processing time.
+    embedding: Mapped[bytes | None] = mapped_column(LargeBinary)
+    embedding_model: Mapped[str | None] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
