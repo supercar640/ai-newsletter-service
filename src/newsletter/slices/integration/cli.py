@@ -5,9 +5,9 @@ from __future__ import annotations
 import typer
 
 from newsletter.core.db import session_scope
-from newsletter.core.llm import LLMClient
 from newsletter.slices.integration.candidates import Candidate
 from newsletter.slices.integration.service import IntegrationReport, integrate
+from newsletter.slices.monitoring.recorder import build_llm_client, record_step
 
 app = typer.Typer(
     name="integrate",
@@ -52,16 +52,18 @@ def cmd_integrate(
 ) -> None:
     """Score every ProcessedItem, cluster duplicates, output candidate lists."""
     _ = date
-    llm = None if no_llm else LLMClient()
-    with session_scope() as session:
-        report = integrate(
-            session,
-            llm=llm,
-            expert_count=expert_count,
-            practical_count=practical_count,
-            top_k_for_llm=top_k_for_llm,
-            max_per_category=max_per_category,
-        )
+    llm = None if no_llm else build_llm_client()
+    with record_step("integrate") as run_log:
+        with session_scope() as session:
+            report = integrate(
+                session,
+                llm=llm,
+                expert_count=expert_count,
+                practical_count=practical_count,
+                top_k_for_llm=top_k_for_llm,
+                max_per_category=max_per_category,
+            )
+        run_log.item_count = len(report.expert_candidates) + len(report.practical_candidates)
     _print_report(report)
 
 

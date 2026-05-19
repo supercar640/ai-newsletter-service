@@ -7,6 +7,7 @@ import typer
 from newsletter.core.db import session_scope
 from newsletter.models.newsletter_issue import NewsletterIssue
 from newsletter.slices.distribution.service import SendError, send_issue
+from newsletter.slices.monitoring.recorder import record_step
 
 app = typer.Typer(
     help="Send a NewsletterIssue via SMTP.",
@@ -23,16 +24,18 @@ def send(
     ),
 ) -> None:
     """Send an approved newsletter issue."""
-    with session_scope() as session:
-        row = session.get(NewsletterIssue, issue)
-        if row is None:
-            typer.echo(f"이슈 {issue} 를 찾을 수 없습니다.", err=True)
-            raise typer.Exit(code=1)
-        try:
-            report = send_issue(session, row, dry_run=dry_run)
-        except SendError as exc:
-            typer.echo(f"발송 실패: {exc}", err=True)
-            raise typer.Exit(code=1) from exc
+    with record_step("send", meta={"issue_id": issue, "dry_run": dry_run}) as run_log:
+        with session_scope() as session:
+            row = session.get(NewsletterIssue, issue)
+            if row is None:
+                typer.echo(f"이슈 {issue} 를 찾을 수 없습니다.", err=True)
+                raise typer.Exit(code=1)
+            try:
+                report = send_issue(session, row, dry_run=dry_run)
+            except SendError as exc:
+                typer.echo(f"발송 실패: {exc}", err=True)
+                raise typer.Exit(code=1) from exc
+        run_log.item_count = len(report.recipients)
 
     if report.dry_run:
         typer.echo(f"[DRY-RUN] {len(report.recipients)}명에게 발송 시뮬레이션 완료.")

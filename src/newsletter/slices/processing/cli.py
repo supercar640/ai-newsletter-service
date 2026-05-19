@@ -5,7 +5,7 @@ from __future__ import annotations
 import typer
 
 from newsletter.core.db import session_scope
-from newsletter.core.llm import LLMClient
+from newsletter.slices.monitoring.recorder import build_llm_client, record_step
 from newsletter.slices.processing.service import ProcessingReport, process
 
 app = typer.Typer(
@@ -36,9 +36,13 @@ def cmd_process(
 ) -> None:
     """Process pending RawItem rows into ProcessedItem rows."""
     _ = date
-    llm = None if keyword_only else LLMClient()
-    with session_scope() as session:
-        report = process(session, llm=llm, keyword_only=keyword_only, min_relevance=min_relevance)
+    llm = None if keyword_only else build_llm_client()
+    with record_step("process") as run_log:
+        with session_scope() as session:
+            report = process(
+                session, llm=llm, keyword_only=keyword_only, min_relevance=min_relevance
+            )
+        run_log.item_count = report.processed
     _print_report(report)
     if report.errors:
         raise typer.Exit(code=1)

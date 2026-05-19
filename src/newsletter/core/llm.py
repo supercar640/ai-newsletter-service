@@ -16,6 +16,7 @@ use are not needed for current processing tasks.
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -44,10 +45,18 @@ class LLMResponse:
     output_tokens: int
 
 
+UsageCallback = Callable[["LLMResponse"], None]
+
+
 class LLMClient:
     """Thin wrapper over the Anthropic SDK."""
 
-    def __init__(self, *, client: Anthropic | None = None) -> None:
+    def __init__(
+        self,
+        *,
+        client: Anthropic | None = None,
+        usage_callback: UsageCallback | None = None,
+    ) -> None:
         if client is not None:
             self._client = client
         else:
@@ -55,6 +64,7 @@ class LLMClient:
             # Anthropic SDK lets api_key be empty for offline-construction;
             # the .messages.create call will fail loudly if it's missing.
             self._client = Anthropic(api_key=settings.anthropic_api_key or "missing")
+        self._usage_callback = usage_callback
 
     def complete(
         self,
@@ -91,12 +101,18 @@ class LLMClient:
             input_tokens=in_tokens,
             output_tokens=out_tokens,
         )
-        return LLMResponse(
+        result = LLMResponse(
             text=text,
             model=model,
             input_tokens=in_tokens,
             output_tokens=out_tokens,
         )
+        if self._usage_callback is not None:
+            try:
+                self._usage_callback(result)
+            except Exception:
+                log.exception("llm.usage_callback_failed", model=model)
+        return result
 
     def complete_prompt(
         self,

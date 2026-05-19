@@ -7,6 +7,7 @@ import typer
 from newsletter.core.db import session_scope
 from newsletter.core.run_context import RunContext
 from newsletter.slices.collection.service import CollectionReport, collect_all
+from newsletter.slices.monitoring.recorder import record_step
 
 app = typer.Typer(
     name="collect",
@@ -41,8 +42,10 @@ def cmd_collect(
     typer.echo(f"Run id: {run_ctx.run_id}")
     typer.echo(f"Artifacts: {run_ctx.path}")
 
-    with session_scope() as session:
-        report = collect_all(session, source_ids=source_id or None, run_context=run_ctx)
+    with record_step("collect", meta={"run_id": run_ctx.run_id}) as run_log:
+        with session_scope() as session:
+            report = collect_all(session, source_ids=source_id or None, run_context=run_ctx)
+        run_log.item_count = report.total_inserted
 
     _print_report(report)
     if report.errors:
