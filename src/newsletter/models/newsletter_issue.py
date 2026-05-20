@@ -80,6 +80,7 @@ class NewsletterIssue(Base):
     approved_by: Mapped[str | None] = mapped_column(String(64))
     approved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    slack_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     notion_page_id: Mapped[str | None] = mapped_column(String(64))
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(

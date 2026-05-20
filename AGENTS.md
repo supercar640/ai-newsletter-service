@@ -68,6 +68,7 @@ Required env vars (see `.env.example`):
 | `uv run newsletter review --date today` | Export review file to `data/reviews/` |
 | `uv run newsletter review:approve --issue ID --by NAME` | Mark issue as approved |
 | `uv run newsletter send --issue ID [--dry-run]` | Send approved issue via SMTP |
+| `uv run newsletter slack --issue ID [--dry-run] [--force]` | Post approved issue to Slack as a summary card |
 | `uv run newsletter run --date today --until draft` | Run end-to-end up to a step |
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
 
@@ -213,7 +214,7 @@ These are deliberately excluded. Do not add them without a plan revision:
 - GraphRAG / Knowledge Graph
 - Crawling beyond official APIs / RSS
 - Paid news APIs
-- Slack / Teams distribution (Phase 2 candidate)
+- Microsoft Teams distribution (Phase 2+ candidate; Slack is implemented)
 
 ---
 

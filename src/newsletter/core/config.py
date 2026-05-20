@@ -73,6 +73,9 @@ class Settings(BaseSettings):
         description="Comma-separated list of recipient emails.",
     )
 
+    # Slack distribution (Phase 2) — Incoming Webhook, single fixed channel.
+    slack_webhook_url: str = Field(default="", description="Slack Incoming Webhook URL")
+
     # DB
     db_url: str = Field(default="sqlite:///data/newsletter.db")
 
