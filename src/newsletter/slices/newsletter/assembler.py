@@ -23,12 +23,18 @@ from newsletter.models.newsletter_issue import NewsletterIssue
 from newsletter.models.processed_item import ProcessedItem
 from newsletter.models.raw_item import RawItem
 from newsletter.models.source import Source
+from newsletter.slices.departments import repository as dept_repo
 from newsletter.slices.integration.candidates import Candidate
 from newsletter.slices.integration.service import integrate
 from newsletter.slices.newsletter.audiences import (
     DEFAULT_AUDIENCE,
     AudienceProfile,
     resolve_audience,
+)
+from newsletter.slices.newsletter.department_tips import (
+    apply_department_tips,
+    persist_department_tips,
+    recent_tips_by_department,
 )
 from newsletter.slices.newsletter.expert import (
     ClusterBrief,
@@ -105,6 +111,16 @@ def draft_issue(
     practical_briefs = _resolve_briefs(session, report.practical_candidates)
     practical_section = build_practical_section(practical_briefs, date=today.isoformat(), llm=llm)
 
+    # Phase 2: per-department tips — generate structured §2, accumulate, and
+    # feed recent tips back so successive issues stay varied. No-op when no
+    # departments are registered.
+    departments = dept_repo.list_departments(session, only_enabled=True)
+    if departments:
+        recent = recent_tips_by_department(session, [d.name for d in departments])
+        practical_section = apply_department_tips(
+            practical_section, departments, recent, date=today.isoformat(), llm=llm
+        )
+
     candidate_blob = {
         "expert": [{"id": c.id, "included": True} for c in report.expert_candidates],
         "practical": [{"id": c.id, "included": True} for c in report.practical_candidates],
@@ -133,6 +149,9 @@ def draft_issue(
     session.add(issue)
     session.flush()
     session.refresh(issue)
+
+    if practical_section.department_tips:
+        persist_department_tips(session, issue.id, practical_section.department_tips)
 
     log.info(
         "newsletter.draft.created",

@@ -61,6 +61,8 @@ Required env vars (see `.env.example`):
 | `uv run newsletter sources:list` | List configured sources |
 | `uv run newsletter sources:add` | Add a new source |
 | `uv run newsletter sources:disable <id>` | Disable a source |
+| `uv run newsletter departments seed` | Seed default departments for per-department tips |
+| `uv run newsletter departments list` | List registered departments |
 | `uv run newsletter collect --date today` | Fetch from all enabled sources → `RawItem` |
 | `uv run newsletter process --date today` | Normalize, dedupe, AI-relevance filter, track classify → `ProcessedItem` |
 | `uv run newsletter integrate --date today` | Cluster + importance score + candidate selection |

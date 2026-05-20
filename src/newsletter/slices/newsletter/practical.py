@@ -10,12 +10,16 @@ editorial schema differs.
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from newsletter.core.llm import LLMClient, LLMError
 from newsletter.core.logging import get_logger
 from newsletter.core.prompts import load_prompt
 from newsletter.slices.newsletter.expert import ClusterBrief, ClusterMember
+
+if TYPE_CHECKING:
+    from newsletter.slices.newsletter.department_tips import DepartmentTipItem
 
 log = get_logger(__name__)
 
@@ -50,6 +54,7 @@ class PracticalSection:
 
     markdown: str
     usecases: list[PracticalUsecase]
+    department_tips: list[DepartmentTipItem] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
