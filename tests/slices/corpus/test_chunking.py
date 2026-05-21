@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from newsletter.slices.corpus.chunking import chunk_text, extract_keywords
 
 
@@ -43,3 +45,14 @@ def test_extract_keywords_drops_short_tokens_and_stopwords():
     assert "및" not in kws
     assert "모델" in kws
     assert "ai" in kws
+
+
+def test_chunk_rejects_nonpositive_max_chars():
+    with pytest.raises(ValueError):
+        chunk_text("anything", max_chars=0)
+
+
+def test_chunk_merges_heading_with_following_paragraph():
+    text = "# 제목\n\n본문 문단입니다."
+    chunks = chunk_text(text)
+    assert chunks == ["# 제목\n\n본문 문단입니다."]

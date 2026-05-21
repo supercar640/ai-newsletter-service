@@ -26,6 +26,8 @@ _STOPWORDS = frozenset(
 
 def chunk_text(text: str, *, max_chars: int = 1200) -> list[str]:
     """Split a document into chunks at headings/paragraphs, capped at max_chars."""
+    if max_chars < 1:
+        raise ValueError(f"max_chars must be >= 1, got {max_chars}")
     blocks: list[str] = []
     for block in _split_blocks(text):
         blocks.extend(_hard_split(block, max_chars))
