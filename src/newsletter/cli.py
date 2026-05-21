@@ -37,6 +37,7 @@ from newsletter.slices.newsletter.cli import app as newsletter_app  # noqa: E402
 from newsletter.slices.processing.cli import app as process_app  # noqa: E402
 from newsletter.slices.run.cli import app as run_app  # noqa: E402
 from newsletter.slices.sources.cli import app as sources_app  # noqa: E402
+from newsletter.slices.trends.cli import app as trends_app  # noqa: E402
 
 app = typer.Typer(
     name="newsletter",
@@ -58,6 +59,7 @@ app.add_typer(slack_app, name="slack")
 app.add_typer(archive_app, name="archive")
 app.add_typer(admin_app, name="admin")
 app.add_typer(stats_app, name="stats")
+app.add_typer(trends_app, name="trends")
 app.add_typer(run_app, name="run")
 
 
