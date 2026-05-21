@@ -7,7 +7,6 @@ boost falls back to keyword overlap.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import typer
@@ -28,10 +27,7 @@ app = typer.Typer(
 @app.command("index")
 def cmd_index() -> None:
     """Scan COMPANY_CONTEXT_DIR and (re)index changed documents."""
-    # company_context_dir is added in Task 8; until then read the raw env var.
-    context_dir = getattr(get_settings(), "company_context_dir", "") or os.environ.get(
-        "COMPANY_CONTEXT_DIR", ""
-    )
+    context_dir = get_settings().company_context_dir
     if not context_dir:
         typer.echo(
             "COMPANY_CONTEXT_DIR 가 설정되지 않았습니다. 인덱싱을 건너뜁니다.",
@@ -84,9 +80,7 @@ def cmd_status() -> None:
     settings = get_settings()
     has_key = bool(settings.voyage_api_key)
     typer.echo(f"embedding key: {'있음' if has_key else '없음 (키워드 폴백)'}")
-    context_dir = getattr(settings, "company_context_dir", "") or os.environ.get(
-        "COMPANY_CONTEXT_DIR", ""
-    )
+    context_dir = settings.company_context_dir
     if not context_dir:
         typer.echo("COMPANY_CONTEXT_DIR: (미설정)")
         return
