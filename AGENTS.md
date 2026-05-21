@@ -79,6 +79,7 @@ Optional env vars:
 | `uv run newsletter corpus index \| list \| clear \| status` | Index / inspect / clear internal company document corpus |
 | `uv run newsletter run --date today --until draft` | Run end-to-end up to a step |
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
+| `uv run newsletter trends [--period week\|month] [--end DATE] [--top N] [--min-count N] [--save PATH]` | Period-over-period AI topic trend report (rising / cooling / new / gone) |
 
 ---
 
@@ -126,7 +127,8 @@ src/newsletter/
 │   ├── review/          Review file export + approve/reject
 │   ├── distribution/    Email template + SMTP send
 │   ├── monitoring/      Run logs, token/cost stats
-│   └── corpus/          사내 문서(.md/.txt)를 청크 단위로 인덱싱해 중요도 스코어링을 보강하는 슬라이스
+│   ├── corpus/          사내 문서(.md/.txt)를 청크 단위로 인덱싱해 중요도 스코어링을 보강하는 슬라이스
+│   └── trends/          누적 ProcessedItem 제목 키워드의 주간/월간 변화(떠오르는/식는/신규/소멸)를 비교하는 독립 리포트 슬라이스
 └── cli.py             Typer root app (mounts slice sub-apps)
 
 prompts/              All LLM prompts (NEVER inline in Python)
