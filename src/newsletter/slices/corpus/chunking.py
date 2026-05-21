@@ -10,18 +10,9 @@ from __future__ import annotations
 import re
 from collections import Counter
 
-_HEADING_LINE_RE = re.compile(r"^#{1,6}\s")
-_TOKEN_RE = re.compile(r"[0-9a-z가-힣]+")
+from newsletter.core.text import tokenize
 
-# Light stopword set — common English glue words + Korean particles/fillers.
-# Single-character tokens are dropped separately, so only len>1 entries matter.
-_STOPWORDS = frozenset(
-    {
-        "the", "and", "for", "are", "but", "not", "you", "with", "this",
-        "that", "from", "have", "was", "were", "한다", "합니다", "있다",
-        "있습니다", "그리고", "그러나", "또는", "등의", "대한", "위한",
-    }
-)
+_HEADING_LINE_RE = re.compile(r"^#{1,6}\s")
 
 
 def chunk_text(text: str, *, max_chars: int = 1200) -> list[str]:
@@ -50,8 +41,7 @@ def chunk_text(text: str, *, max_chars: int = 1200) -> list[str]:
 
 def extract_keywords(text: str, *, max_keywords: int = 20) -> list[str]:
     """Frequency-ranked lowercased tokens. Deterministic (alpha tie-break)."""
-    tokens = _TOKEN_RE.findall(text.lower())
-    counts = Counter(t for t in tokens if len(t) > 1 and t not in _STOPWORDS)
+    counts = Counter(tokenize(text))
     ranked = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
     return [token for token, _ in ranked[:max_keywords]]
 
