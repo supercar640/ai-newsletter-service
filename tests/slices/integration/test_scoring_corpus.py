@@ -59,6 +59,18 @@ def test_embedding_below_threshold_is_neutral():
     assert factor == 1.0
 
 
+def test_keyword_fallback_used_when_item_has_embedding_but_chunks_dont():
+    chunks = [CorpusChunk(keywords=("rag", "agent", "vector"), embedding=None)]
+    factor = corpus_relevance_factor(
+        title="RAG agent vector",
+        summary=None,
+        item_embedding=[1.0, 0.0, 0.0],  # item embedded, but chunk is not
+        chunks=chunks,
+    )
+    # No embedded chunk -> keyword path: 3 distinct hits == saturation -> 1.3
+    assert factor == 1.3
+
+
 def test_score_items_applies_corpus_boost():
     item = ScoreInput(
         id=1,
