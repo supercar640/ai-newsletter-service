@@ -119,3 +119,18 @@ def test_analyze_empty_window(db_session: Session):
     assert report.total_current_items == 0
     assert report.total_previous_items == 0
     assert report.new == []
+
+
+def test_window_boundary_is_half_open(db_session: Session):
+    _seed_source(db_session)
+    # current_start is 2026-05-15 00:00 (inclusive lower bound of current window)
+    _seed(db_session, title="Boundary alpha term", published_at=datetime(2026, 5, 15, 0, 0))
+    # one second before current_start -> previous window
+    _seed(db_session, title="Boundary beta term", published_at=datetime(2026, 5, 14, 23, 59, 59))
+    db_session.commit()
+
+    report = analyze_trends(db_session, period="week", end=_END, min_count=1)
+    assert report.total_current_items == 1
+    assert report.total_previous_items == 1
+    assert "alpha" in {d.term for d in report.new}      # current-only term -> new
+    assert "beta" in {d.term for d in report.dropped}    # previous-only term -> dropped
