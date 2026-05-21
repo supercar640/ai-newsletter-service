@@ -45,6 +45,14 @@ def index_corpus(
             continue
 
         texts = chunk_text(content)
+        if not texts:
+            # No indexable content. Clear any stale chunks for this path so an
+            # emptied file doesn't leave orphans. We can't record a hash without
+            # a row, so empty files are re-checked each run (cheap: no embed).
+            repository.replace_file_chunks(
+                session, source_path=rel, file_hash=file_hash, chunks=[]
+            )
+            continue
         inserts = _build_inserts(texts, embed_client)
         written = repository.replace_file_chunks(
             session, source_path=rel, file_hash=file_hash, chunks=inserts
@@ -70,6 +78,10 @@ def _build_inserts(
     if not texts:
         return []
     vectors = embed_client.embed(texts)
+    if vectors and len(vectors) < len(texts):
+        log.warning(
+            "corpus.embed.partial", expected=len(texts), got=len(vectors)
+        )
     model = getattr(embed_client, "model", None)
     inserts: list[ChunkInsert] = []
     for index, text in enumerate(texts):
