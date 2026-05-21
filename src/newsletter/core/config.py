@@ -76,6 +76,12 @@ class Settings(BaseSettings):
     # Slack distribution (Phase 2) — Incoming Webhook, single fixed channel.
     slack_webhook_url: str = Field(default="", description="Slack Incoming Webhook URL")
 
+    # 회사 관심사 RAG (Phase 3) — 사내 문서 코퍼스 디렉터리. 빈 값이면 기능 off.
+    company_context_dir: str = Field(
+        default="",
+        description="Directory of internal .md/.txt docs indexed for scoring.",
+    )
+
     # DB
     db_url: str = Field(default="sqlite:///data/newsletter.db")
 

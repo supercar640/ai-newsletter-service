@@ -19,6 +19,7 @@ from newsletter.core.logging import get_logger
 from newsletter.models.processed_item import ProcessedItem
 from newsletter.models.raw_item import RawItem
 from newsletter.models.source import Source
+from newsletter.slices.corpus import repository as corpus_repo
 from newsletter.slices.integration.candidates import (
     Candidate,
     CandidateInput,
@@ -26,6 +27,7 @@ from newsletter.slices.integration.candidates import (
 )
 from newsletter.slices.integration.clustering import ClusterInput, cluster_items
 from newsletter.slices.integration.scoring import (
+    CorpusChunk,
     InterestProfile,
     ScoreInput,
     score_items,
@@ -97,6 +99,7 @@ def integrate(
             embeddings[proc.id] = deserialize(proc.embedding)
 
     interests = _load_interests(session)
+    corpus_chunks = _load_corpus_chunks(session)
 
     scores = score_items(
         score_inputs,
@@ -106,6 +109,7 @@ def integrate(
         half_life_days=half_life_days,
         interests=interests,
         item_embeddings=embeddings or None,
+        corpus_chunks=corpus_chunks,
     )
 
     # Persist importance_score.
@@ -150,6 +154,7 @@ def integrate(
         practical_candidates=len(report.practical_candidates),
         items_with_embedding=len(embeddings),
         active_interests=len(interests),
+        corpus_chunks=len(corpus_chunks),
     )
     return report
 
@@ -171,6 +176,17 @@ def _load_interests(session: Session) -> list[InterestProfile]:
             )
         )
     return profiles
+
+
+def _load_corpus_chunks(session: Session) -> list[CorpusChunk]:
+    """Materialize ContextChunk rows into score-side corpus chunks."""
+    rows = corpus_repo.list_chunks(session)
+    chunks: list[CorpusChunk] = []
+    for row in rows:
+        keywords = tuple(k.lower() for k in corpus_repo.load_keywords(row))
+        embedding = deserialize(row.embedding) if row.embedding else None
+        chunks.append(CorpusChunk(keywords=keywords, embedding=embedding))
+    return chunks
 
 
 def _fetch_processed_with_context(

@@ -52,6 +52,11 @@ Required env vars (see `.env.example`):
 `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`,
 `NEWSLETTER_RECIPIENTS`, `DB_URL` (default `sqlite:///data/newsletter.db`).
 
+Optional env vars:
+`VOYAGE_API_KEY` (semantic embeddings — Jaccard fallback if unset),
+`SLACK_WEBHOOK_URL` (Slack distribution — disabled if unset),
+`COMPANY_CONTEXT_DIR` (corpus RAG for scoring boost — disabled if unset).
+
 ---
 
 ## Run
@@ -71,6 +76,7 @@ Required env vars (see `.env.example`):
 | `uv run newsletter review:approve --issue ID --by NAME` | Mark issue as approved |
 | `uv run newsletter send --issue ID [--dry-run]` | Send approved issue via SMTP |
 | `uv run newsletter slack --issue ID [--dry-run] [--force]` | Post approved issue to Slack as a summary card |
+| `uv run newsletter corpus index \| list \| clear \| status` | Index / inspect / clear internal company document corpus |
 | `uv run newsletter run --date today --until draft` | Run end-to-end up to a step |
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
 
@@ -119,7 +125,8 @@ src/newsletter/
 │   ├── newsletter/      Two-track section writers + assembler
 │   ├── review/          Review file export + approve/reject
 │   ├── distribution/    Email template + SMTP send
-│   └── monitoring/      Run logs, token/cost stats
+│   ├── monitoring/      Run logs, token/cost stats
+│   └── corpus/          사내 문서(.md/.txt)를 청크 단위로 인덱싱해 중요도 스코어링을 보강하는 슬라이스
 └── cli.py             Typer root app (mounts slice sub-apps)
 
 prompts/              All LLM prompts (NEVER inline in Python)

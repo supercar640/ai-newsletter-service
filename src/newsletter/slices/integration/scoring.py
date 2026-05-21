@@ -70,10 +70,27 @@ class InterestProfile:
     embedding: Sequence[float] | None
 
 
+@dataclass(slots=True, frozen=True)
+class CorpusChunk:
+    """One company-document chunk materialized for relevance scoring.
+
+    ``keywords`` is lowercased so callers match against pre-lowercased text.
+    """
+
+    keywords: tuple[str, ...]
+    embedding: Sequence[float] | None
+
+
 # Interest matching tuning knobs.
 _INTEREST_CAP: Final[float] = 0.5
 _INTEREST_PER_HIT_STRENGTH: Final[float] = 0.1
 _INTEREST_COSINE_THRESHOLD: Final[float] = 0.55
+
+# Corpus (company-document) relevance tuning. Capped lower than interests
+# because both boosts compound on the base score.
+_CORPUS_CAP: Final[float] = 0.3
+_CORPUS_COSINE_THRESHOLD: Final[float] = 0.55
+_CORPUS_KEYWORD_SATURATION: Final[int] = 3
 
 
 class _JSONCompleter(Protocol):
@@ -163,6 +180,41 @@ def _has_any_keyword(text: str, keywords: tuple[str, ...]) -> bool:
     return any(kw in text for kw in keywords if kw)
 
 
+def corpus_relevance_factor(
+    *,
+    title: str,
+    summary: str | None,
+    item_embedding: Sequence[float] | None,
+    chunks: list[CorpusChunk],
+) -> float:
+    """Return a multiplier in [1.0, 1.0 + _CORPUS_CAP] from corpus relevance.
+
+    Prefers the embedding path (max cosine over embedded chunks). When the
+    item has no embedding or no chunk is embedded, falls back to counting
+    distinct corpus keywords present in the item text.
+    """
+    if not chunks:
+        return 1.0
+
+    embedded = [c.embedding for c in chunks if c.embedding is not None]
+    if item_embedding is not None and embedded:
+        best = max(cosine(item_embedding, vec) for vec in embedded)
+        if best < _CORPUS_COSINE_THRESHOLD:
+            return 1.0
+        strength = (best - _CORPUS_COSINE_THRESHOLD) / (
+            1.0 - _CORPUS_COSINE_THRESHOLD
+        )
+    else:
+        text = (title + " " + (summary or "")).lower()
+        keywords = {kw for chunk in chunks for kw in chunk.keywords if kw}
+        hits = sum(1 for kw in keywords if kw in text)
+        if hits == 0:
+            return 1.0
+        strength = min(1.0, hits / _CORPUS_KEYWORD_SATURATION)
+
+    return 1.0 + strength * _CORPUS_CAP
+
+
 def score_items(
     items: list[ScoreInput],
     *,
@@ -172,6 +224,7 @@ def score_items(
     half_life_days: float = _DEFAULT_HALF_LIFE_DAYS,
     interests: list[InterestProfile] | None = None,
     item_embeddings: dict[int, Sequence[float]] | None = None,
+    corpus_chunks: list[CorpusChunk] | None = None,
 ) -> dict[int, float]:
     """Compute a final importance score per input item.
 
@@ -185,6 +238,7 @@ def score_items(
 
     embeddings_by_id = item_embeddings or {}
     interest_list = interests or []
+    corpus_list = corpus_chunks or []
 
     base = {
         item.id: base_importance(item.trust_level, item.published_at, now, half_life_days)
@@ -193,6 +247,12 @@ def score_items(
             summary=item.summary,
             item_embedding=embeddings_by_id.get(item.id),
             interests=interest_list,
+        )
+        * corpus_relevance_factor(
+            title=item.title,
+            summary=item.summary,
+            item_embedding=embeddings_by_id.get(item.id),
+            chunks=corpus_list,
         )
         for item in items
     }
@@ -246,9 +306,11 @@ def _llm_importance(item: ScoreInput, *, llm: _JSONCompleter) -> int | None:
 
 __all__ = [
     "TRUST_WEIGHTS",
+    "CorpusChunk",
     "InterestProfile",
     "ScoreInput",
     "base_importance",
+    "corpus_relevance_factor",
     "interest_match_factor",
     "recency_factor",
     "score_items",
