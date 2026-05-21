@@ -19,6 +19,7 @@ from newsletter.core.logging import get_logger
 from newsletter.models.processed_item import ProcessedItem
 from newsletter.models.raw_item import RawItem
 from newsletter.models.source import Source
+from newsletter.slices.corpus import repository as corpus_repo
 from newsletter.slices.integration.candidates import (
     Candidate,
     CandidateInput,
@@ -31,7 +32,6 @@ from newsletter.slices.integration.scoring import (
     ScoreInput,
     score_items,
 )
-from newsletter.slices.corpus import repository as corpus_repo
 from newsletter.slices.interests import repository as interests_repo
 
 log = get_logger(__name__)
