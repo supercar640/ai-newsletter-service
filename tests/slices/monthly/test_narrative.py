@@ -85,3 +85,4 @@ def test_prompt_input_uses_titles_not_full_summary_field_name(db_session: Sessio
     fake = _FakeLLM()
     build_narrative(report, llm=fake)
     assert "GPT-5 launch" in fake.last_body
+    assert "secret body text" not in fake.last_body  # raw_summary must not leak to the LLM

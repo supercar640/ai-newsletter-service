@@ -39,7 +39,7 @@ def build_monthly_report(
     session: Session, *, month: date | None = None, top_k: int = 10
 ) -> MonthlyReport:
     """Aggregate trends + competitors + top headlines for one calendar month."""
-    target = month or _previous_month_first(date.today())
+    target = month or _previous_month_first(datetime.now(UTC).date())
     since, until = _month_bounds(target)
 
     trend = analyze_trends(session, period="month", end=until - timedelta(days=1))
