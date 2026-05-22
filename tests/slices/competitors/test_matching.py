@@ -30,6 +30,13 @@ def test_empty_alias_is_ignored():
     assert alias_matches("anything at all", "") is False
 
 
+def test_ascii_alias_in_korean_context():
+    # ASCII alias immediately followed by a Korean particle — must still match.
+    assert alias_matches("gpt를 사용한다", "gpt") is True
+    assert alias_matches("openai의 모델이다", "openai") is True
+    assert alias_matches("meta가 발표했다", "meta") is True
+
+
 def test_mentioned_competitor_ids_returns_all_matches():
     competitors = [
         CompetitorProfile(id=1, name="OpenAI", aliases=("openai", "gpt")),
