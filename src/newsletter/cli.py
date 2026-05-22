@@ -34,6 +34,7 @@ from newsletter.slices.distribution.cli import slack_app  # noqa: E402
 from newsletter.slices.integration.cli import app as integrate_app  # noqa: E402
 from newsletter.slices.interests.cli import app as interests_app  # noqa: E402
 from newsletter.slices.monitoring.cli import app as stats_app  # noqa: E402
+from newsletter.slices.monthly.cli import app as monthly_app  # noqa: E402
 from newsletter.slices.newsletter.cli import app as newsletter_app  # noqa: E402
 from newsletter.slices.processing.cli import app as process_app  # noqa: E402
 from newsletter.slices.run.cli import app as run_app  # noqa: E402
@@ -61,6 +62,7 @@ app.add_typer(slack_app, name="slack")
 app.add_typer(archive_app, name="archive")
 app.add_typer(admin_app, name="admin")
 app.add_typer(stats_app, name="stats")
+app.add_typer(monthly_app, name="monthly")
 app.add_typer(trends_app, name="trends")
 app.add_typer(run_app, name="run")
 
