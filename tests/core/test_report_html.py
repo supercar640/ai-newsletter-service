@@ -36,7 +36,14 @@ def test_is_self_contained_no_external_resources():
 
 
 def test_raw_html_in_body_is_neutralized():
-    # Article titles come from untrusted feeds; raw HTML must not be live.
+    # Article titles come from untrusted feeds; raw HTML must be escaped to
+    # inert text, not passed through as live markup.
     out = render_report_html("# T\n\n- [<img src=x onerror=alert(1)>](http://e.com)\n", title="T")
-    assert "onerror=alert(1)" not in out
-    assert "&lt;img" in out
+    assert "<img" not in out  # no live tag
+    assert "&lt;img" in out  # escaped instead
+
+
+def test_script_tag_in_body_is_escaped():
+    out = render_report_html("# T\n\n<script>alert(1)</script>\n", title="T")
+    assert "<script>" not in out
+    assert "&lt;script&gt;" in out
