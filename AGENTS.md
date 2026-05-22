@@ -68,6 +68,7 @@ Optional env vars:
 | `uv run newsletter sources:disable <id>` | Disable a source |
 | `uv run newsletter departments seed` | Seed default departments for per-department tips |
 | `uv run newsletter departments list` | List registered departments |
+| `uv run newsletter departments digest [--days N \| --since DATE] [--until DATE] [--top K] [--format md\|html] [--save PATH]` | Per-department most-relevant articles (embedding match, keyword fallback) |
 | `uv run newsletter collect --date today` | Fetch from all enabled sources → `RawItem` |
 | `uv run newsletter process --date today` | Normalize, dedupe, AI-relevance filter, track classify → `ProcessedItem` |
 | `uv run newsletter integrate --date today` | Cluster + importance score + candidate selection |
