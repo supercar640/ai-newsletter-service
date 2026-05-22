@@ -39,6 +39,7 @@ from newsletter.slices.monthly.cli import app as monthly_app  # noqa: E402
 from newsletter.slices.newsletter.cli import app as newsletter_app  # noqa: E402
 from newsletter.slices.processing.cli import app as process_app  # noqa: E402
 from newsletter.slices.run.cli import app as run_app  # noqa: E402
+from newsletter.slices.site.cli import app as site_app  # noqa: E402
 from newsletter.slices.sources.cli import app as sources_app  # noqa: E402
 from newsletter.slices.trends.cli import app as trends_app  # noqa: E402
 
@@ -52,6 +53,7 @@ app = typer.Typer(
 app.add_typer(sources_app, name="sources")
 app.add_typer(corpus_app, name="corpus")
 app.add_typer(dashboard_app, name="dashboard")
+app.add_typer(site_app, name="site")
 app.add_typer(competitors_app, name="competitors")
 app.add_typer(interests_app, name="interests")
 app.add_typer(departments_app, name="departments")

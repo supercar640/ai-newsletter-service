@@ -84,6 +84,7 @@ Optional env vars:
 | `uv run newsletter competitors add \| list \| remove \| enable \| disable \| report [--days N \| --since DATE] [--until DATE] [--top K] [--format md\|html] [--save PATH]` | Register competitors and report their mentions across collected items |
 | `uv run newsletter monthly [--month YYYY-MM] [--top K] [--no-narrative] [--format md\|html] [--save PATH]` | Monthly AI digest — trends + competitors + top items + LLM narrative |
 | `uv run newsletter dashboard [--days N \| --since DATE] [--until DATE] [--top K] [--format md\|html] [--save PATH]` | Source performance (collected/processed/scores) + quality metrics |
+| `uv run newsletter site [--out DIR]` | Render every report into a linked, self-contained static HTML site (index.html + one file per report) |
 
 ---
 
@@ -135,7 +136,8 @@ src/newsletter/
 │   ├── trends/          누적 ProcessedItem 제목 키워드의 주간/월간 변화(떠오르는/식는/신규/소멸)를 비교하는 독립 리포트 슬라이스
 │   ├── competitors/     운영자가 등록한 경쟁사(이름+별칭)를 누적 ProcessedItem에서 탐지해 멘션 수·대표 헤드라인을 보여주는 독립 리포트 슬라이스
 │   ├── monthly/         한 달치 트렌드·경쟁사·중요도 상위 기사를 종합하고 LLM 서술 요약을 얹는 월간 리포트 슬라이스
-│   └── dashboard/       소스별 수집·처리·평균 점수와 품질 지표(트랙·카테고리·중복)를 보여주는 성과 리포트 슬라이스
+│   ├── dashboard/       소스별 수집·처리·평균 점수와 품질 지표(트랙·카테고리·중복)를 보여주는 성과 리포트 슬라이스
+│   └── site/            모든 리포트를 링크된 자체 완결형 정적 HTML 사이트(index + 리포트별 파일)로 묶어 발행하는 슬라이스
 └── cli.py             Typer root app (mounts slice sub-apps)
 
 prompts/              All LLM prompts (NEVER inline in Python)
