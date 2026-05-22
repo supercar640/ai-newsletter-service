@@ -56,6 +56,9 @@ def analyze_competitors(
     total_items = 0
     for title, summary, url, importance, published_at, created_at in _fetch(session, lo, hi):
         anchor = _anchor(published_at, created_at)
+        # _fetch already window-filters in SQL, but re-check after _anchor
+        # normalizes tz-aware timestamps to naive UTC (a tz-aware published_at
+        # can pass the naive SQL bound yet fall outside the window once shifted).
         if anchor is None or not (lo <= anchor < hi):
             continue
         total_items += 1
