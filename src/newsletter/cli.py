@@ -28,6 +28,7 @@ from newsletter.slices.archive.cli import app as archive_app  # noqa: E402
 from newsletter.slices.collection.cli import app as collect_app  # noqa: E402
 from newsletter.slices.competitors.cli import app as competitors_app  # noqa: E402
 from newsletter.slices.corpus.cli import app as corpus_app  # noqa: E402
+from newsletter.slices.dashboard.cli import app as dashboard_app  # noqa: E402
 from newsletter.slices.departments.cli import app as departments_app  # noqa: E402
 from newsletter.slices.distribution.cli import app as send_app  # noqa: E402
 from newsletter.slices.distribution.cli import slack_app  # noqa: E402
@@ -50,6 +51,7 @@ app = typer.Typer(
 
 app.add_typer(sources_app, name="sources")
 app.add_typer(corpus_app, name="corpus")
+app.add_typer(dashboard_app, name="dashboard")
 app.add_typer(competitors_app, name="competitors")
 app.add_typer(interests_app, name="interests")
 app.add_typer(departments_app, name="departments")
