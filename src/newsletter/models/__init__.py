@@ -5,6 +5,7 @@ ensures all models are registered with ``Base.metadata`` for Alembic autogen.
 """
 
 from newsletter.models.company_interest import CompanyInterest
+from newsletter.models.competitor import Competitor
 from newsletter.models.context_chunk import ContextChunk
 from newsletter.models.department import Department
 from newsletter.models.department_tip import DepartmentTip
@@ -16,6 +17,7 @@ from newsletter.models.source import Source
 
 __all__ = [
     "CompanyInterest",
+    "Competitor",
     "ContextChunk",
     "Department",
     "DepartmentTip",
