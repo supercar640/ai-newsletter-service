@@ -80,6 +80,7 @@ Optional env vars:
 | `uv run newsletter run --date today --until draft` | Run end-to-end up to a step |
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
 | `uv run newsletter trends [--period week\|month] [--end DATE] [--top N] [--min-count N] [--save PATH]` | Period-over-period AI topic trend report (rising / cooling / new / gone) |
+| `uv run newsletter competitors add \| list \| remove \| enable \| disable \| report [--days N \| --since DATE] [--until DATE] [--top K] [--save PATH]` | Register competitors and report their mentions across collected items |
 
 ---
 
@@ -128,7 +129,8 @@ src/newsletter/
 │   ├── distribution/    Email template + SMTP send
 │   ├── monitoring/      Run logs, token/cost stats
 │   ├── corpus/          사내 문서(.md/.txt)를 청크 단위로 인덱싱해 중요도 스코어링을 보강하는 슬라이스
-│   └── trends/          누적 ProcessedItem 제목 키워드의 주간/월간 변화(떠오르는/식는/신규/소멸)를 비교하는 독립 리포트 슬라이스
+│   ├── trends/          누적 ProcessedItem 제목 키워드의 주간/월간 변화(떠오르는/식는/신규/소멸)를 비교하는 독립 리포트 슬라이스
+│   └── competitors/     운영자가 등록한 경쟁사(이름+별칭)를 누적 ProcessedItem에서 탐지해 멘션 수·대표 헤드라인을 보여주는 독립 리포트 슬라이스
 └── cli.py             Typer root app (mounts slice sub-apps)
 
 prompts/              All LLM prompts (NEVER inline in Python)

@@ -181,6 +181,11 @@ def render_markdown(report: CompetitorReport) -> str: ...
   `--since`가 함께 오면 `--since` 우선. half-open `[since, until)`.
 - 앵커: `published_at` 우선, NULL이면 `created_at`. SQLite naive 비교(trends와 동일 철학).
 - 한 아이템이 여러 경쟁사 별칭에 매칭되면 각 경쟁사에 모두 귀속.
+- 구현 메모: ASCII 별칭은 `re.ASCII` 플래그로 단어 경계를 판정한다. 그래야 한글 조사가
+  경계로 취급되어 "GPT를", "OpenAI의" 같은 패턴이 매칭된다(기본 유니코드 `\b`는 한글을
+  단어 문자로 보아 경계를 놓침). 단, 같은 이유로 한글 토큰 안에 끼인 ASCII 별칭
+  (예: "출시llama모델"의 `llama`)도 매칭된다 — 2~3자 짧은 ASCII 별칭(`ai`, `gpt`) 등록 시
+  오탐 가능. 명명 엔티티 별칭에는 저위험이나 운영자가 인지할 것.
 
 ---
 
