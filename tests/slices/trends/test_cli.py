@@ -67,9 +67,7 @@ def test_trends_reports_new_term(db_session):
     _seed_source(db_session)
     _seed(db_session, title="Sora video model launch", published_at=datetime(2026, 5, 18, 9, 0))
     db_session.commit()
-    result = runner.invoke(
-        app, ["--period", "week", "--end", "2026-05-21", "--min-count", "1"]
-    )
+    result = runner.invoke(app, ["--period", "week", "--end", "2026-05-21", "--min-count", "1"])
     assert result.exit_code == 0, result.output
     assert "sora" in result.output.lower()
 
@@ -86,3 +84,21 @@ def test_trends_saves_to_file(tmp_path, db_session):
     assert result.exit_code == 0, result.output
     assert out.exists()
     assert "트렌드 리포트" in out.read_text(encoding="utf-8")
+
+
+def test_trends_html_format(db_session):
+    _seed_source(db_session)
+    _seed(db_session, title="Sora video model", published_at=datetime(2026, 5, 18, 9, 0))
+    db_session.commit()
+    result = runner.invoke(
+        app,
+        ["--period", "week", "--end", "2026-05-21", "--min-count", "1", "--format", "html"],
+    )
+    assert result.exit_code == 0, result.output
+    assert result.output.lstrip().startswith("<!DOCTYPE html>")
+    assert "트렌드 리포트" in result.output
+
+
+def test_trends_rejects_bad_format(db_session):
+    result = runner.invoke(app, ["--period", "week", "--end", "2026-05-21", "--format", "xml"])
+    assert result.exit_code != 0

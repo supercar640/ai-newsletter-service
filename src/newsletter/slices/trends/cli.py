@@ -12,6 +12,7 @@ from pathlib import Path
 import typer
 
 from newsletter.core.db import session_scope
+from newsletter.core.report_html import render_report_html
 from newsletter.slices.trends.report import render_markdown
 from newsletter.slices.trends.service import analyze_trends
 
@@ -36,16 +37,18 @@ def cmd_trends(
         None, "--end", help="End date YYYY-MM-DD or 'today' (default today)."
     ),
     top: int = typer.Option(15, "--top", help="Max terms per section."),
-    min_count: int = typer.Option(
-        2, "--min-count", help="Ignore terms below this article count."
-    ),
+    min_count: int = typer.Option(2, "--min-count", help="Ignore terms below this article count."),
+    fmt: str = typer.Option("md", "--format", help="md or html."),
     save: str | None = typer.Option(
-        None, "--save", help="Write markdown to this path instead of stdout."
+        None, "--save", help="Write the report to this path instead of stdout."
     ),
 ) -> None:
     """Print (or save) the period-over-period trend report."""
     if period not in ("week", "month"):
         typer.echo("period must be 'week' or 'month'", err=True)
+        raise typer.Exit(code=1)
+    if fmt not in ("md", "html"):
+        typer.echo("format must be 'md' or 'html'", err=True)
         raise typer.Exit(code=1)
     with session_scope() as session:
         report = analyze_trends(
@@ -57,8 +60,13 @@ def cmd_trends(
         return
 
     markdown = render_markdown(report)
+    output = (
+        render_report_html(markdown, title=f"트렌드 리포트 — {period}")
+        if fmt == "html"
+        else markdown
+    )
     if save:
-        Path(save).write_text(markdown, encoding="utf-8")
+        Path(save).write_text(output, encoding="utf-8")
         typer.echo(f"트렌드 리포트 저장: {save}")
     else:
-        typer.echo(markdown)
+        typer.echo(output)
