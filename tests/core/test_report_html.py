@@ -33,3 +33,10 @@ def test_is_self_contained_no_external_resources():
     assert "https://" not in out
     assert "<link" not in out
     assert "<script" not in out
+
+
+def test_raw_html_in_body_is_neutralized():
+    # Article titles come from untrusted feeds; raw HTML must not be live.
+    out = render_report_html("# T\n\n- [<img src=x onerror=alert(1)>](http://e.com)\n", title="T")
+    assert "onerror=alert(1)" not in out
+    assert "&lt;img" in out

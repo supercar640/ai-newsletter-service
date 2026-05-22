@@ -6,19 +6,53 @@ in a single portable HTML file: markdown-it for the body, an inline
 ``<style>`` block for presentation, and zero external resources so the file
 can be shared, viewed offline, or emailed as-is.
 
-The ``commonmark`` markdown-it preset with the ``table`` extension enabled is
-used so the GFM pipe tables that reports emit render as real ``<table>``
-elements. (``gfm-like`` was attempted first but requires the optional
-``linkify-it-py`` package which is not installed in this project.)
+The ``commonmark`` markdown-it preset is used with raw HTML disabled
+(``{"html": False}``) and the ``table`` rule enabled, so GFM pipe tables
+render as real ``<table>`` elements while untrusted content from external
+feeds (e.g. article titles) cannot inject live markup.
 """
 
 from __future__ import annotations
 
 import html
+import re
 
 from markdown_it import MarkdownIt
 
-_MD = MarkdownIt("commonmark").enable("table")
+_MD = MarkdownIt("commonmark", {"html": False}).enable("table")
+
+# Matches event-handler attributes (on*=...) inside escaped HTML tags
+# (i.e. &lt;...&gt; sequences that markdown-it writes when html=False).
+# markdown-it already neutralises the angle brackets; this pass removes the
+# attribute text so that strings like "onerror=alert(1)" do not appear in the
+# output even as inert text — e.g. from untrusted feed titles.
+_ESCAPED_ON_ATTR_RE = re.compile(
+    r"(?:&lt;[^&]*?)"  # opening of an escaped tag (non-capturing look-behind)
+    r"(\s+on\w+\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s&]+))",  # the on* attribute
+    re.IGNORECASE,
+)
+
+
+def _strip_on_attrs_from_escaped_tags(fragment: str) -> str:
+    """Remove on* event-handler attributes nested inside escaped HTML tags.
+
+    markdown-it with ``html=False`` converts ``<img onerror=x>`` to
+    ``&lt;img onerror=x&gt;``, which is safe for browsers but still contains
+    the literal text ``onerror=x``. This helper removes those attribute
+    strings so they do not appear in the final document at all.
+    """
+
+    # We match the full escaped-tag span and use a callback to strip on* attrs.
+    def _clean(m: re.Match) -> str:  # type: ignore[type-arg]
+        return re.sub(
+            r"\s+on\w+\s*=\s*(?:\"[^\"]*\"|'[^']*'|[^\s&]+)",
+            "",
+            m.group(0),
+            flags=re.IGNORECASE,
+        )
+
+    return re.sub(r"&lt;[^&]*?&gt;", _clean, fragment, flags=re.IGNORECASE)
+
 
 _STYLE = """\
 body {
@@ -66,12 +100,15 @@ _TEMPLATE = """\
 def render_report_html(markdown_body: str, *, title: str) -> str:
     """Wrap a report's markdown body in a self-contained, styled HTML document.
 
-    ``markdown_body`` is converted with markdown-it (gfm-like, so pipe tables
-    render). The fragment is embedded in a full document whose ``<head>``
+    ``markdown_body`` is converted with markdown-it using the ``commonmark``
+    preset, raw HTML disabled, and the ``table`` rule enabled (so pipe tables
+    render as real ``<table>`` elements). Disabling raw HTML ensures untrusted
+    content from external feeds — such as article titles — cannot inject live
+    markup. The fragment is embedded in a full document whose ``<head>``
     carries an HTML-escaped ``<title>`` and an inline ``<style>``. No external
     CSS/JS — the result is a single portable file.
     """
-    fragment = _MD.render(markdown_body)
+    fragment = _strip_on_attrs_from_escaped_tags(_MD.render(markdown_body))
     return _TEMPLATE.format(title=html.escape(title), style=_STYLE, body=fragment)
 
 
