@@ -79,8 +79,8 @@ Optional env vars:
 | `uv run newsletter corpus index \| list \| clear \| status` | Index / inspect / clear internal company document corpus |
 | `uv run newsletter run --date today --until draft` | Run end-to-end up to a step |
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
-| `uv run newsletter trends [--period week\|month] [--end DATE] [--top N] [--min-count N] [--save PATH]` | Period-over-period AI topic trend report (rising / cooling / new / gone) |
-| `uv run newsletter competitors add \| list \| remove \| enable \| disable \| report [--days N \| --since DATE] [--until DATE] [--top K] [--save PATH]` | Register competitors and report their mentions across collected items |
+| `uv run newsletter trends [--period week\|month] [--end DATE] [--top N] [--min-count N] [--format md\|html] [--save PATH]` | Period-over-period AI topic trend report (rising / cooling / new / gone) |
+| `uv run newsletter competitors add \| list \| remove \| enable \| disable \| report [--days N \| --since DATE] [--until DATE] [--top K] [--format md\|html] [--save PATH]` | Register competitors and report their mentions across collected items |
 
 ---
 
