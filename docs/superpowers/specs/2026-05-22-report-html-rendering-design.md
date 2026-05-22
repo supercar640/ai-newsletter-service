@@ -61,8 +61,13 @@ def render_report_html(markdown_body: str, *, title: str) -> str:
     """
 ```
 
-- 변환기: `MarkdownIt("commonmark", {"linkify": True})` (조립기 `assembler.py:51`과 동일 계열).
-  `html` 옵션 비활성(기본) — 마크다운 내 원시 HTML은 이스케이프되어 안전.
+- 변환기: `MarkdownIt("commonmark", {"html": False}).enable("table")`.
+  - `html=False`는 명시 지정해야 한다 — commonmark 프리셋의 기본은 `html=True`(원시 HTML
+    통과)다. 피드에서 온 기사 제목이 그대로 본문에 들어가므로(`competitors/report.py`),
+    `html=False`로 원시 태그를 이스케이프해 XSS를 막는다(조립기 `assembler.py:51`과 동일 컨벤션).
+  - `table` 룰을 명시 활성 — commonmark 프리셋엔 GFM 파이프 표가 없다. `gfm-like` 프리셋은
+    `linkify-it-py`(미설치)를 요구해 쓰지 않는다. 리포트는 명시적 `[text](url)` 링크만 써서
+    linkify 불필요.
 - `title`은 `<head><title>`에만 사용(브라우저 탭/문서 제목). 본문 H1은 마크다운에서 옴.
   → `title`은 HTML 이스케이프 처리(`html.escape`)해서 주입.
 - 임베디드 CSS(모듈 상수 `_STYLE`): `max-width` 제한 + 중앙 정렬, 시스템 폰트 스택,
