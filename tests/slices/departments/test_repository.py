@@ -9,9 +9,7 @@ from newsletter.slices.departments.schemas import DepartmentCreate, DepartmentUp
 
 
 def test_add_and_get(db_session):
-    row = repository.add(
-        db_session, DepartmentCreate(name="기획", description="제품/사업 기획")
-    )
+    row = repository.add(db_session, DepartmentCreate(name="기획", description="제품/사업 기획"))
     db_session.commit()
     assert row.id is not None
     assert row.name == "기획"

@@ -7,12 +7,19 @@ keep successive issues varied.
 
 from __future__ import annotations
 
+from datetime import date as date_cls
+from pathlib import Path
+
 import typer
 
 from newsletter.core.db import session_scope
+from newsletter.core.report_html import render_report_html
 from newsletter.slices.departments import repository
+from newsletter.slices.departments.digest import build_department_digest
+from newsletter.slices.departments.report import render_markdown
 from newsletter.slices.departments.schemas import DepartmentCreate, DepartmentUpdate
 from newsletter.slices.departments.seeds import seed as seed_departments
+from newsletter.slices.monitoring.recorder import build_embedding_client
 
 app = typer.Typer(
     help="Manage departments for the per-department usage-tips section.",
@@ -52,9 +59,7 @@ def cmd_add(
     """Add a department."""
     with session_scope() as session:
         try:
-            row = repository.add(
-                session, DepartmentCreate(name=name, description=description)
-            )
+            row = repository.add(session, DepartmentCreate(name=name, description=description))
         except repository.DepartmentAlreadyExistsError:
             typer.echo(f"이미 존재하는 이름입니다: {name}", err=True)
             raise typer.Exit(code=1) from None
@@ -82,9 +87,7 @@ def cmd_enable(
     """Re-enable a previously disabled department."""
     with session_scope() as session:
         try:
-            row = repository.update(
-                session, department_id, DepartmentUpdate(enabled=True)
-            )
+            row = repository.update(session, department_id, DepartmentUpdate(enabled=True))
         except repository.DepartmentNotFoundError:
             typer.echo(f"존재하지 않는 id: {department_id}", err=True)
             raise typer.Exit(code=1) from None
@@ -111,3 +114,43 @@ def cmd_seed() -> None:
     with session_scope() as session:
         created, updated = seed_departments(session)
     typer.echo(f"department 시드 완료: 신규={created}, 갱신={updated}")
+
+
+@app.command("digest")
+def cmd_digest(
+    days: int = typer.Option(7, "--days", help="Look-back window length in days."),
+    since: str | None = typer.Option(
+        None, "--since", help="Window start YYYY-MM-DD (wins over --days)."
+    ),
+    until: str | None = typer.Option(
+        None, "--until", help="Exclusive window end YYYY-MM-DD (default tomorrow)."
+    ),
+    top: int = typer.Option(5, "--top", help="Max headlines per department."),
+    fmt: str = typer.Option("md", "--format", help="md or html."),
+    save: str | None = typer.Option(
+        None, "--save", help="Write the report to this path instead of stdout."
+    ),
+) -> None:
+    """Per-department most-relevant articles (embedding match, keyword fallback)."""
+    if fmt not in ("md", "html"):
+        typer.echo("format must be 'md' or 'html'", err=True)
+        raise typer.Exit(code=1)
+    since_date = date_cls.fromisoformat(since) if since else None
+    until_date = date_cls.fromisoformat(until) if until else None
+    with session_scope() as session:
+        digest = build_department_digest(
+            session,
+            days=days,
+            until=until_date,
+            since=since_date,
+            top_k=top,
+            embed_client=build_embedding_client(),
+        )
+
+    markdown = render_markdown(digest)
+    output = render_report_html(markdown, title="부서별 다이제스트") if fmt == "html" else markdown
+    if save:
+        Path(save).write_text(output, encoding="utf-8")
+        typer.echo(f"부서별 다이제스트 저장: {save}")
+    else:
+        typer.echo(output)

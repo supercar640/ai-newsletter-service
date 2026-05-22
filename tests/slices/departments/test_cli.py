@@ -18,9 +18,7 @@ def test_list_empty(db_session):
 
 
 def test_add_creates_row(db_session):
-    result = runner.invoke(
-        app, ["add", "--name", "기획", "--description", "제품 기획"]
-    )
+    result = runner.invoke(app, ["add", "--name", "기획", "--description", "제품 기획"])
     assert result.exit_code == 0, result.output
     db_session.expire_all()
     rows = repository.list_departments(db_session)
