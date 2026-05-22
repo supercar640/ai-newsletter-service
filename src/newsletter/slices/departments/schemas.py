@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import date, datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -35,3 +36,25 @@ class DepartmentRead(BaseModel):
     description: str | None
     enabled: bool
     created_at: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class RelevantHeadline:
+    title: str
+    url: str
+    score: float
+
+
+@dataclass(frozen=True, slots=True)
+class DepartmentDigestEntry:
+    name: str
+    headlines: list[RelevantHeadline]  # score desc, top_k
+
+
+@dataclass(frozen=True, slots=True)
+class DepartmentDigest:
+    since: date
+    until: date  # exclusive
+    total_items: int  # items scanned in window
+    mode: str  # "embedding" | "keyword"
+    departments: list[DepartmentDigestEntry]  # enabled departments, by id

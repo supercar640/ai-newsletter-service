@@ -52,9 +52,7 @@ def cmd_add(
     """Add a department."""
     with session_scope() as session:
         try:
-            row = repository.add(
-                session, DepartmentCreate(name=name, description=description)
-            )
+            row = repository.add(session, DepartmentCreate(name=name, description=description))
         except repository.DepartmentAlreadyExistsError:
             typer.echo(f"이미 존재하는 이름입니다: {name}", err=True)
             raise typer.Exit(code=1) from None
@@ -82,9 +80,7 @@ def cmd_enable(
     """Re-enable a previously disabled department."""
     with session_scope() as session:
         try:
-            row = repository.update(
-                session, department_id, DepartmentUpdate(enabled=True)
-            )
+            row = repository.update(session, department_id, DepartmentUpdate(enabled=True))
         except repository.DepartmentNotFoundError:
             typer.echo(f"존재하지 않는 id: {department_id}", err=True)
             raise typer.Exit(code=1) from None

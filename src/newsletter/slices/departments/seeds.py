@@ -30,8 +30,6 @@ def seed(session: Session) -> tuple[int, int]:
             repository.add(session, payload)
             created += 1
         else:
-            repository.update(
-                session, row.id, DepartmentUpdate(description=payload.description)
-            )
+            repository.update(session, row.id, DepartmentUpdate(description=payload.description))
             updated += 1
     return created, updated
