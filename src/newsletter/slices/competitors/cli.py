@@ -11,6 +11,7 @@ from pathlib import Path
 import typer
 
 from newsletter.core.db import session_scope
+from newsletter.core.report_html import render_report_html
 from newsletter.slices.competitors import repository
 from newsletter.slices.competitors.report import render_markdown
 from newsletter.slices.competitors.schemas import CompetitorCreate, CompetitorUpdate
@@ -115,11 +116,15 @@ def cmd_report(
         None, "--until", help="Exclusive window end YYYY-MM-DD (default tomorrow)."
     ),
     top: int = typer.Option(5, "--top", help="Max headlines per competitor."),
+    fmt: str = typer.Option("md", "--format", help="md or html."),
     save: str | None = typer.Option(
-        None, "--save", help="Write markdown to this path instead of stdout."
+        None, "--save", help="Write the report to this path instead of stdout."
     ),
 ) -> None:
     """Print (or save) the competitor mention report."""
+    if fmt not in ("md", "html"):
+        typer.echo("format must be 'md' or 'html'", err=True)
+        raise typer.Exit(code=1)
     since_date = date_cls.fromisoformat(since) if since else None
     until_date = date_cls.fromisoformat(until) if until else None
     with session_scope() as session:
@@ -131,8 +136,9 @@ def cmd_report(
         )
 
     markdown = render_markdown(report)
+    output = render_report_html(markdown, title="경쟁사 멘션 리포트") if fmt == "html" else markdown
     if save:
-        Path(save).write_text(markdown, encoding="utf-8")
+        Path(save).write_text(output, encoding="utf-8")
         typer.echo(f"경쟁사 리포트 저장: {save}")
     else:
-        typer.echo(markdown)
+        typer.echo(output)

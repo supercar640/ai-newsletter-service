@@ -92,3 +92,21 @@ def test_report_save_writes_file(db_session, tmp_path):
     assert result.exit_code == 0, result.output
     assert out.exists()
     assert "경쟁사 멘션 리포트" in out.read_text(encoding="utf-8")
+
+
+def test_report_html_format(db_session):
+    repository.add(db_session, CompetitorCreate(name="OpenAI", aliases=["openai"]))
+    db_session.commit()
+    result = runner.invoke(
+        app, ["report", "--since", "2026-05-15", "--until", "2026-05-22", "--format", "html"]
+    )
+    assert result.exit_code == 0, result.output
+    assert result.output.lstrip().startswith("<!DOCTYPE html>")
+    assert "경쟁사 멘션 리포트" in result.output
+
+
+def test_report_rejects_bad_format(db_session):
+    repository.add(db_session, CompetitorCreate(name="OpenAI", aliases=["openai"]))
+    db_session.commit()
+    result = runner.invoke(app, ["report", "--format", "pdf"])
+    assert result.exit_code != 0
