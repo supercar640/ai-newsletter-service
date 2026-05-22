@@ -81,6 +81,7 @@ Optional env vars:
 | `uv run newsletter stats --date today` | Step counts, token usage, cost |
 | `uv run newsletter trends [--period week\|month] [--end DATE] [--top N] [--min-count N] [--format md\|html] [--save PATH]` | Period-over-period AI topic trend report (rising / cooling / new / gone) |
 | `uv run newsletter competitors add \| list \| remove \| enable \| disable \| report [--days N \| --since DATE] [--until DATE] [--top K] [--format md\|html] [--save PATH]` | Register competitors and report their mentions across collected items |
+| `uv run newsletter monthly [--month YYYY-MM] [--top K] [--no-narrative] [--format md\|html] [--save PATH]` | Monthly AI digest — trends + competitors + top items + LLM narrative |
 
 ---
 
@@ -130,7 +131,8 @@ src/newsletter/
 │   ├── monitoring/      Run logs, token/cost stats
 │   ├── corpus/          사내 문서(.md/.txt)를 청크 단위로 인덱싱해 중요도 스코어링을 보강하는 슬라이스
 │   ├── trends/          누적 ProcessedItem 제목 키워드의 주간/월간 변화(떠오르는/식는/신규/소멸)를 비교하는 독립 리포트 슬라이스
-│   └── competitors/     운영자가 등록한 경쟁사(이름+별칭)를 누적 ProcessedItem에서 탐지해 멘션 수·대표 헤드라인을 보여주는 독립 리포트 슬라이스
+│   ├── competitors/     운영자가 등록한 경쟁사(이름+별칭)를 누적 ProcessedItem에서 탐지해 멘션 수·대표 헤드라인을 보여주는 독립 리포트 슬라이스
+│   └── monthly/         한 달치 트렌드·경쟁사·중요도 상위 기사를 종합하고 LLM 서술 요약을 얹는 월간 리포트 슬라이스
 └── cli.py             Typer root app (mounts slice sub-apps)
 
 prompts/              All LLM prompts (NEVER inline in Python)
