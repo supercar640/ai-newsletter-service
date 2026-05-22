@@ -181,3 +181,42 @@ def test_empty_departments(db_session: Session):
     )
     assert digest.departments == []
     assert digest.mode == "keyword"
+
+
+def test_item_attributed_to_multiple_departments(db_session: Session):
+    # One item relevant to two departments (shared token) appears under both.
+    _seed_source(db_session)
+    repository.add(db_session, DepartmentCreate(name="영업", description="고객"))
+    repository.add(db_session, DepartmentCreate(name="마케팅", description="고객"))
+    _seed_item(db_session, title="고객 분석", summary="x", published_at=datetime(2026, 5, 20, 9, 0))
+    db_session.commit()
+    digest = build_department_digest(
+        db_session, days=7, until=_UNTIL, embed_client=DisabledEmbeddingClient()
+    )
+    by_name = {e.name: e for e in digest.departments}
+    assert by_name["영업"].headlines[0].title == "고객 분석"
+    assert by_name["마케팅"].headlines[0].title == "고객 분석"
+
+
+def test_embedding_mode_with_one_empty_department_vector(db_session: Session):
+    # Embedding mode where one department's vector is empty: indexing stays
+    # aligned, the empty-vector department yields no headlines (score 0).
+    _seed_source(db_session)
+    repository.add(db_session, DepartmentCreate(name="A", description="alpha"))
+    repository.add(db_session, DepartmentCreate(name="B", description="beta"))
+    _seed_item(
+        db_session,
+        title="aligned",
+        summary="x",
+        published_at=datetime(2026, 5, 20, 9, 0),
+        embedding=serialize([1.0, 0.0]),
+    )
+    db_session.commit()
+    # A gets a real vector, B gets an empty vector
+    digest = build_department_digest(
+        db_session, days=7, until=_UNTIL, embed_client=_FakeEmbed([[1.0, 0.0], []])
+    )
+    assert digest.mode == "embedding"  # any() is True because A's vector is non-empty
+    by_name = {e.name: e for e in digest.departments}
+    assert [h.title for h in by_name["A"].headlines] == ["aligned"]
+    assert by_name["B"].headlines == []  # empty dept vector -> cosine 0 -> excluded
