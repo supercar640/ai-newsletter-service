@@ -44,3 +44,6 @@ Thumbs.db
 # Build artifacts
 build/
 dist/
+
+# HITL briefings (generated HTML artifacts; .md session notes stay tracked)
+hitl/*.html
