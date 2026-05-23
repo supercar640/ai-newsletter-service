@@ -7,9 +7,7 @@ from newsletter.slices.corpus.repository import ChunkInsert
 
 
 def _insert(text: str, keywords: list[str]) -> ChunkInsert:
-    return ChunkInsert(
-        text=text, keywords=keywords, embedding=None, embedding_model=None
-    )
+    return ChunkInsert(text=text, keywords=keywords, embedding=None, embedding_model=None)
 
 
 def test_replace_file_chunks_inserts(db_session):
@@ -43,7 +41,9 @@ def test_replace_file_chunks_is_idempotent(db_session):
 
 def test_file_hashes_maps_path_to_hash(db_session):
     repository.replace_file_chunks(
-        db_session, source_path="a.md", file_hash="h1",
+        db_session,
+        source_path="a.md",
+        file_hash="h1",
         chunks=[_insert("c0", []), _insert("c1", [])],
     )
     repository.replace_file_chunks(
@@ -55,7 +55,9 @@ def test_file_hashes_maps_path_to_hash(db_session):
 
 def test_delete_all_returns_count(db_session):
     repository.replace_file_chunks(
-        db_session, source_path="a.md", file_hash="h1",
+        db_session,
+        source_path="a.md",
+        file_hash="h1",
         chunks=[_insert("c0", []), _insert("c1", [])],
     )
     db_session.commit()
@@ -67,7 +69,9 @@ def test_delete_all_returns_count(db_session):
 
 def test_load_keywords_tolerates_bad_json(db_session):
     repository.replace_file_chunks(
-        db_session, source_path="a.md", file_hash="h1",
+        db_session,
+        source_path="a.md",
+        file_hash="h1",
         chunks=[_insert("c0", ["alpha", "beta"])],
     )
     db_session.commit()

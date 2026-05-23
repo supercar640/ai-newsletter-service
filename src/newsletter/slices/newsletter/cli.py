@@ -18,8 +18,7 @@ app = typer.Typer(
 )
 
 _AUDIENCE_HELP = (
-    f"Reader profile — {', '.join(AUDIENCES)}. "
-    "Controls per-track candidate counts and template."
+    f"Reader profile — {', '.join(AUDIENCES)}. Controls per-track candidate counts and template."
 )
 
 

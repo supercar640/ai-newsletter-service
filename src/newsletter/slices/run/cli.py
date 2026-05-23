@@ -46,9 +46,7 @@ def _resolve_date(value: str) -> date_cls:
 
 def _resolve_until(value: str) -> str:
     if value not in _STEPS:
-        raise typer.BadParameter(
-            f"unknown step {value!r}. choose one of: {', '.join(_STEPS)}"
-        )
+        raise typer.BadParameter(f"unknown step {value!r}. choose one of: {', '.join(_STEPS)}")
     return value
 
 

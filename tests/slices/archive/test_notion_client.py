@@ -21,9 +21,7 @@ def test_create_page_returns_page_id_on_success():
     page_id = client.create_page(
         title="hello",
         properties={"Audience": {"select": {"name": "general"}}},
-        children=[
-            {"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}
-        ],
+        children=[{"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}],
     )
     assert page_id == "abc-123"
     assert create.called
@@ -48,9 +46,7 @@ def test_create_page_propagates_http_errors_as_notion_error():
 
 @respx.mock
 def test_create_page_propagates_network_errors():
-    respx.post("https://api.notion.com/v1/pages").mock(
-        side_effect=httpx.ConnectError("boom")
-    )
+    respx.post("https://api.notion.com/v1/pages").mock(side_effect=httpx.ConnectError("boom"))
     client = NotionClient(token="secret", database_id="db-1")
     with pytest.raises(NotionError):
         client.create_page(title="x", properties={}, children=[])
@@ -65,9 +61,7 @@ def test_create_page_payload_shape():
     client.create_page(
         title="My Title",
         properties={"Date": {"date": {"start": "2026-05-19"}}},
-        children=[
-            {"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}
-        ],
+        children=[{"object": "block", "type": "paragraph", "paragraph": {"rich_text": []}}],
     )
     import json
 

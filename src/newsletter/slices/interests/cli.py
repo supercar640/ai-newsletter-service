@@ -64,9 +64,7 @@ def cmd_add(
         "--keywords",
         help="Comma-separated keywords for fast lexical matching.",
     ),
-    weight: float = typer.Option(
-        1.0, "--weight", min=0.0, max=5.0, help="Weight in [0, 5]."
-    ),
+    weight: float = typer.Option(1.0, "--weight", min=0.0, max=5.0, help="Weight in [0, 5]."),
 ) -> None:
     """Add an interest. Generates an embedding from --description when possible."""
     payload = InterestCreate(
@@ -115,9 +113,7 @@ def cmd_enable(interest_id: int = typer.Argument(..., help="Interest id.")) -> N
     """Re-enable a previously disabled interest."""
     with session_scope() as session:
         try:
-            row = repository.update(
-                session, interest_id, InterestUpdate(enabled=True)
-            )
+            row = repository.update(session, interest_id, InterestUpdate(enabled=True))
         except repository.InterestNotFoundError:
             typer.echo(f"존재하지 않는 id: {interest_id}", err=True)
             raise typer.Exit(code=1) from None

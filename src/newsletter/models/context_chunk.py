@@ -32,9 +32,7 @@ class ContextChunk(Base):
 
     __tablename__ = "context_chunks"
     __table_args__ = (
-        UniqueConstraint(
-            "source_path", "chunk_index", name="uq_context_chunks_path_index"
-        ),
+        UniqueConstraint("source_path", "chunk_index", name="uq_context_chunks_path_index"),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)

@@ -56,9 +56,7 @@ def generate_department_tips(
             [{"name": d.name, "description": d.description or ""} for d in departments],
             ensure_ascii=False,
         ),
-        usecases_json=json.dumps(
-            [_usecase_to_dict(u) for u in usecases], ensure_ascii=False
-        ),
+        usecases_json=json.dumps([_usecase_to_dict(u) for u in usecases], ensure_ascii=False),
         recent_tips_json=json.dumps(dict(recent_tips_by_dept), ensure_ascii=False),
     )
     try:
@@ -135,9 +133,7 @@ def apply_department_tips(
         return PracticalSection(
             markdown=section.markdown, usecases=section.usecases, department_tips=tips
         )
-    return PracticalSection(
-        markdown=new_md, usecases=section.usecases, department_tips=tips
-    )
+    return PracticalSection(markdown=new_md, usecases=section.usecases, department_tips=tips)
 
 
 def persist_department_tips(
@@ -147,9 +143,7 @@ def persist_department_tips(
 ) -> None:
     """Store generated tips as DepartmentTip history rows (one per tip)."""
     for t in tips:
-        session.add(
-            DepartmentTip(issue_id=issue_id, department=t.department, tip=t.tip)
-        )
+        session.add(DepartmentTip(issue_id=issue_id, department=t.department, tip=t.tip))
     session.flush()
 
 

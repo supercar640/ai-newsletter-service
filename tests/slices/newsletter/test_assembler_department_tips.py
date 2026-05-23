@@ -75,9 +75,7 @@ def test_draft_persists_and_splices_department_tips(db_session):
 
 
 def test_disabled_department_is_skipped(db_session):
-    dept_repo.add(
-        db_session, DepartmentCreate(name="기획", description="x", enabled=False)
-    )
+    dept_repo.add(db_session, DepartmentCreate(name="기획", description="x", enabled=False))
     db_session.commit()
     llm = _StubLLM()
     draft_issue(db_session, today=TODAY, llm=llm)

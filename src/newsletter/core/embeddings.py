@@ -79,9 +79,7 @@ class VoyageEmbeddingClient:
         if not texts:
             return []
         try:
-            result = self._client.embed(
-                list(texts), model=self._model, input_type="document"
-            )
+            result = self._client.embed(list(texts), model=self._model, input_type="document")
         except Exception as exc:
             raise EmbeddingError(f"Voyage embed failed: {exc}") from exc
 

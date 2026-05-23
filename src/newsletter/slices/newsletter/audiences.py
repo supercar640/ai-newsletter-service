@@ -59,9 +59,7 @@ def resolve_audience(name: str | None) -> AudienceProfile:
     if name is None:
         return AUDIENCES[DEFAULT_AUDIENCE]
     if name not in AUDIENCES:
-        raise ValueError(
-            f"unknown audience {name!r}. choose one of: {', '.join(AUDIENCES)}"
-        )
+        raise ValueError(f"unknown audience {name!r}. choose one of: {', '.join(AUDIENCES)}")
     return AUDIENCES[name]
 
 

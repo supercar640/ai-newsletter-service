@@ -15,9 +15,7 @@ _NOW = datetime(2026, 5, 15, 12, 0, tzinfo=UTC)
 
 
 def test_no_chunks_returns_neutral():
-    factor = corpus_relevance_factor(
-        title="anything", summary=None, item_embedding=None, chunks=[]
-    )
+    factor = corpus_relevance_factor(title="anything", summary=None, item_embedding=None, chunks=[])
     assert factor == 1.0
 
 

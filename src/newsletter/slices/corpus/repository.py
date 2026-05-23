@@ -28,9 +28,7 @@ class ChunkInsert:
 
 def file_hashes(session: Session) -> dict[str, str]:
     """Return ``{source_path: file_hash}`` for incremental re-index checks."""
-    rows = session.execute(
-        select(ContextChunk.source_path, ContextChunk.file_hash)
-    ).all()
+    rows = session.execute(select(ContextChunk.source_path, ContextChunk.file_hash)).all()
     return {path: file_hash for path, file_hash in rows}
 
 
@@ -42,9 +40,7 @@ def replace_file_chunks(
     chunks: Sequence[ChunkInsert],
 ) -> int:
     """Delete a file's existing chunks, then insert the new set. Returns count."""
-    session.execute(
-        delete(ContextChunk).where(ContextChunk.source_path == source_path)
-    )
+    session.execute(delete(ContextChunk).where(ContextChunk.source_path == source_path))
     for index, chunk in enumerate(chunks):
         session.add(
             ContextChunk(
@@ -62,9 +58,7 @@ def replace_file_chunks(
 
 
 def list_chunks(session: Session) -> list[ContextChunk]:
-    stmt = select(ContextChunk).order_by(
-        ContextChunk.source_path, ContextChunk.chunk_index
-    )
+    stmt = select(ContextChunk).order_by(ContextChunk.source_path, ContextChunk.chunk_index)
     return list(session.scalars(stmt).all())
 
 

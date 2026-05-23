@@ -13,7 +13,7 @@ def test_tokenize_drops_single_char_and_stopwords():
     out = tokenize("the a AI 및 모델 x")
     assert "the" not in out
     assert "및" not in out  # length 1 (single char)
-    assert "x" not in out   # length 1
+    assert "x" not in out  # length 1
     assert "ai" in out
     assert "모델" in out
 

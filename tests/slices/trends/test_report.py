@@ -18,8 +18,14 @@ _SPEC = WindowSpec(
 
 def _report(**kw) -> TrendReport:
     base = dict(
-        window=_SPEC, rising=[], fading=[], new=[], dropped=[], top_current=[],
-        total_current_items=0, total_previous_items=0,
+        window=_SPEC,
+        rising=[],
+        fading=[],
+        new=[],
+        dropped=[],
+        top_current=[],
+        total_current_items=0,
+        total_previous_items=0,
     )
     base.update(kw)
     return TrendReport(**base)

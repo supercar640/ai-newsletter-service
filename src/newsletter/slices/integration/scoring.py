@@ -201,9 +201,7 @@ def corpus_relevance_factor(
         best = max(cosine(item_embedding, vec) for vec in embedded)
         if best < _CORPUS_COSINE_THRESHOLD:
             return 1.0
-        strength = (best - _CORPUS_COSINE_THRESHOLD) / (
-            1.0 - _CORPUS_COSINE_THRESHOLD
-        )
+        strength = (best - _CORPUS_COSINE_THRESHOLD) / (1.0 - _CORPUS_COSINE_THRESHOLD)
     else:
         text = (title + " " + (summary or "")).lower()
         keywords = {kw for chunk in chunks for kw in chunk.keywords if kw}
