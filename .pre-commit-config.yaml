@@ -1,0 +1,24 @@
+# pre-commit 훅 — 커밋 전 ruff lint/format + 기본 위생 검사를 강제합니다.
+# 설치: uv run pre-commit install
+# 전체 수동 실행: uv run pre-commit run --all-files
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.13
+    hooks:
+      - id: ruff
+        name: ruff lint (--fix)
+        args: [--fix]
+      - id: ruff-format
+        name: ruff format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
