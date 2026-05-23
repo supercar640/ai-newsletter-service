@@ -29,14 +29,10 @@ class DepartmentTip(Base):
     """One generated department tip, tied to the issue it shipped in."""
 
     __tablename__ = "department_tips"
-    __table_args__ = (
-        Index("ix_department_tips_dept_created", "department", "created_at"),
-    )
+    __table_args__ = (Index("ix_department_tips_dept_created", "department", "created_at"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    issue_id: Mapped[int] = mapped_column(
-        ForeignKey("newsletter_issues.id", ondelete="CASCADE")
-    )
+    issue_id: Mapped[int] = mapped_column(ForeignKey("newsletter_issues.id", ondelete="CASCADE"))
     department: Mapped[str] = mapped_column(String(100))
     tip: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(
@@ -45,4 +41,6 @@ class DepartmentTip(Base):
     )
 
     def __repr__(self) -> str:  # pragma: no cover - debug only
-        return f"DepartmentTip(id={self.id}, issue_id={self.issue_id}, department={self.department!r})"
+        return (
+            f"DepartmentTip(id={self.id}, issue_id={self.issue_id}, department={self.department!r})"
+        )

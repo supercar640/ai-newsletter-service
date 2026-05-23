@@ -14,20 +14,37 @@ _TOKEN_RE = re.compile(r"[0-9a-z가-힣]+")
 # Single-character tokens are dropped separately, so only len>1 entries matter.
 STOPWORDS = frozenset(
     {
-        "the", "and", "for", "are", "but", "not", "you", "with", "this",
-        "that", "from", "have", "was", "were", "한다", "합니다", "있다",
-        "있습니다", "그리고", "그러나", "또는", "등의", "대한", "위한",
+        "the",
+        "and",
+        "for",
+        "are",
+        "but",
+        "not",
+        "you",
+        "with",
+        "this",
+        "that",
+        "from",
+        "have",
+        "was",
+        "were",
+        "한다",
+        "합니다",
+        "있다",
+        "있습니다",
+        "그리고",
+        "그러나",
+        "또는",
+        "등의",
+        "대한",
+        "위한",
     }
 )
 
 
 def tokenize(text: str) -> list[str]:
     """Lowercased word tokens, dropping length-1 tokens and stopwords."""
-    return [
-        t
-        for t in _TOKEN_RE.findall(text.lower())
-        if len(t) > 1 and t not in STOPWORDS
-    ]
+    return [t for t in _TOKEN_RE.findall(text.lower()) if len(t) > 1 and t not in STOPWORDS]
 
 
 __all__ = ["STOPWORDS", "tokenize"]

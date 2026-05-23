@@ -29,7 +29,10 @@ def compare_windows(
         c = current.get(term, 0)
         p = previous.get(term, 0)
         delta = TermDelta(
-            term=term, current=c, previous=p, delta=c - p,
+            term=term,
+            current=c,
+            previous=p,
+            delta=c - p,
             importance=importance.get(term, 0.0),
         )
         if p == 0 and c >= min_count:
@@ -49,7 +52,9 @@ def compare_windows(
     top_current = sorted(
         (
             TermDelta(
-                term=term, current=c, previous=previous.get(term, 0),
+                term=term,
+                current=c,
+                previous=previous.get(term, 0),
                 delta=c - previous.get(term, 0),
                 importance=importance.get(term, 0.0),
             )

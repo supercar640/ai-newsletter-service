@@ -67,9 +67,7 @@ def analyze_trends(
             total_current += 1
             for term in title_terms(title):
                 current_counts[term] = current_counts.get(term, 0) + 1
-                current_importance[term] = current_importance.get(term, 0.0) + (
-                    importance or 0.0
-                )
+                current_importance[term] = current_importance.get(term, 0.0) + (importance or 0.0)
         elif prev_lo <= anchor < cur_lo:
             total_previous += 1
             for term in title_terms(title):

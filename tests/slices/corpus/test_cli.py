@@ -38,7 +38,9 @@ def test_clear_removes_chunks(db_session, monkeypatch):
     from newsletter.slices.corpus.repository import ChunkInsert
 
     repository.replace_file_chunks(
-        db_session, source_path="a.md", file_hash="h1",
+        db_session,
+        source_path="a.md",
+        file_hash="h1",
         chunks=[ChunkInsert(text="c", keywords=[], embedding=None, embedding_model=None)],
     )
     db_session.commit()

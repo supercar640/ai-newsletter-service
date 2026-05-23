@@ -106,9 +106,7 @@ def archive_issue(
     return ArchiveReport(issue_id=issue.id, page_id=page_id, forced=force)
 
 
-def backfill_archive(
-    session: Session, *, client: _NotionTarget | None
-) -> BackfillReport:
+def backfill_archive(session: Session, *, client: _NotionTarget | None) -> BackfillReport:
     """Archive every ``sent`` issue that still lacks a notion_page_id.
 
     Errors per issue are captured rather than raised so the operator can

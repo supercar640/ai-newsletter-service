@@ -24,16 +24,12 @@ log = get_logger(__name__)
 _SUFFIXES = {".md", ".txt"}
 
 
-def index_corpus(
-    session: Session, *, root: Path, embed_client: EmbeddingClient
-) -> IndexReport:
+def index_corpus(session: Session, *, root: Path, embed_client: EmbeddingClient) -> IndexReport:
     """Scan ``root`` recursively and (re)index changed Markdown/text files."""
     report = IndexReport()
     stored = repository.file_hashes(session)
 
-    files = sorted(
-        p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in _SUFFIXES
-    )
+    files = sorted(p for p in root.rglob("*") if p.is_file() and p.suffix.lower() in _SUFFIXES)
     for path in files:
         report.scanned += 1
         rel = path.relative_to(root).as_posix()
@@ -49,9 +45,7 @@ def index_corpus(
             # No indexable content. Clear any stale chunks for this path so an
             # emptied file doesn't leave orphans. We can't record a hash without
             # a row, so empty files are re-checked each run (cheap: no embed).
-            repository.replace_file_chunks(
-                session, source_path=rel, file_hash=file_hash, chunks=[]
-            )
+            repository.replace_file_chunks(session, source_path=rel, file_hash=file_hash, chunks=[])
             continue
         inserts = _build_inserts(texts, embed_client)
         written = repository.replace_file_chunks(
@@ -72,16 +66,12 @@ def index_corpus(
     return report
 
 
-def _build_inserts(
-    texts: list[str], embed_client: EmbeddingClient
-) -> list[ChunkInsert]:
+def _build_inserts(texts: list[str], embed_client: EmbeddingClient) -> list[ChunkInsert]:
     if not texts:
         return []
     vectors = embed_client.embed(texts)
     if vectors and len(vectors) < len(texts):
-        log.warning(
-            "corpus.embed.partial", expected=len(texts), got=len(vectors)
-        )
+        log.warning("corpus.embed.partial", expected=len(texts), got=len(vectors))
     model = getattr(embed_client, "model", None)
     inserts: list[ChunkInsert] = []
     for index, text in enumerate(texts):

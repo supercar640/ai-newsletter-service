@@ -63,9 +63,7 @@ def test_index_reindexes_changed_file(tmp_path, db_session):
 
 def test_index_without_embeddings_stores_keywords_only(tmp_path, db_session):
     _write(tmp_path, "doc.md", "rag agent vector store retrieval")
-    report = index_corpus(
-        db_session, root=tmp_path, embed_client=DisabledEmbeddingClient()
-    )
+    report = index_corpus(db_session, root=tmp_path, embed_client=DisabledEmbeddingClient())
     db_session.commit()
     assert report.embedded == 0
     row = repository.list_chunks(db_session)[0]

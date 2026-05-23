@@ -132,5 +132,5 @@ def test_window_boundary_is_half_open(db_session: Session):
     report = analyze_trends(db_session, period="week", end=_END, min_count=1)
     assert report.total_current_items == 1
     assert report.total_previous_items == 1
-    assert "alpha" in {d.term for d in report.new}      # current-only term -> new
-    assert "beta" in {d.term for d in report.dropped}    # previous-only term -> dropped
+    assert "alpha" in {d.term for d in report.new}  # current-only term -> new
+    assert "beta" in {d.term for d in report.dropped}  # previous-only term -> dropped

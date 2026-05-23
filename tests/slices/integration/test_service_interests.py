@@ -102,9 +102,7 @@ def test_interest_boost_lifts_matching_item_above_non_matching(db_session: Sessi
 def test_disabled_interest_is_ignored(db_session: Session) -> None:
     _seed_source(db_session)
     item = _seed_item(db_session, title="RAG news")
-    row = interests_repo.add(
-        db_session, InterestCreate(name="RAG", keywords=["rag"], weight=2.0)
-    )
+    row = interests_repo.add(db_session, InterestCreate(name="RAG", keywords=["rag"], weight=2.0))
     db_session.commit()
 
     integrate(db_session, now=_NOW)

@@ -67,9 +67,7 @@ def test_remove(db_session):
     result = runner.invoke(app, ["remove", str(rid)])
     assert result.exit_code == 0
     db_session.expire_all()
-    leftover = db_session.scalars(
-        select(CompanyInterest).where(CompanyInterest.id == rid)
-    ).first()
+    leftover = db_session.scalars(select(CompanyInterest).where(CompanyInterest.id == rid)).first()
     assert leftover is None
 
 

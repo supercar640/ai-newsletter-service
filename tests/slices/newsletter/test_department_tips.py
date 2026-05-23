@@ -75,9 +75,7 @@ def test_generate_returns_tip_per_department():
 
 def test_generate_uses_sonnet_model():
     llm = _StubLLM(json_response={"tips": []})
-    generate_department_tips(
-        [_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    generate_department_tips([_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert llm.json_calls[0][1] == "claude-sonnet-4-6"
 
 
@@ -95,27 +93,19 @@ def test_generate_injects_recent_tips_into_prompt():
 
 def test_generate_llm_failure_returns_empty():
     llm = _StubLLM(raise_on="json")
-    tips = generate_department_tips(
-        [_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    tips = generate_department_tips([_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert tips == []
 
 
 def test_generate_malformed_payload_returns_empty():
     llm = _StubLLM(json_response=["not", "a", "dict"])
-    tips = generate_department_tips(
-        [_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    tips = generate_department_tips([_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert tips == []
 
 
 def test_generate_skips_entries_missing_fields():
-    llm = _StubLLM(
-        json_response={"tips": [{"department": "기획"}, {"tip": "no dept"}]}
-    )
-    tips = generate_department_tips(
-        [_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    llm = _StubLLM(json_response={"tips": [{"department": "기획"}, {"tip": "no dept"}]})
+    tips = generate_department_tips([_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert tips == []
 
 
@@ -144,9 +134,7 @@ def test_render_block_empty_placeholder():
 
 
 def _make_issue(db_session, *, title="x") -> NewsletterIssue:
-    issue = NewsletterIssue(
-        issue_date=date(2026, 5, 20), title=title, status="review_required"
-    )
+    issue = NewsletterIssue(issue_date=date(2026, 5, 20), title=title, status="review_required")
     db_session.add(issue)
     db_session.commit()
     db_session.refresh(issue)
@@ -205,20 +193,14 @@ def _section() -> PracticalSection:
 
 
 def test_apply_splices_structured_block():
-    llm = _StubLLM(
-        json_response={"tips": [{"department": "기획", "tip": "신규 기획 팁"}]}
-    )
-    result = apply_department_tips(
-        _section(), _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    llm = _StubLLM(json_response={"tips": [{"department": "기획", "tip": "신규 기획 팁"}]})
+    result = apply_department_tips(_section(), _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert "- 기획: 신규 기획 팁" in result.markdown
     assert "(작성기가 쓴 기존 한 줄)" not in result.markdown
     # surrounding sections preserved
     assert "### 1. 이번 주 바로 써볼 AI 활용법" in result.markdown
     assert "### 3. 이번 주 추천 프롬프트" in result.markdown
-    assert result.department_tips == [
-        DepartmentTipItem(department="기획", tip="신규 기획 팁")
-    ]
+    assert result.department_tips == [DepartmentTipItem(department="기획", tip="신규 기획 팁")]
 
 
 def test_apply_no_departments_returns_unchanged():
@@ -232,8 +214,6 @@ def test_apply_no_departments_returns_unchanged():
 def test_apply_no_tips_keeps_writer_block():
     llm = _StubLLM(json_response={"tips": []})
     section = _section()
-    result = apply_department_tips(
-        section, _depts("기획"), {}, date="2026-05-20", llm=llm
-    )
+    result = apply_department_tips(section, _depts("기획"), {}, date="2026-05-20", llm=llm)
     assert "(작성기가 쓴 기존 한 줄)" in result.markdown
     assert result.department_tips == []

@@ -82,9 +82,7 @@ class NotionClient:
             "parent": {"database_id": self.database_id},
             "properties": {
                 **properties,
-                "Name": {
-                    "title": [{"type": "text", "text": {"content": title}}]
-                },
+                "Name": {"title": [{"type": "text", "text": {"content": title}}]},
             },
             "children": children,
         }
@@ -107,9 +105,7 @@ class NotionClient:
 
         if response.status_code >= 400:
             detail = _safe_error_message(response)
-            raise NotionError(
-                f"Notion API returned {response.status_code}: {detail}"
-            )
+            raise NotionError(f"Notion API returned {response.status_code}: {detail}")
 
         payload = response.json()
         page_id = str(payload.get("id") or "")

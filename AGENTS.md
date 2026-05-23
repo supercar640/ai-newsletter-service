@@ -42,6 +42,7 @@
 
 ```bash
 uv sync
+uv run pre-commit install  # enable lint/format hook (one-time)
 cp .env.example .env       # fill in keys
 uv run alembic upgrade head
 uv run newsletter sources:seed

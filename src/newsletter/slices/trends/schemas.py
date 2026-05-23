@@ -8,20 +8,20 @@ from datetime import date
 
 @dataclass(frozen=True, slots=True)
 class WindowSpec:
-    period: str          # "week" | "month"
+    period: str  # "week" | "month"
     current_start: date
-    current_end: date    # exclusive
+    current_end: date  # exclusive
     previous_start: date
-    previous_end: date   # exclusive (== current_start)
+    previous_end: date  # exclusive (== current_start)
 
 
 @dataclass(frozen=True, slots=True)
 class TermDelta:
     term: str
-    current: int         # article count this window
-    previous: int        # article count prior window
-    delta: int           # current - previous
-    importance: float    # sum of importance_score this window (tiebreak)
+    current: int  # article count this window
+    previous: int  # article count prior window
+    delta: int  # current - previous
+    importance: float  # sum of importance_score this window (tiebreak)
 
 
 @dataclass(frozen=True, slots=True)

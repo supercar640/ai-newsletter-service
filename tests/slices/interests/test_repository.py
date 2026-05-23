@@ -41,9 +41,7 @@ def test_list_filters_enabled(db_session):
 
 
 def test_update_changes_fields_and_keywords(db_session):
-    row = repository.add(
-        db_session, InterestCreate(name="RAG", keywords=["rag"], weight=1.0)
-    )
+    row = repository.add(db_session, InterestCreate(name="RAG", keywords=["rag"], weight=1.0))
     db_session.commit()
     updated = repository.update(
         db_session,
