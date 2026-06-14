@@ -13,7 +13,9 @@ QUALITY = "quality"
 
 MODELS: dict[str, dict[str, str]] = {
     "anthropic": {FAST: "claude-sonnet-4-6", QUALITY: "claude-opus-4-7"},
-    "gemini": {FAST: "gemini-2.5-flash", QUALITY: "gemini-2.5-pro"},
+    # Free tier blocks 2.5-pro (quota limit 0); quality falls back to flash.
+    # Restore QUALITY to "gemini-2.5-pro" once billing (Tier 1) is enabled.
+    "gemini": {FAST: "gemini-2.5-flash", QUALITY: "gemini-2.5-flash"},
 }
 
 

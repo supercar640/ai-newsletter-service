@@ -14,7 +14,8 @@ def test_resolve_anthropic() -> None:
 
 def test_resolve_gemini() -> None:
     assert resolve_model("gemini", FAST) == "gemini-2.5-flash"
-    assert resolve_model("gemini", QUALITY) == "gemini-2.5-pro"
+    # Free tier: quality maps to flash until Tier 1 billing unlocks 2.5-pro.
+    assert resolve_model("gemini", QUALITY) == "gemini-2.5-flash"
 
 
 def test_every_provider_defines_both_tiers() -> None:
