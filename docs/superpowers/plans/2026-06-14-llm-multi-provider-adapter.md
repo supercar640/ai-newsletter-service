@@ -30,9 +30,13 @@ core/llm/
 ## Task 1: tier → 모델 매핑 (`core/llm/models.py`)
 
 **Files:**
+- Move: `src/newsletter/core/llm.py` → `src/newsletter/core/llm/__init__.py` (패키지화, 내용 100% 보존)
 - Create: `src/newsletter/core/llm/models.py`
-- Create: `src/newsletter/core/llm/__init__.py` (이 태스크에선 빈 파일 또는 최소)
 - Test: `tests/test_llm_models.py`
+
+> **Step 0 (충돌 회피):** `git mv src/newsletter/core/llm.py src/newsletter/core/llm/__init__.py`.
+> 모듈과 동명 패키지는 공존 불가하므로, 먼저 기존 파일을 그대로 패키지의 `__init__.py`로
+> 옮긴다. 내용 변경 없음 → 기존 import·테스트 그대로 green. 이후 단계에서 모듈을 분리한다.
 
 - [ ] **Step 1: 실패 테스트**
 
