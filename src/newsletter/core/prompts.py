@@ -6,7 +6,7 @@ below the second ``---`` is the literal text rendered to the model.
 ```
 ---
 name: expert-importance-scorer
-model: claude-sonnet-4-6
+tier: fast
 version: 1
 inputs: [title, summary, source_name]
 output_schema: {"importance": "int 1-5", "rationale": "string"}
@@ -35,7 +35,7 @@ class PromptError(Exception):
 @dataclass(slots=True, frozen=True)
 class Prompt:
     name: str
-    model: str
+    tier: str
     version: int
     body: str
     inputs: tuple[str, ...]
@@ -98,7 +98,7 @@ def _parse_prompt(text: str, *, path: Path) -> Prompt:
     if not isinstance(meta, dict):
         raise PromptError(f"{path.name}: frontmatter must be a mapping")
 
-    required = ("name", "model", "version")
+    required = ("name", "tier", "version")
     missing = [k for k in required if k not in meta]
     if missing:
         raise PromptError(f"{path.name}: frontmatter missing keys: {missing}")
@@ -107,9 +107,12 @@ def _parse_prompt(text: str, *, path: Path) -> Prompt:
     if not isinstance(inputs_raw, list):
         raise PromptError(f"{path.name}: 'inputs' must be a list")
 
+    tier = str(meta["tier"])
+    if tier not in ("fast", "quality"):
+        raise PromptError(f"{path.name}: 'tier' must be 'fast' or 'quality', got {tier!r}")
     return Prompt(
         name=str(meta["name"]),
-        model=str(meta["model"]),
+        tier=tier,
         version=int(meta["version"]),
         body=body,
         inputs=tuple(str(x) for x in inputs_raw),

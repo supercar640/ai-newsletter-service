@@ -103,7 +103,7 @@ def classify_with_llm(
     try:
         payload, _ = llm.complete_json(
             prompt.render(title=title or "(no title)", summary=(summary or "")[:600]),
-            model=prompt.model,
+            tier=prompt.tier,
             max_tokens=256,
         )
     except LLMError as exc:

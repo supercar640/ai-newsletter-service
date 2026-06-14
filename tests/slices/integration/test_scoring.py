@@ -182,12 +182,12 @@ class _RecordingLLM:
         self.default_importance = default_importance
         self.calls: list[str] = []
 
-    def complete_json(self, body, *, model=None, max_tokens=None, system=None, temperature=None):  # type: ignore[no-untyped-def]
+    def complete_json(self, body, *, tier=None, max_tokens=None, system=None, temperature=None):  # type: ignore[no-untyped-def]
         self.calls.append(body)
         from newsletter.core.llm import LLMResponse
 
         payload = {"importance": self.default_importance, "rationale": "stub"}
-        return payload, LLMResponse(text="", model=model or "stub", input_tokens=0, output_tokens=0)
+        return payload, LLMResponse(text="", model=tier or "stub", input_tokens=0, output_tokens=0)
 
 
 # Sanity: dataclass is immutable enough for safe reuse via replace().

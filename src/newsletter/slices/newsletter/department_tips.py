@@ -60,7 +60,7 @@ def generate_department_tips(
         recent_tips_json=json.dumps(dict(recent_tips_by_dept), ensure_ascii=False),
     )
     try:
-        payload, _ = llm.complete_json(body, model=prompt.model, max_tokens=1024)
+        payload, _ = llm.complete_json(body, tier=prompt.tier, max_tokens=1024)
     except LLMError as exc:
         log.warning("department_tips.generate.failed", error=str(exc))
         return []

@@ -63,17 +63,17 @@ class _StubLLM:
         self,
         body,  # type: ignore[no-untyped-def]
         *,
-        model=None,
+        tier=None,
         max_tokens=None,
         system=None,
         temperature=None,
     ):
-        self.json_calls.append((body, model))
+        self.json_calls.append((body, tier))
         if self.raise_on == "json":
             raise LLMError("stub failure")
         return self.json_response, LLMResponse(
             text=json.dumps(self.json_response or {}),
-            model=model or "stub",
+            model=tier or "stub",
             input_tokens=0,
             output_tokens=0,
         )
@@ -82,24 +82,24 @@ class _StubLLM:
         self,
         body,  # type: ignore[no-untyped-def]
         *,
-        model=None,
+        tier=None,
         max_tokens=None,
         system=None,
         temperature=None,
     ):
-        self.text_calls.append((body, model))
+        self.text_calls.append((body, tier))
         if self.raise_on == "text":
             raise LLMError("stub failure")
         return LLMResponse(
             text=self.text_response,
-            model=model or "stub",
+            model=tier or "stub",
             input_tokens=0,
             output_tokens=0,
         )
 
     def complete_prompt(self, prompt, values, **kwargs):  # type: ignore[no-untyped-def]
         body = prompt.render(**values)
-        return self.complete(body, model=prompt.model, **kwargs)
+        return self.complete(body, tier=prompt.tier, **kwargs)
 
 
 # ---------------------------------------------------------------------------
@@ -144,8 +144,8 @@ class TestSummarizeCluster:
         )
         summarize_cluster(brief, llm=llm)
         assert llm.json_calls, "summarize_cluster must call complete_json"
-        _body, model = llm.json_calls[0]
-        assert model == "claude-sonnet-4-6"
+        _body, tier = llm.json_calls[0]
+        assert tier == "fast"
 
     def test_members_block_includes_every_item(self) -> None:
         llm = _StubLLM(json_response=self._payload())
@@ -272,8 +272,8 @@ class TestWriteExpertSection:
         llm = _StubLLM(text_response="## A. ...\n\nbody")
         write_expert_section([_sum()], date="2026-05-15", llm=llm)
         assert llm.text_calls, "section writer must call complete via prompt"
-        _body, model = llm.text_calls[0]
-        assert model == "claude-opus-4-7"
+        _body, tier = llm.text_calls[0]
+        assert tier == "quality"
 
     def test_returns_markdown_from_llm(self) -> None:
         llm = _StubLLM(text_response="## A. AI 전문가용 최신 AI 뉴스\n\nbody")

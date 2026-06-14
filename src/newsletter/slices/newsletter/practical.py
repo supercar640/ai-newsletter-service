@@ -69,7 +69,7 @@ def summarize_practical_cluster(brief: ClusterBrief, *, llm: LLMClient) -> Pract
         members_block=_format_members(brief.members),
     )
     try:
-        payload, _ = llm.complete_json(body, model=prompt.model, max_tokens=1024)
+        payload, _ = llm.complete_json(body, tier=prompt.tier, max_tokens=1024)
     except LLMError as exc:
         log.warning("practical.summarize.failed", cluster_id=brief.cluster_id, error=str(exc))
         return None
@@ -134,7 +134,7 @@ def write_practical_section(
         usecases_json=json.dumps([_usecase_to_dict(u) for u in usecases], ensure_ascii=False),
     )
     try:
-        response = llm.complete(body, model=prompt.model, max_tokens=4096)
+        response = llm.complete(body, tier=prompt.tier, max_tokens=4096)
     except LLMError as exc:
         log.warning("practical.writer.failed", error=str(exc))
         return PracticalSection(

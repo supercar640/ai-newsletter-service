@@ -98,9 +98,13 @@ def test_build_llm_client_wires_recorder(db_session, monkeypatch):
             self.messages = _FakeMessages()
 
     from newsletter.core.llm import LLMClient
+    from newsletter.core.llm.providers import AnthropicProvider
 
-    client = LLMClient(client=_FakeAnthropic(), usage_callback=recorder.make_llm_recorder())
-    client.complete("hi", model="claude-sonnet-4-6")
+    client = LLMClient(
+        provider=AnthropicProvider(client=_FakeAnthropic()),
+        usage_callback=recorder.make_llm_recorder(),
+    )
+    client.complete("hi", tier="fast")
     db_session.expire_all()
     rows = _all_runs(db_session)
     assert len(rows) == 1

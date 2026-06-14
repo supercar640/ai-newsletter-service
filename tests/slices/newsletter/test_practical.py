@@ -51,17 +51,17 @@ class _StubLLM:
     json_calls: list[tuple[str, str]] = field(default_factory=list)
     text_calls: list[tuple[str, str]] = field(default_factory=list)
 
-    def complete_json(self, body, *, model, max_tokens=1024):
-        self.json_calls.append((body, model))
+    def complete_json(self, body, *, tier, max_tokens=1024):
+        self.json_calls.append((body, tier))
         if self.raise_on == "json":
             raise LLMError("stub fail")
         return (self.json_response, None)
 
-    def complete(self, body, *, model, max_tokens=4096, system=None, temperature=0.2):
-        self.text_calls.append((body, model))
+    def complete(self, body, *, tier, max_tokens=4096, system=None, temperature=0.2):
+        self.text_calls.append((body, tier))
         if self.raise_on == "text":
             raise LLMError("stub fail")
-        return LLMResponse(text=self.text_response, model=model, input_tokens=0, output_tokens=0)
+        return LLMResponse(text=self.text_response, model=tier, input_tokens=0, output_tokens=0)
 
 
 # ---------------------------------------------------------------------------

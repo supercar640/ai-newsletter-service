@@ -1,6 +1,6 @@
 ---
 name: expert-news-writer
-model: claude-opus-4-7
+tier: quality
 version: 1
 inputs: [date, cluster_summaries_json]
 ---

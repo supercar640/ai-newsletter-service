@@ -33,11 +33,11 @@ class _StubLLM:
     )
     writer_text: str = "stubbed output"
 
-    def complete_json(self, body, *, model, max_tokens=1024):
+    def complete_json(self, body, *, tier, max_tokens=1024):
         return (self.json_payload, None)
 
-    def complete(self, body, *, model, max_tokens=4096, system=None, temperature=0.2):
-        return LLMResponse(text=self.writer_text, model=model, input_tokens=0, output_tokens=0)
+    def complete(self, body, *, tier, max_tokens=4096, system=None, temperature=0.2):
+        return LLMResponse(text=self.writer_text, model=tier, input_tokens=0, output_tokens=0)
 
 
 def _seed_pool(db_session, count: int):

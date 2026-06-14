@@ -42,14 +42,14 @@ class _StubLLM:
     tip_text: str = "기획 신규 팁"
     json_calls: list[str] = field(default_factory=list)
 
-    def complete_json(self, body, *, model, max_tokens=1024):
+    def complete_json(self, body, *, tier, max_tokens=1024):
         self.json_calls.append(body)
         if "부서별 활용 팁" in body:
             return ({"tips": [{"department": "기획", "tip": self.tip_text}]}, None)
         return (self.usecase_payload, None)
 
-    def complete(self, body, *, model, max_tokens=4096, system=None, temperature=0.2):
-        return LLMResponse(text="opus", model=model, input_tokens=0, output_tokens=0)
+    def complete(self, body, *, tier, max_tokens=4096, system=None, temperature=0.2):
+        return LLMResponse(text="opus", model=tier, input_tokens=0, output_tokens=0)
 
 
 def _seed_dept(db_session):

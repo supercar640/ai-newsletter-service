@@ -25,8 +25,8 @@ class _StubLLM:
     raise_on: str | None = None
     json_calls: list[tuple[str, str]] = field(default_factory=list)
 
-    def complete_json(self, body, *, model, max_tokens=1024):
-        self.json_calls.append((body, model))
+    def complete_json(self, body, *, tier, max_tokens=1024):
+        self.json_calls.append((body, tier))
         if self.raise_on == "json":
             raise LLMError("stub fail")
         return (self.json_response, None)
@@ -76,7 +76,7 @@ def test_generate_returns_tip_per_department():
 def test_generate_uses_sonnet_model():
     llm = _StubLLM(json_response={"tips": []})
     generate_department_tips([_usecase("x")], _depts("기획"), {}, date="2026-05-20", llm=llm)
-    assert llm.json_calls[0][1] == "claude-sonnet-4-6"
+    assert llm.json_calls[0][1] == "fast"
 
 
 def test_generate_injects_recent_tips_into_prompt():

@@ -1,6 +1,6 @@
 ---
 name: practical-department-tips
-model: claude-sonnet-4-6
+tier: fast
 version: 1
 inputs: [date, departments_json, usecases_json, recent_tips_json]
 output_schema: '{"tips": [{"department": "<부서명>", "tip": "<한 줄 팁>"}]}'

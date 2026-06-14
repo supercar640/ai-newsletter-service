@@ -45,13 +45,13 @@ class _StubLLM:
     json_calls: list[str] = field(default_factory=list)
     text_calls: list[str] = field(default_factory=list)
 
-    def complete_json(self, body, *, model, max_tokens=1024):
+    def complete_json(self, body, *, tier, max_tokens=1024):
         self.json_calls.append(body)
         return (self.json_payload, None)
 
-    def complete(self, body, *, model, max_tokens=4096, system=None, temperature=0.2):
+    def complete(self, body, *, tier, max_tokens=4096, system=None, temperature=0.2):
         self.text_calls.append(body)
-        return LLMResponse(text=self.writer_text, model=model, input_tokens=0, output_tokens=0)
+        return LLMResponse(text=self.writer_text, model=tier, input_tokens=0, output_tokens=0)
 
 
 def _seed_source(db_session, source_id: str = "src1") -> Source:

@@ -1,6 +1,6 @@
 ---
 name: expert-importance-scorer
-model: claude-sonnet-4-6
+tier: fast
 version: 1
 inputs: [title, summary, source_name]
 output_schema:

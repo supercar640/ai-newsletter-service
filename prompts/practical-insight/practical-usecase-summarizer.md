@@ -1,6 +1,6 @@
 ---
 name: practical-usecase-summarizer
-model: claude-sonnet-4-6
+tier: fast
 version: 1
 inputs: [cluster_id, members_block]
 output_schema:

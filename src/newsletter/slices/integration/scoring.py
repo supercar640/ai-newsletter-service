@@ -285,7 +285,7 @@ def _llm_importance(item: ScoreInput, *, llm: _JSONCompleter) -> int | None:
             summary=(item.summary or "")[:600],
             source_name=item.source_name or "(unknown)",
         )
-        payload, _ = llm.complete_json(body, model=prompt.model, max_tokens=128)
+        payload, _ = llm.complete_json(body, tier=prompt.tier, max_tokens=128)
     except LLMError as exc:
         log.warning("scoring.llm_failed", item_id=item.id, error=str(exc))
         return None

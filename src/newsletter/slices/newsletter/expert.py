@@ -88,7 +88,7 @@ def summarize_cluster(brief: ClusterBrief, *, llm: LLMClient) -> ClusterSummary 
         members_block=_format_members(brief.members),
     )
     try:
-        payload, _ = llm.complete_json(body, model=prompt.model, max_tokens=1024)
+        payload, _ = llm.complete_json(body, tier=prompt.tier, max_tokens=1024)
     except LLMError as exc:
         log.warning("expert.summarize.failed", cluster_id=brief.cluster_id, error=str(exc))
         return None
@@ -163,7 +163,7 @@ def write_expert_section(
         ),
     )
     try:
-        response = llm.complete(body, model=prompt.model, max_tokens=4096)
+        response = llm.complete(body, tier=prompt.tier, max_tokens=4096)
     except LLMError as exc:
         log.warning("expert.writer.failed", error=str(exc))
         return ExpertSection(

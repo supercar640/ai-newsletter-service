@@ -18,7 +18,7 @@ def _clear_prompt_cache() -> None:
 def test_loads_real_prompt() -> None:
     prompt = load_prompt("common/keyword-relevance-classifier.md")
     assert prompt.name == "keyword-relevance-classifier"
-    assert prompt.model.startswith("claude-")
+    assert prompt.tier in {"fast", "quality"}
     assert "is_ai_related" in prompt.body
     assert "title" in prompt.inputs
 
@@ -48,7 +48,7 @@ def test_malformed_prompt_raises(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 def test_prompt_with_only_required_fields(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     minimal = tmp_path / "min.md"
     minimal.write_text(
-        "---\nname: x\nmodel: claude-sonnet-4-6\nversion: 1\n---\nhello",
+        "---\nname: x\ntier: fast\nversion: 1\n---\nhello",
         encoding="utf-8",
     )
     monkeypatch.setattr(prompts_mod, "_PROMPTS_DIR", tmp_path)

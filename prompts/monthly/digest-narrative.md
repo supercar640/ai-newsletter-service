@@ -1,6 +1,6 @@
 ---
 name: monthly-digest-narrative
-model: claude-opus-4-7
+tier: quality
 version: 1
 inputs: [month, digest_json]
 ---

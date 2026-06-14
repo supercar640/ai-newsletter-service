@@ -1,6 +1,6 @@
 ---
 name: keyword-relevance-classifier
-model: claude-sonnet-4-6
+tier: fast
 version: 1
 inputs: [title, summary]
 output_schema:

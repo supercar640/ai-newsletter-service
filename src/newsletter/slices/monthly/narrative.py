@@ -28,7 +28,7 @@ def build_narrative(report: MonthlyReport, *, llm: LLMClient) -> str | None:
     digest_json = json.dumps(_digest_input(report), ensure_ascii=False)
     body = prompt.render(month=report.month, digest_json=digest_json)
     try:
-        response = llm.complete(body, model=prompt.model, max_tokens=2048)
+        response = llm.complete(body, tier=prompt.tier, max_tokens=2048)
     except LLMError as exc:
         log.warning("monthly.narrative.failed", error=str(exc))
         return None

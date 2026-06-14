@@ -1,6 +1,6 @@
 ---
 name: practical-insight-writer
-model: claude-opus-4-7
+tier: quality
 version: 1
 inputs: [date, usecases_json]
 ---

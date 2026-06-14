@@ -21,11 +21,11 @@ class _FakeLLM:
         self.error = error
         self.last_body: str | None = None
 
-    def complete(self, body: str, *, model: str, max_tokens: int) -> LLMResponse:
+    def complete(self, body: str, *, tier: str, max_tokens: int) -> LLMResponse:
         self.last_body = body
         if self.error:
             raise LLMError("boom")
-        return LLMResponse(text=self.text, model=model, input_tokens=1, output_tokens=1)
+        return LLMResponse(text=self.text, model=tier, input_tokens=1, output_tokens=1)
 
 
 def _report_with_one_item(db_session: Session):
