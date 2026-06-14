@@ -63,3 +63,40 @@ def test_anthropic_omits_system_when_none() -> None:
 
 def test_anthropic_name() -> None:
     assert AnthropicProvider(client=_Anthropic()).name == "anthropic"
+
+
+# --- Gemini ---------------------------------------------------------------
+
+
+def test_gemini_generate_extracts_text_and_tokens() -> None:
+    captured: dict = {}
+
+    class _Usage:
+        prompt_token_count = 4
+        candidates_token_count = 9
+
+    class _Resp:
+        text = "hello"
+        usage_metadata = _Usage()
+
+    class _GeminiModels:
+        def generate_content(self, **kw):
+            captured.update(kw)
+            return _Resp()
+
+    class _GeminiClient:
+        def __init__(self) -> None:
+            self.models = _GeminiModels()
+
+    from newsletter.core.llm.providers import GeminiProvider
+
+    provider = GeminiProvider(client=_GeminiClient())
+    out = provider.generate(
+        "body", model="gemini-2.5-flash", max_tokens=50, system="sys", temperature=0.3
+    )
+    assert out == RawCompletion(text="hello", input_tokens=4, output_tokens=9)
+    assert captured["model"] == "gemini-2.5-flash"
+    assert captured["contents"] == "body"
+    assert captured["config"].system_instruction == "sys"
+    assert captured["config"].max_output_tokens == 50
+    assert provider.name == "gemini"

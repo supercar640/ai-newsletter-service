@@ -72,15 +72,42 @@ def _anthropic_text(response: Any) -> str:
     return "".join(parts)
 
 
-def make_provider(settings) -> Provider:
-    """Build the provider named by ``settings.llm_provider``.
+class GeminiProvider:
+    name = "gemini"
 
-    (GeminiProvider is registered in a later task.)
-    """
+    def __init__(self, *, client: Any | None = None, api_key: str = "") -> None:
+        if client is not None:
+            self._client = client
+        else:
+            from google import genai
+
+            self._client = genai.Client(api_key=api_key or "missing")
+
+    def generate(self, body, *, model, max_tokens, system, temperature) -> RawCompletion:
+        from google.genai import types
+
+        config = types.GenerateContentConfig(
+            system_instruction=system or None,
+            max_output_tokens=max_tokens,
+            temperature=temperature,
+        )
+        resp = self._client.models.generate_content(model=model, contents=body, config=config)
+        usage = getattr(resp, "usage_metadata", None)
+        return RawCompletion(
+            text=getattr(resp, "text", "") or "",
+            input_tokens=int(getattr(usage, "prompt_token_count", 0) or 0),
+            output_tokens=int(getattr(usage, "candidates_token_count", 0) or 0),
+        )
+
+
+def make_provider(settings) -> Provider:
+    """Build the provider named by ``settings.llm_provider``."""
     name = settings.llm_provider
     if name == "anthropic":
         return AnthropicProvider(api_key=settings.anthropic_api_key)
+    if name == "gemini":
+        return GeminiProvider(api_key=settings.gemini_api_key)
     raise ValueError(f"unknown LLM_PROVIDER: {name!r}")
 
 
-__all__ = ["AnthropicProvider", "Provider", "RawCompletion", "make_provider"]
+__all__ = ["AnthropicProvider", "GeminiProvider", "Provider", "RawCompletion", "make_provider"]
