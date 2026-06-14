@@ -27,6 +27,7 @@ def _configure_logging() -> None:
 # pydantic-settings will reject them.
 _EXTERNAL_CREDENTIAL_VARS = (
     "ANTHROPIC_API_KEY",
+    "GEMINI_API_KEY",
     "NAVER_CLIENT_ID",
     "NAVER_CLIENT_SECRET",
     "YOUTUBE_API_KEY",
@@ -46,6 +47,9 @@ def settings(monkeypatch: pytest.MonkeyPatch) -> Settings:
     """
     monkeypatch.setenv("DB_URL", "sqlite:///:memory:")
     monkeypatch.setenv("ENV", "test")
+    # Pin provider so any LLMClient built without an injected provider resolves
+    # to the (always-installed) Anthropic adapter rather than reaching for Gemini.
+    monkeypatch.setenv("LLM_PROVIDER", "anthropic")
     # setenv("") (not delenv) so an on-disk .env can't repopulate these.
     for name in _EXTERNAL_CREDENTIAL_VARS:
         monkeypatch.setenv(name, "")

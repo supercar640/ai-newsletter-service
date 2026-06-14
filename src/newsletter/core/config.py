@@ -23,8 +23,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # Anthropic
+    # LLM provider selection (anthropic | gemini)
+    llm_provider: Literal["anthropic", "gemini"] = Field(default="gemini")
     anthropic_api_key: str = Field(default="", description="Claude API key")
+    gemini_api_key: str = Field(default="", description="Google Gemini API key")
 
     # Voyage AI (embeddings, Phase 2)
     voyage_api_key: str = Field(default="", description="Voyage AI key for embeddings")
