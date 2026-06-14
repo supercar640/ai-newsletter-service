@@ -12,9 +12,13 @@
 
 ## 목표
 
-`LLMClient`의 공개 인터페이스를 바꾸지 않고, 내부의 "Anthropic 직접 호출"을
-**프로바이더 어댑터**로 추출한다. `.env`의 `LLM_PROVIDER`로 Anthropic ↔ Gemini를
-한 줄로 전환한다. 슬라이스 코드는 한 줄도 바뀌지 않는다.
+`LLMClient`의 공개 메서드 집합(`complete`/`complete_json`/`complete_prompt`)을
+유지한 채, 내부의 "Anthropic 직접 호출"을 **프로바이더 어댑터**로 추출한다.
+`.env`의 `LLM_PROVIDER`로 Anthropic ↔ Gemini를 한 줄로 전환한다.
+
+> 단, 모델 지정 인자는 구체 모델 문자열에서 tier로 바뀐다. 슬라이스가 LLM을
+> 부르는 7곳이 `model=prompt.model` → `tier=prompt.tier`로 **기계적으로** 치환된다
+> (호출 구조·로직은 그대로). 슬라이스가 프로바이더나 모델 ID를 알 필요는 여전히 없다.
 
 ## 비목표 (YAGNI)
 
@@ -102,6 +106,7 @@ slice → LLMClient.complete_prompt(prompt, values)
 
 | 파일 | 변경 |
 |---|---|
+| 슬라이스 LLM 호출 7곳 | `model=prompt.model` → `tier=prompt.tier`. 대상: `processing/relevance.py`, `processing/track_classifier.py`, `integration/scoring.py`, `newsletter/expert.py`(2), `newsletter/practical.py`(2), `newsletter/department_tips.py`, `monthly/narrative.py` |
 | `core/config.py` | `llm_provider: Literal["anthropic","gemini"] = "gemini"`, `gemini_api_key: str = ""` 추가. `anthropic_api_key` 유지 |
 | `core/prompts.py` | `Prompt.model` → `Prompt.tier`. frontmatter에서 `tier:` 파싱 |
 | `prompts/**/*.md` (9개) | `model: claude-sonnet-4-6` → `tier: fast`, `model: claude-opus-4-7` → `tier: quality` |
