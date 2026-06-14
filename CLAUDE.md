@@ -65,9 +65,9 @@
 
 상세는 `AGENTS.md`. Claude Code 작업 중 자주 어기기 쉬운 부분:
 
-- `core/llm.py`를 우회하는 직접 `import anthropic` 금지.
-- 새 프롬프트는 `prompts/` 하위에 두고 frontmatter(`name, model, version, inputs, output_schema`)를 채웁니다.
-- 처리(필터/요약/스코어)는 `claude-sonnet-4-6`, 최종 뉴스레터 작성·편집은 `claude-opus-4-7`.
+- `core/llm`을 우회하는 벤더 SDK 직접 import(`anthropic`, `google-genai`) 금지.
+- 새 프롬프트는 `prompts/` 하위에 두고 frontmatter(`name, tier, version, inputs, output_schema`)를 채웁니다.
+- 처리(필터/요약/스코어)는 `tier: fast`, 최종 뉴스레터 작성·편집은 `tier: quality`. 프로바이더는 `LLM_PROVIDER`(anthropic|gemini)로 선택.
 - 입력은 `title + raw_summary` 우선. 본문 전체 전송 금지.
 
 ---

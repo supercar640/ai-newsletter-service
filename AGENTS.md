@@ -27,7 +27,7 @@
 | Package manager | `uv` |
 | CLI | Typer |
 | DB | SQLite + SQLAlchemy 2.0 + Alembic |
-| LLM | Anthropic SDK — `claude-sonnet-4-6` for processing, `claude-opus-4-7` for final writing |
+| LLM | Pluggable via `core/llm` — `anthropic` (sonnet/opus) or `gemini` (2.5-flash/2.5-pro), chosen by `LLM_PROVIDER`. Calls pick a tier (fast/quality) |
 | RSS / HTTP | feedparser, httpx |
 | Templating | Jinja2 (Markdown + HTML email) |
 | Settings | pydantic-settings + `.env` |
@@ -49,7 +49,8 @@ uv run newsletter sources:seed
 ```
 
 Required env vars (see `.env.example`):
-`ANTHROPIC_API_KEY`, `NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`,
+`LLM_PROVIDER` (anthropic|gemini) + the matching key (`ANTHROPIC_API_KEY` or `GEMINI_API_KEY`),
+`NAVER_CLIENT_ID`, `NAVER_CLIENT_SECRET`,
 `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`,
 `NEWSLETTER_RECIPIENTS`, `DB_URL` (default `sqlite:///data/newsletter.db`).
 
@@ -168,9 +169,9 @@ The send code path MUST reject any state other than `approved`. There is no `--f
 
 ## LLM rules
 
-- All LLM calls go through `core/llm.py`. Slices MUST NOT import `anthropic` directly.
-- `claude-sonnet-4-6` for per-item processing (relevance, summarize, classify, score).
-- `claude-opus-4-7` only for final newsletter writing and the editor pass.
+- All LLM calls go through `core/llm` (the provider-agnostic `LLMClient`). Slices MUST NOT import a vendor SDK (`anthropic`, `google-genai`) directly.
+- The active provider is chosen by `LLM_PROVIDER` (`anthropic` | `gemini`).
+- Calls pick a **tier**, not a model: `fast` for per-item processing (relevance, summarize, classify, score); `quality` only for final newsletter writing and the editor pass. Provider + tier resolve to a concrete model (`anthropic`: sonnet/opus, `gemini`: 2.5-flash/2.5-pro).
 - Default input is `title + raw_summary`. Do NOT send full article text unless the prompt explicitly requires it.
 - Every prompt specifies its output format (JSON schema or strict markdown sections).
 - Every LLM call is recorded to `RunLog` (tokens in/out, cost, latency, error).
@@ -185,7 +186,7 @@ The send code path MUST reject any state other than `approved`. There is no `--f
   ```yaml
   ---
   name: expert-importance-scorer
-  model: claude-sonnet-4-6
+  tier: fast
   version: 1
   inputs: [title, summary, source_name, trust_level]
   output_schema: {"importance": "integer 1-5", "rationale": "string"}

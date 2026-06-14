@@ -18,6 +18,16 @@ def test_opus_cost():
     assert cost_for("claude-opus-4-7", 0, 1_000_000) == pytest.approx(75.0)
 
 
+def test_gemini_flash_cost():
+    assert cost_for("gemini-2.5-flash", 1_000_000, 0) == pytest.approx(0.5)
+    assert cost_for("gemini-2.5-flash", 0, 1_000_000) == pytest.approx(2.0)
+
+
+def test_gemini_pro_cost():
+    assert cost_for("gemini-2.5-pro", 1_000_000, 0) == pytest.approx(1.25)
+    assert cost_for("gemini-2.5-pro", 0, 1_000_000) == pytest.approx(10.0)
+
+
 def test_unknown_model_falls_back_to_sonnet_rates():
     # We don't want crashes for new model ids; sonnet rate is the safe baseline.
     assert cost_for("unknown-model", 1_000_000, 1_000_000) == pytest.approx(3.0 + 15.0)

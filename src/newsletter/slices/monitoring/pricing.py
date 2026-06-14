@@ -1,4 +1,4 @@
-"""Claude API price table (USD per 1M tokens).
+"""LLM API price table (USD per 1M tokens).
 
 Rates intentionally live in code rather than the DB: pricing changes are
 rare, deploy-time, and require human review. ``cost_for`` is total USD
@@ -11,6 +11,9 @@ from __future__ import annotations
 PRICING: dict[str, tuple[float, float]] = {
     "claude-opus-4-7": (15.0, 75.0),
     "claude-sonnet-4-6": (3.0, 15.0),
+    # Gemini 2.5 text, <=200k context, per Google AI pricing (2026-06).
+    "gemini-2.5-pro": (1.25, 10.0),
+    "gemini-2.5-flash": (0.5, 2.0),
 }
 
 # Sonnet rate as the conservative fallback — never zero so a missing key
