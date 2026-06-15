@@ -68,42 +68,18 @@ def test_make_llm_recorder_writes_one_row_per_call(db_session):
     assert opus.cost_usd == pytest.approx(0.00165)
 
 
-def test_build_llm_client_wires_recorder(db_session, monkeypatch):
+def test_build_llm_client_wires_recorder(db_session):
     """build_llm_client returns an LLMClient whose complete() writes a RunLog."""
-    from dataclasses import dataclass
+    from newsletter.core.llm.providers import RawCompletion
+    from newsletter.slices.monitoring.recorder import build_llm_client
 
-    @dataclass
-    class _FakeUsage:
-        input_tokens: int
-        output_tokens: int
+    class _FakeProvider:
+        name = "anthropic"
 
-    @dataclass
-    class _FakeBlock:
-        text: str
+        def generate(self, body, *, model, max_tokens, system, temperature):
+            return RawCompletion(text="answer", input_tokens=42, output_tokens=7)
 
-    @dataclass
-    class _FakeMessage:
-        content: list
-        usage: _FakeUsage
-
-    class _FakeMessages:
-        def create(self, **kwargs):
-            return _FakeMessage(
-                content=[_FakeBlock(text="answer")],
-                usage=_FakeUsage(input_tokens=42, output_tokens=7),
-            )
-
-    class _FakeAnthropic:
-        def __init__(self):
-            self.messages = _FakeMessages()
-
-    from newsletter.core.llm import LLMClient
-    from newsletter.core.llm.providers import AnthropicProvider
-
-    client = LLMClient(
-        provider=AnthropicProvider(client=_FakeAnthropic()),
-        usage_callback=recorder.make_llm_recorder(),
-    )
+    client = build_llm_client(provider=_FakeProvider())
     client.complete("hi", tier="fast")
     db_session.expire_all()
     rows = _all_runs(db_session)

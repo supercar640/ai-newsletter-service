@@ -103,9 +103,9 @@ def make_llm_recorder() -> Callable[[LLMResponse], None]:
     return record
 
 
-def build_llm_client(*, client: Any = None) -> LLMClient:
+def build_llm_client(*, provider: Any = None) -> LLMClient:
     """Construct an LLMClient pre-wired to record every call in RunLog."""
-    return LLMClient(client=client, usage_callback=make_llm_recorder())
+    return LLMClient(provider=provider, usage_callback=make_llm_recorder())
 
 
 def make_embedding_recorder() -> Callable[[str, int], None]:
