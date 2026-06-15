@@ -149,11 +149,11 @@ def test_collect_filters_by_source_id(runner: CliRunner) -> None:
         seeds.seed(session)
     _mock_seed_endpoints()
 
-    result = runner.invoke(app, ["collect", "--source-id", "openai-blog"])
+    result = runner.invoke(app, ["collect", "--source-id", "techcrunch-ai"])
     assert result.exit_code == 0, result.output
-    body_lines = [ln for ln in result.output.splitlines() if ln.startswith("openai-blog")]
+    body_lines = [ln for ln in result.output.splitlines() if ln.startswith("techcrunch-ai")]
     assert len(body_lines) == 1
-    assert "techcrunch-ai" not in result.output
+    assert "mit-tech-review-ai" not in result.output
 
 
 @respx.mock

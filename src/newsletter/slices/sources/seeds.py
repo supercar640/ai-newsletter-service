@@ -47,13 +47,18 @@ SEED_SOURCES: list[SourceCreate] = [
         name="OpenAI Blog",
         type="RSS",
         content_track="expert_news",
-        endpoint="https://openai.com/blog/rss.xml",
+        # blog/rss.xml redirects here; both return the FULL archive (~1000 items).
+        endpoint="https://openai.com/news/rss.xml",
         language="en",
         region="Global",
         category="AI Model",
         priority="high",
         trust_level="official",
         fetch_interval="daily",
+        # Disabled: feed dumps the entire archive, swamping the pipeline. Re-enable
+        # once collection has a recency gate (max-age / max-items per fetch).
+        enabled=False,
+        rate_limit_note="RSS returns full archive (~1000 items); needs a recency gate before re-enabling.",
         owner="admin",
     ),
     SourceCreate(

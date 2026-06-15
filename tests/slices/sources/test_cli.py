@@ -122,7 +122,7 @@ def test_sources_disable_then_list_filtered(runner: CliRunner) -> None:
     only_enabled = runner.invoke(app, ["sources", "list", "--enabled"])
     assert only_enabled.exit_code == 0
     assert "naver-ai" not in only_enabled.output
-    assert "openai-blog" in only_enabled.output
+    assert "techcrunch-ai" in only_enabled.output
 
 
 def test_sources_list_json(runner: CliRunner) -> None:
